@@ -1,0 +1,88 @@
+Description: Remove old BRO_NOTICE pattern
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion22) precise; urgency=low
+ .
+   * More changes to ELSA cron
+Author: Scott Allen Runnels <srunnels@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/contrib/securityonion-patterndb.xml
++++ securityonion-elsa-extras-20131117/contrib/securityonion-patterndb.xml
+@@ -741,65 +741,6 @@
+ 		</rules>
+ 	</ruleset>
+ 	<ruleset>
+-		<pattern>bro_notice</pattern>
+-		<rules>
+-			<rule class="41" id="Bro file transfer via bro_notice">
+-            	<patterns>
+-					<pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@tcp|HTTP::MD5|@IPv4::@ @ESTRING:s0: @http@ESTRING:://@@ESTRING:s1:/@@ESTRING:s2:|@</pattern>
+-					<pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@HTTP::MD5|@IPv4::@ @ESTRING:s0: @http@ESTRING:://@@ESTRING:s1:/@@ESTRING:s2:|@</pattern>
+-                </patterns>
+-                <values>
+-                  <value name="s2">/$s2</value>
+-                </values>
+-                <examples>
+-					<example>
+-						<test_message program="bro_notice">1318443067.534801|tZOKnx1pO1j|10.0.0.0|44780|198.87.182.145|80|HTTP::MD5|10.0.0.0 5074d0c1988df72c1be354f8b842021a http://msft.digitalrivercontent.net/01/108767003-10238044--NOA//office2010/X17-75238.exe|5074d0c1988df72c1be354f8b842021a|10.0.0.0|198.87.182.145|80|-|worker-2|Notice::ACTION_LOG|6|3600.000000|-|-|-|-|-|-|-|-|-</test_message>
+-						<!-- srcip -->
+-						<test_value name="i0">10.0.0.0</test_value>
+-						<!-- srcport -->
+-						<test_value name="i1">44780</test_value>
+-						<!-- dstip -->
+-						<test_value name="i2">198.87.182.145</test_value>
+-						<!-- dstport -->
+-						<test_value name="i3">80</test_value>
+-						<!-- md5 -->
+-						<test_value name="s0">5074d0c1988df72c1be354f8b842021a</test_value>
+-						<!-- site -->
+-						<test_value name="s1">msft.digitalrivercontent.net</test_value>
+-						<!-- uri -->
+-						<test_value name="s2">01/108767003-10238044--NOA//office2010/X17-75238.exe</test_value>
+-					</example>
+-				</examples>
+-	        </rule>
+-			<rule class="15" id="15">
+-				<patterns>
+-                  <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ANYSTRING::@</pattern>
+-				  <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@tcp|@ESTRING:s0:|@@ESTRING:s1:|@@ANYSTRING::@</pattern>
+-				  <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@udp|@ESTRING:s0:|@@ESTRING:s1:|@@ANYSTRING::@</pattern>
+-				  <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@icmp|@ESTRING:s0:|@@ESTRING:s1:|@@ANYSTRING::@</pattern>
+-				  <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:|@@ANYSTRING::@</pattern>
+-				</patterns>
+-				<examples>
+-					<example>
+-						<test_message program="bro_notice">1318443067.534801|tZOKnx1pO1j|10.0.0.0|44780|198.87.182.145|80|HTTP::MD5|10.0.0.0 5074d0c1988df72c1be354f8b842021a http://msft.digitalrivercontent.net/01/108767003-10238044--NOA//office2010/X17-75238.exe|5074d0c1988df72c1be354f8b842021a|10.0.0.0|198.87.182.145|80|-|worker-2|Notice::ACTION_LOG|6|3600.000000|-|-|-|-|-|-|-|-|-</test_message>
+-						<!-- srcip -->
+-						<test_value name="i0">10.0.0.0</test_value>
+-						<!-- srcport -->
+-						<test_value name="i1">44780</test_value>
+-						<!-- dstip -->
+-						<test_value name="i2">198.87.182.145</test_value>
+-						<!-- dstport -->
+-						<test_value name="i3">80</test_value>
+-						<!-- notice_type -->
+-						<test_value name="s0">HTTP::MD5</test_value>
+-						<!-- notice_msg -->
+-						<test_value name="s1">10.0.0.0 5074d0c1988df72c1be354f8b842021a http://msft.digitalrivercontent.net/01/108767003-10238044--NOA//office2010/X17-75238.exe</test_value>
+-					</example>
+-				</examples>
+-			</rule>
+-		</rules>
+-	</ruleset>
+-	<ruleset>
+ 		<pattern>bro_smtp</pattern>
+ 		<rules>
+ 			<rule class="16" id="16">

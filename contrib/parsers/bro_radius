@@ -1,0 +1,33 @@
+	<ruleset>
+                <pattern>bro_radius</pattern>
+                <rules>
+                        <rule class="26012" id="26012">
+                                <patterns>
+					<pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:i4:|@@ESTRING:s2:|@@ESTRING:s3:@</pattern>
+                                </patterns>
+                                <examples>
+                                        <example>
+						<test_message program='bro_radius'>MESSAGE=1416329517.552658|CMi27H1K0v5bex0dwf|10.0.0.1|1645|10.0.0.100|1812|John.McGuirk|00:14:22:e9:54:5e|-|-|success</test_message>
+                                                <!-- id.orig_h -->
+                                                <test_value name='i0'>10.0.0.1</test_value>
+                                                <!-- id.orig_p -->
+                                                <test_value name='i1'>1645</test_value>
+                                                <!-- id.resp_h -->
+                                                <test_value name='i2'>10.0.0.100</test_value>
+                                                <!-- id.resp_p -->
+                                                <test_value name='i3'>1812</test_value>
+                                                <!-- username -->
+                                                <test_value name='s0'>John.McGuirk</test_value>
+                                                <!-- mac -->
+                                                <test_value name='s1'>00:14:22:e9:54:5e</test_value>
+                                                <!-- remote_ip -->
+                                                <test_value name='i4'>-</test_value>
+                                                <!-- connect_info -->
+                                                <test_value name='s2'>-</test_value>
+                                                <!-- result -->
+                                                <test_value name='s3'>success</test_value>
+                                        </example>
+                                </examples>
+                        </rule>
+                </rules>
+        </ruleset>

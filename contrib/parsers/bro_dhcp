@@ -1,0 +1,29 @@
+<ruleset name="bro_dhcp" id='26005'>
+  <pattern>bro_dhcp</pattern>
+  <rules>
+    <rule provider="Security_Onion" class='26005' id=''>
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:i4:|@@ESTRING:i5:|@@ESTRING::@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program="bro_dhcp">1383924349.866451|CSkyT134YyBJGhE174|192.168.4.192|68|192.168.4.254|67|00:0c:29:2d:3d:00|192.168.4.192|1800.000000|4142852124</test_message>
+          <!-- tx_hosts -->
+          <test_value name="i0">192.168.4.192</test_value>
+          <!-- rx_hosts -->
+          <test_value name="i1">68</test_value>
+          <!-- source -->
+          <test_value name="i2">192.168.4.254</test_value>
+          <!-- mime_type -->
+          <test_value name="i3">67</test_value>
+          <!-- seen_bytes -->
+          <test_value name="s0">00:0c:29:2d:3d:00</test_value>
+          <!-- total_bytes -->
+          <test_value name="i4">192.168.4.192</test_value>
+          <!-- missing_bytes -->
+          <test_value name="i5">1800.000000</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>

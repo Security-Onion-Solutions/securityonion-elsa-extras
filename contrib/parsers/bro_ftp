@@ -1,0 +1,33 @@
+<ruleset name="bro_ftp" id='26003'>
+  <pattern>bro_ftp</pattern>
+  <rules>
+    <rule provider="Security_Onion" class='26003' id=''>
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:i4:|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING::@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program="bro_ftp">1374184393.495227|qoHLWssGGD1|172.16.2.92|55604|192.168.24.8|21|anonymous|chrome@example.com|RETR|ftp://172.16.2.90/files/doubletree.pdf|application/pdf|PDF document, version 1.4|748|226|Transfer complete.|-|-</test_message>
+          <!-- srcip -->
+          <test_value name="i0">172.16.2.92</test_value>
+          <!-- srcport -->
+          <test_value name="i1">55604</test_value>
+          <!-- dstip -->
+          <test_value name="i2">192.168.24.8</test_value>
+          <!-- dstport -->
+          <test_value name="i3">21</test_value>
+          <!-- command -->
+          <test_value name="s0">RETR</test_value>
+          <!-- arg -->
+          <test_value name="s1">ftp://172.16.2.90/files/doubletree.pdf</test_value>
+          <!-- mime_type -->
+          <test_value name="s2">application/pdf</test_value>
+          <!-- file_size -->
+          <test_value name="i4">748</test_value>
+          <!-- reply_msg -->
+          <test_value name="s3">Transfer complete.</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>   

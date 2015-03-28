@@ -1,0 +1,59 @@
+<!-- 
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE
+    BEWARE                                                                BEWARE
+    BEWARE     Disable builtin parser id 35 before enabling this one      BEWARE
+    BEWARE                                                                BEWARE
+    BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE BEWARE
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-->
+
+<patterndb version='3' pub_date='2009-11-04'>
+    <ruleset name='BIND'>
+        <pattern>BIND</pattern>
+        <pattern>named</pattern>
+        <rules>
+            <rule provider='Certego' class='11081' id='11081'>
+                <patterns>
+                    <pattern>@ESTRING::client @@ESTRING:i0:#@@NUMBER:i1:@:@ESTRING::query@: @ESTRING:s0: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @(@ESTRING:i2:)@</pattern>
+                    <pattern>@ESTRING::client @@ESTRING:i0:#@@NUMBER:i1:@ (@ESTRING::)@:@ESTRING::query@: @ESTRING:s0: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @(@ESTRING:i2:)@</pattern>
+                </patterns>
+                <examples>
+                    <example>
+                        <test_message program='BIND-DNS'>02-Nov-2012 15:49:58.516 queries: info: client 198.211.94.24#55557: query: 174.2.219.178.in-addr.arpa IN PTR + (198.211.94.23)</test_message>
+                        <test_values>
+                            <test_value name='i0'>198.211.94.24</test_value>
+                            <test_value name='i1'>55557</test_value>
+                            <test_value name='s0'>174.2.219.178.in-addr.arpa</test_value>
+                            <test_value name='s1'>IN</test_value>
+                            <test_value name='s2'>PTR</test_value>
+                            <test_value name='i2'>198.211.94.23</test_value>
+                        </test_values>
+                    </example>
+                    <example>
+                        <test_message program='BIND-DNS'>02-Nov-2012 16:01:27.731 client 10.10.10.185#49999 (10.10.10.185): query: p.twitter.com IN A + (10.10.210.210)</test_message>
+                        <test_values>
+                            <test_value name='i0'>10.10.10.185</test_value>
+                            <test_value name='i1'>49999</test_value>
+                            <test_value name='s0'>p.twitter.com</test_value>
+                            <test_value name='s1'>IN</test_value>
+                            <test_value name='s2'>A</test_value>
+                            <test_value name='i2'>10.10.210.210</test_value>
+                        </test_values>
+                    </example>
+                    <example>
+                        <test_message program='named'>23-Jan-2015 18:10:46.196 queries: info: client 127.0.0.1#49552 (client01.domain.local): view private: query: p.twitter.com IN A + (127.0.0.1)</test_message>
+                        <test_values>
+                            <test_value name='i0'>127.0.0.1</test_value>
+                            <test_value name='i1'>49552</test_value>
+                            <test_value name='s0'>p.twitter.com</test_value>
+                            <test_value name='s1'>IN</test_value>
+                            <test_value name='s2'>A</test_value>
+                            <test_value name='i2'>127.0.0.1</test_value>
+                        </test_values>
+                    </example>
+                </examples>
+            </rule>
+        </rules>
+    </ruleset>
+</patterndb>

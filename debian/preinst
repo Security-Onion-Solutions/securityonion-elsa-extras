@@ -1,0 +1,69 @@
+#!/bin/sh
+set -e
+DATA_DIR="/nsm/elsa/data/"
+SPHINX_CONF="/etc/sphinxsearch/sphinx.conf"
+# Upgrade from 20121010-0ubuntu0-securityonion20
+# Fixes:  Changes from 3307/tcp to 9312/tcp for sphinx.
+if [ "$2" = "20121010-0ubuntu0securityonion20" ]; then
+    if grep -q "listen = 0.0.0.0:3307" $SPHINX_CONF ; then
+        echo "* Found old listening port for sphinx."
+        sed -i "s|listen = 0.0.0.0:3307|listen = 0.0.0.0:9312|" $SPHINX_CONF
+    fi
+	if [ -e /etc/elsa_web.conf ]; then
+		if grep -q "\"password\": \"biglog\"$" /etc/elsa_web.conf ; then
+			echo "* Adding port and sphinx_port to 127.0.0.1 in elsa_web.conf"
+			sed -i.bak '/^\(\s*\)"password": "biglog"$/{s/.*/&,\n                "port": 3306,\n                "sphinx_port": 9306/}' /etc/elsa_web.conf
+		fi
+	fi
+fi
+
+# If this is an upgrade from a previous version, make changes to
+# appropriate files and configuration options.
+if [ "$2" = "20121010-0ubuntu0securityonion1" ] ; then
+    echo "* Upgrade from previous version"
+	if [ -e /var/log/nsm/sosetup.log ] ; then
+		# Update a system with an incorrectly configured sphinx install
+    	echo "* Checking pid location for sphinx.conf"
+		if [ -e $SPHINX_CONF ]; then	
+   	 		sed -i "s|pid_file = /var/run/searchd.pid|pid_file = /var/run/sphinxsearch/searchd.pid|" $SPHINX_CONF
+    		if ! grep -i "\/var\/run\/searchd.pid" $SPHINX_CONF ; then
+	   			echo "\t* Successfully changed location."
+    		fi
+		fi
+
+    	echo "* Checking pid location for elsa_node.conf"
+		if [ -e /etc/elsa_node.conf ]; then
+   	 		sed -i "s|\"pid_file\": \"/var/run/searchd.pid\"|\"pid_file\": \"/var/run/sphinxsearch/searchd.pid\"|" /etc/elsa_node.conf
+   			if ! grep -i "\/var\/run\/searchd.pid" /etc/elsa_node.conf ; then
+		    	echo "\t* Successfully changed location."
+    		fi
+		fi
+
+		# Apply correct permissions to /nsm/elsa/data/sphinx
+    	echo "* Checking ownership of $DATA_DIR/sphinx/"
+    	x=$(ls -lha $DATA_DIR | awk '{if ($9 == "sphinx" && $3 != "sphinxsearch") print "WRONG"}')
+    	if [ "$x" != "WRONG" ] ; then
+	    	echo "\t* Ownership is correct."
+    	else
+	    	echo "\t* Altering ownership."
+	    	chown -R sphinxsearch $DATA_DIR/sphinx
+    	fi	
+
+		# Apply core group permissions to /nsm/elsa/data/elsa/log
+    	echo "* Check group permissions on the ELSA log directory"
+    	x=$(ls -lha $DATA_DIR/elsa | awk '{if ($9 == "log" && $4 != "sphinxsearch") print "WRONG"}')
+    	if [ "$x" != "WRONG" ] ; then
+        	echo "\t* Ownership is correct."
+    	else
+        	echo "\t* Altering group permissions"
+        	chgrp -R sphinxsearch $DATA_DIR/elsa/log/
+    	fi
+
+    	echo "* Ensuring appropriate group permissions to ElSA log directory"
+    	chmod g+rwx $DATA_DIR/elsa/log/*
+	fi
+fi
+
+if [ "$2" = "20130328-0ubuntu0securityonion1" ]; then
+    echo "* Older non-API architecture found."
+fi

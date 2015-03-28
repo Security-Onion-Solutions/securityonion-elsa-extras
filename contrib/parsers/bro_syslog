@@ -1,0 +1,29 @@
+<ruleset name="bro_syslog" id='26001'>
+  <pattern>bro_syslog</pattern>
+  <rules>
+    <rule provider="Security_Onion" class='26001' id=''>
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program="bro_syslog">1375124439.324082|qPgVFtswmy3|172.16.12.1|514|172.16.12.131|514|udp|LOCAL0|INFO|Jul 29 19:00:39 pf: 00:00:00.000017 rule 1/0(match): block in on em7: (tos 0x0, ttl 112, id 10335, offset 0, flags [none], proto UDP (17), length 56)</test_message>
+          <!-- srcip -->
+          <test_value name="i0">172.16.12.1</test_value>
+          <!-- srcport -->
+          <test_value name="i1">514</test_value>
+          <!-- dstip -->
+          <test_value name="i2">172.16.12.131</test_value>
+          <!-- dstport -->
+          <test_value name="i3">514</test_value>
+          <!-- facility -->
+          <test_value name="s0">LOCAL0</test_value>
+          <!-- syslog_severity -->
+          <test_value name="s1">INFO</test_value>
+          <!-- message -->
+          <test_value name="s2">Jul 29 19:00:39 pf: 00:00:00.000017 rule 1/0(match): block in on em7: (tos 0x0, ttl 112, id 10335, offset 0, flags [none], proto UDP (17), length 56)</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>   

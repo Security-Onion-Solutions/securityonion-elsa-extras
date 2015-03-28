@@ -1,0 +1,39 @@
+<ruleset name="bro_http" id='19'>
+  <pattern>bro_http</pattern>
+  <rules>
+    <rule provider="Security_Onion" class="19" id="19">
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING:s4:|@@ESTRING::|@@ESTRING:i5:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s5:@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program="bro_http">1384366977.167889|CeEWn14oWSULhfVyL6|192.168.4.226|58543|74.125.228.32|80|1|GET|clients2.google.com||-|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/28.0.1500.71 Chrome/28.0.1500.71 Safari/537.36|0|380|200|OK|-|-|-|(empty)|-|-|-|-|-|F6XqFl1L5YkUsflHK8|application/xml</test_message>
+          <!-- srcip -->
+          <test_value name="i0">192.168.4.226</test_value>
+          <!-- srcport -->
+          <test_value name="i1">58543</test_value>
+          <!-- dstip -->
+          <test_value name="i2">74.125.228.32</test_value>
+          <!-- dstport -->
+          <test_value name="i3">80</test_value>
+          <!-- method -->
+          <test_value name="s0">GET</test_value>
+          <!-- host -->
+          <test_value name="s1">clients2.google.com</test_value>
+          <!-- uri -->
+          <test_value name="s2"></test_value>
+          <!-- referer -->
+          <test_value name="s3">-</test_value>
+          <!-- user_agent -->
+          <test_value name="s4">Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/28.0.1500.71 Chrome/28.0.1500.71 Safari/537.36</test_value>
+          <!-- resp_body_len -->
+          <test_value name="i4">200</test_value>
+          <!-- status_code -->
+          <test_value name="i5">380</test_value>
+          <!-- mime_type -->
+          <test_value name="s5">application/xml</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>

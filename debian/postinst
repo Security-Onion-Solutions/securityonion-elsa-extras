@@ -1,0 +1,573 @@
+#!/bin/sh
+
+LOG="/var/log/securityonion-elsa-config.log"
+# Log Node vars
+MYSQL_ROOT_USER="root"
+MYSQL_PASS_SWITCH=""
+MYSQL_NODE_DB="syslog"
+
+# Web Node vars
+MYSQL_DB="elsa_web"
+MYSQL_HOST="localhost"
+MYSQL_PORT="3306"
+MYSQL_USER="elsa"
+MYSQL_PASS="biglog"
+
+# SSH Config File
+SSH_DIR="/root/.ssh"
+SSH_CONF="$SSH_DIR/securityonion_ssh.conf"
+
+check_config_perms() {
+    GROUP_NAME="securityonion"
+    SSH_USERS=`grep -l "root@" /home/*/.ssh/authorized_keys |cut -d\/ -f3`
+    awk -F: -v group="$GROUP_NAME" '{ if ($1 == group) exit 5}' /etc/group
+    if [ $? -eq 5 ]; then
+        echo "* Group exists. Checking Membership."
+        GROUP_MEMBERSHIP=`grep "^$GROUP_NAME:" /etc/group`
+        for word in $SSH_USERS; do
+            echo "* Checking for $word in $GROUP_MEMBERSHIP"
+            if echo $GROUP_MEMBERSHIP | grep $word; then
+                echo "* User found in $GROUP_MEMBERSHIP"
+            else
+                echo "* User not found in $GROUP_MEMBERSHIP"
+                usermod -a -G $GROUP_NAME $word
+            fi
+        done
+    else
+        echo "* Group does not exist. Adding the group and populating members."
+        groupadd $GROUP_NAME
+        for word in $SSH_USERS; do
+            usermod -a -G $GROUP_NAME $word
+        done
+    fi
+
+    # Check the permissions on ELSA's file.
+    ELSA_CONFIGS="elsa_web.conf elsa_node.conf"
+    for conf in $ELSA_CONFIGS; do
+        FPERM=`stat -Lc "%a" /etc/$conf`
+        FGRUP=`stat -Lc "%G" /etc/$conf`
+        FUSER=`stat -Lc "%U" /etc/$conf`
+        if [ $FGRUP = $GROUP_NAME ]; then
+            echo "* /etc/$conf has the correct group."
+        else
+            echo "* /etc/$conf has the incorrect group."
+            chgrp $GROUP_NAME /etc/$conf
+        fi
+        chmod 664 /etc/$conf
+    done
+    
+    # Ensure the logging directory for securityonion_elsa_register.rb is available.
+    ELSA_REG_LOG_DIR="/var/log/nsm/so-elsa"
+    if [ ! -d $ELSA_REG_LOG_DIR ]; then
+        echo "* Adding $ELSA_REG_LOG_DIR"
+        mkdir -p $ELSA_REG_LOG_DIR;
+    fi
+    chgrp -R securityonion $ELSA_REG_LOG_DIR
+    chmod -R g+w $ELSA_REG_LOG_DIR
+
+
+}
+
+case "$1" in 
+	configure)
+        if [ ! -d /opt/elsa/web/inc/yui ]; then
+            echo "* yui not found."
+            mkdir -p /opt/elsa/web/inc/yui
+            ln -s /usr/share/javascript/yui /opt/elsa/web/inc/yui/build
+            echo "* Linking yui directory to /opt/elsa/web/inc/yui/build"
+            if [ -e /etc/elsa_web.conf ]; then
+                # There are two cases that must be handled
+                # 1) sosetup has been run but a new node hasn't been registered,
+                #    meaning the elsa_web.conf file still has comments.
+                # 2) sosetup has been run and a new node has been registered,
+                #    meaning the elsa_web.conf file does NOT have comments.
+                
+                if [ -e /var/log/nsm/elsa_web_registration.log ]; then
+                    # Case 1
+                    sed -i '1!N; s|\(\"yui\": {\n\)\(\s*\)\(\"version\":.*$\)|\1\2\"local\": \"inc\"|' /etc/elsa_web.conf
+                    sed -i '/\"modifier\"\s*:\s*\"\"/d' /etc/elsa_web.conf
+                else
+                    # Case 2
+                    sed -i 's|\(\s*\)#\"local\" : \"inc\/combo.js\",|\1\"local\": \"inc\"|' /etc/elsa_web.conf
+                    sed -i '/\"version\" : \"2.8.1\",/d' /etc/elsa_web.conf
+                    sed -i '/\"modifier\"\s*:\s*\"\"/d' /etc/elsa_web.conf
+                fi
+            fi
+        fi
+        
+        if [ "$2" = "20130328-0ubuntu0securityonion1" ]; then
+            # PRE ELSA 1.5
+            
+            if [ -e /var/log/nsm/sosetup.log ]; then
+                # If sosetup has been run, update the database schema
+                echo "* Updating ELSA dbs to support new parsers"
+                sh /opt/elsa/contrib/securityonion/contrib/securityonion_parsers_sql.sh
+                echo "* Merging new parsers into patterndb.xml."
+                PATTERNS_DIR=/etc/elsa/patterns.d/
+                DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+                cp $DEST_PATTERN $DEST_PATTERN.bak
+                pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR
+                
+                echo "* Creating /nsm/elsa/data/elsa/mysql" 
+                mkdir -p /nsm/elsa/data/elsa/mysql
+                chown -R mysql /nsm/elsa/data/elsa/mysql
+                
+                echo "* Creating locks directory" 
+                mkdir -p /opt/elsa/node/tmp/locks
+                touch /opt/elsa/node/tmp/locks/directory
+                touch /opt/elsa/node/tmp/locks/query
+                
+                echo "* Configuring apparmor for ELSA" 
+                if [ -f /etc/apparmor.d/local/usr.sbin.mysqld ]; then
+	                if ! grep "/nsm/elsa/data/elsa/mysql/" /etc/apparmor.d/local/usr.sbin.mysqld >/dev/null; then
+                        echo "* Adding apparmor directives."
+                        echo "/nsm/elsa/data/elsa/mysql/ r,"      >> /etc/apparmor.d/local/usr.sbin.mysqld;
+                        echo "/nsm/elsa/data/elsa/mysql/** rwk,"  >> /etc/apparmor.d/local/usr.sbin.mysqld;
+                        echo "* Restarting apparmor"
+		                service apparmor reload
+	                fi
+                fi
+                
+                if [ -f /etc/syslog-ng/syslog-ng.conf ]; then
+                    SYSLOG_CONF="/etc/syslog-ng/syslog-ng.conf"
+                    echo "* Backing up syslog-ng.conf"
+                    cp $SYSLOG_CONF $SYSLOG_CONF.bak
+                    echo "* Adding additional sources"
+                    # bro_files
+                    if ! grep 'source s_bro_files { file("/nsm/bro/logs/current/files.log" flags(no-parse) program_override("bro_files")); };' $SYSLOG_CONF >> /dev/null; then
+                        echo "* Adding bro_files"
+                        sed -i 's|^\(log {\)|source s_bro_files { file("/nsm/bro/logs/current/files.log" flags(no-parse) program_override("bro_files")); };\n\1|' $SYSLOG_CONF
+                        sed -i 's|^\(log {\)|\1\n\tsource(s_bro_files);|' $SYSLOG_CONF
+                    fi
+                    # bro_dhcp
+                    if ! grep 'source s_bro_dhcp { file("/nsm/bro/logs/current/dhcp.log" flags(no-parse) program_override("bro_dhcp")); };' $SYSLOG_CONF >> /dev/null; then
+                        echo "* Adding bro_dhcp"
+                        sed -i 's|^\(log {\)|source s_bro_dhcp { file("/nsm/bro/logs/current/dhcp.log" flags(no-parse) program_override("bro_dhcp")); };\n\1|' $SYSLOG_CONF
+                        sed -i 's|^\(log {\)|\1\n\tsource(s_bro_dhcp);|' $SYSLOG_CONF
+                    fi
+                    
+                    # bro_ftp
+                    if ! grep 'source s_bro_ftp { file("/nsm/bro/logs/current/ftp.log" flags(no-parse) program_override("bro_ftp")); };' $SYSLOG_CONF >> /dev/null; then
+                        echo "* Adding bro_ftp"
+                        sed -i 's|^\(log {\)|source s_bro_ftp { file("/nsm/bro/logs/current/ftp.log" flags(no-parse) program_override("bro_ftp")); };\n\1|' $SYSLOG_CONF
+                        sed -i 's|^\(log {\)|\1\n\tsource(s_bro_ftp);|' $SYSLOG_CONF
+                    fi
+                    
+                    # bro_tunnels
+                    if ! grep 'source s_bro_tunnels { file("/nsm/bro/logs/current/tunnel.log" flags(no-parse) program_override("bro_tunnels")); };' $SYSLOG_CONF >> /dev/null; then
+                        echo "* Adding bro_tunnels"
+                        sed -i 's|^\(log {\)|source s_bro_tunnels { file("/nsm/bro/logs/current/tunnel.log" flags(no-parse) program_override("bro_tunnels")); };\n\1|' $SYSLOG_CONF
+                        sed -i 's|^\(log {\)|\1\n\tsource(s_bro_tunnels);|' $SYSLOG_CONF
+                    fi
+                    
+                    # bro_weird
+                    if ! grep 'source s_bro_weird { file("/nsm/bro/logs/current/weird.log" flags(no-parse) program_override("bro_weird")); };' $SYSLOG_CONF >> /dev/null; then
+                        echo "* Adding bro_weird"
+                        sed -i 's|^\(log {\)|source s_bro_weird { file("/nsm/bro/logs/current/weird.log" flags(no-parse) program_override("bro_weird")); };\n\1|' $SYSLOG_CONF
+                        sed -i 's|^\(log {\)|\1\n\tsource(s_bro_weird);|' $SYSLOG_CONF
+                    fi
+                    
+                    # bro_syslog
+                    if ! grep 'source s_bro_syslog { file("/nsm/bro/logs/current/syslog.log" flags(no-parse) program_override("bro_syslog")); };' $SYSLOG_CONF >> /dev/null; then
+                        echo "* Adding bro_syslog"
+                        sed -i 's|^\(log {\)|source s_bro_syslog { file("/nsm/bro/logs/current/syslog.log" flags(no-parse) program_override("bro_syslog")); };\n\1|' $SYSLOG_CONF
+                        sed -i 's|^\(log {\)|\1\n\tsource(s_bro_syslog);|' $SYSLOG_CONF
+                    fi
+                    # bro_ssh
+                    if ! grep 'source s_bro_ssh { file("/nsm/bro/logs/current/ssh.log" flags(no-parse) program_override("bro_ssh")); };' $SYSLOG_CONF >> /dev/null; then
+                        echo "* Adding bro_ssh"
+                        sed -i 's|^\(log {\)|source s_bro_ssh { file("/nsm/bro/logs/current/ssh.log" flags(no-parse) program_override("bro_ssh")); };\n\1|' $SYSLOG_CONF
+                        sed -i 's|^\(log {\)|\1\n\tsource(s_bro_ssh);|' $SYSLOG_CONF
+                    fi
+                    # bro_irc
+                    if ! grep 'source s_bro_irc { file("/nsm/bro/logs/current/irc.log" flags(no-parse) program_override("bro_irc")); };' $SYSLOG_CONF >> /dev/null; then
+                        echo "* Adding bro_irc"
+                        sed -i 's|^\(log {\)|source s_bro_irc { file("/nsm/bro/logs/current/irc.log" flags(no-parse) program_override("bro_irc")); };\n\1|' $SYSLOG_CONF
+                        sed -i 's|^\(log {\)|\1\n\tsource(s_bro_irc);|' $SYSLOG_CONF
+                    fi
+                    # bro_software
+                    if ! grep 'source s_bro_software { file("/nsm/bro/logs/current/software.log" flags(no-parse) program_override("bro_software")); };' $SYSLOG_CONF >> /dev/null; then
+                        echo "* Adding bro_software"
+                        sed -i 's|^\(log {\)|source s_bro_software { file("/nsm/bro/logs/current/software.log" flags(no-parse) program_override("bro_software")); };\n\1|' $SYSLOG_CONF
+                        sed -i 's|^\(log {\)|\1\n\tsource(s_bro_software);|' $SYSLOG_CONF
+                    fi
+                    # bro_intel
+                    if ! grep 'source s_bro_intel { file("/nsm/bro/logs/current/intel.log" flags(no-parse) program_override("bro_intel")); };' $SYSLOG_CONF >> /dev/null; then
+                        echo "* Adding bro_intel"
+                        sed -i 's|^\(log {\)|source s_bro_intel { file("/nsm/bro/logs/current/intel.log" flags(no-parse) program_override("bro_intel")); };\n\1|' $SYSLOG_CONF
+                        sed -i 's|^\(log {\)|\1\n\tsource(s_bro_intel);|' $SYSLOG_CONF
+                    fi
+                    service syslog-ng restart
+                fi
+                echo "* Verifying ELSA cron job."
+                [ -e /etc/cron.d/elsa ] && cp /opt/elsa/contrib/securityonion/contrib/elsa.cron /etc/cron.d/elsa
+
+                if [ -f /etc/sphinxsearch/sphinx.conf ]; then
+                    sed -i 's|max_matches = 1000|max_matches = 10000|' /etc/sphinxsearch/sphinx.conf
+                fi
+                
+                if [ -d /var/lib/mysql/snorby ]; then
+                    check_config_perms
+                    /usr/bin/securityonion_elsa_register.rb --trim-nodes
+                    /usr/bin/securityonion_elsa_register.rb --migrate-node 1090
+                    /usr/bin/securityonion_elsa_register.rb --migrate-web 1090
+                else
+                    if grep -v "Configuring Web API and Starman" $LOG > /dev/null; then
+                        /usr/bin/securityonion-elsa-config.sh -t API
+                    fi
+                    
+                    ELSA_REG_LOG_DIR="/var/log/nsm/so-elsa"
+                    if [ ! -d $ELSA_REG_LOG_DIR ]; then
+                        echo "* Adding $ELSA_REG_LOG_DIR"
+                        mkdir -p $ELSA_REG_LOG_DIR;
+                    fi
+                    /usr/bin/securityonion_elsa_register.rb --migrate-node 1090
+                    
+                    # Kill current ssh tunnel
+                    echo "* Tearing down current tunnels"
+                    pkill autossh
+                    SSH_DIR="/root/.ssh"
+                    SSH_CONF="$SSH_DIR/securityonion_ssh.conf"
+                    if [ -f $SSH_CONF ]; then
+                        # Establish persistent SSH tunnel to MASTER.
+                        KEY="$SSH_DIR/securityonion"
+                        
+                        # Upstart uses sh instead of bash so we can't use "source"
+                        SSH_USERNAME=`grep SSH_USERNAME $SSH_CONF | cut -d\= -f2`
+                        SERVERNAME=`grep SERVERNAME $SSH_CONF | cut -d\= -f2`
+                        ELSA=`grep ELSA /etc/nsm/securityonion.conf | cut -d\= -f2`
+                        : ${ELSA:="NO"}
+                        if [ $ELSA = "YES" ]; then
+                            # We are using ELSA so we need reverse ssh tunnel
+                            # from localhost:3154 to master-node:50000+n where n
+                            # is an integer.
+                            ELSA_PORT=`grep ELSA_PORT $SSH_CONF | cut -d\= -f2`
+                            : ${ELSA_PORT:="UNDEF"}
+                            if [ $ELSA_PORT = "UNDEF" ] ; then
+                                # The ELSA port is not set and we need to query
+                                # the $SERVERNAME for a free port and an API key.
+                                SSH_CMD="/usr/bin/securityonion_elsa_register.rb --register --peer-name `hostname` --force"
+                                ELSA_REGISTER_RESPONSE=`ssh -i $KEY $SSH_USERNAME@$SERVERNAME $SSH_CMD`
+                                ELSA_PORT=`echo $ELSA_REGISTER_RESPONSE | cut -d',' -f1`
+                                ELSA_APIKEY=`echo $ELSA_REGISTER_RESPONSE | cut -d',' -f2`
+                                
+                                # Copy the ELSA port back into the SSH config file for future use.
+                                echo "ELSA_PORT=$ELSA_PORT" >> $SSH_CONF
+                                
+                                # Update the local ELSA API key
+                                /usr/bin/securityonion_elsa_register.rb --update-apikey $ELSA_APIKEY
+                                REVERSE_TUNNEL="-R $ELSA_PORT:localhost:3154"
+                            else
+			                    REVERSE_TUNNEL="-R $ELSA_PORT:localhost:3154"
+                            fi                 
+                        elif [ $ELSA = "NO" ]; then
+	                        # We are not using ELSA so there's no need for a reverse ssl tunnel
+			                REVERSE_TUNNEL=""
+                            # Also no need for mysql
+                            [ -f /etc/init/mysql.conf ] && service mysql stop
+                        fi
+                        # If the server isn't up, we want autossh to keep retrying so we set AUTOSSH_GATETIME to 0
+                        export AUTOSSH_GATETIME=0
+                        /usr/bin/autossh -M 0 -f -q -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -i "$KEY" -L 3306:127.0.0.1:3306 $REVERSE_TUNNEL $SSH_USERNAME@$SERVERNAME
+                    fi
+                fi
+            fi
+        fi
+        if [ "$2" = "20131117-1ubuntu0securityonion19" ] ; then
+            # POST ELSA 1.5
+            if [ -e /var/log/nsm/sosetup.log ]; then
+                echo "* Correcting BRO_NOTICE parser fields."
+                mysql -uroot -D syslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_NOTICE"), (SELECT id FROM fields WHERE field="mime_type"), 11);'
+                mysql -uroot -D syslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_NOTICE"), (SELECT id FROM fields WHERE field="desc"), 12);'
+                echo "* Verifying ELSA cron job."
+                [ -e /etc/cron.d/elsa ] && cp /opt/elsa/contrib/securityonion/contrib/elsa.cron /etc/cron.d/elsa
+                echo "* Merging corrected parsers into patterndb.xml."
+                PATTERNS_DIR=/etc/elsa/patterns.d/
+                DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+                cp $DEST_PATTERN $DEST_PATTERN.bak
+                pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR
+                echo "* Correcting ELSA mysql_dir variable."
+                [ -e /etc/elsa_node.conf ] && sed -i 's|/nsm/elsa/data/mysql|/nsm/elsa/data/elsa/mysql|' /etc/elsa_node.conf
+                
+                
+                
+            fi
+        fi
+        if [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+            if [ -e /var/log/nsm/sosetup.log ]; then
+                # Correct the bro tunnel.log syslog directive.
+                sed -i 's|bro/logs/current/tunnels.log|bro/logs/current/tunnel.log|' /etc/syslog-ng/syslog-ng.conf
+                service syslog-ng restart
+            fi
+        fi
+        if [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+            if [ -d /var/lib/mysql/securityonion_db ]; then
+                echo "* Randomizing API Key for Master Node"
+                if [ -f /etc/elsa_web.conf ]; then
+	                # Check for the default value
+	                if grep "\"elsa\": \"1\"" /etc/elsa_web.conf >> /dev/null; then
+		                /usr/bin/securityonion_elsa_register.rb --random-apikey
+	                fi
+                fi
+            fi
+            if [ -e /var/log/nsm/sosetup.log ]; then
+                echo "* Adding MYSQL Tables for BRO_INTEL"
+                # bro_intel MYSQL calls
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO classes(id, class) VALUES(26009, "BRO_INTEL");'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("indicator", "string", "QSTRING");'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("indicator_type", "string", "QSTRING");'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("seen_where", "string", "QSTRING");'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("sources", "string", "QSTRING");'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="srcip"), 5);'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="srcport"), 6);'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="dstip"), 7);'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="dstport"), 8);'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="indicator"), 11);'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="indicator_type"), 12);'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="seen_where"), 13);'
+				mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="sources"), 14);'
+
+                # bro_intel syslog source and destination
+                echo "* Including Bro's intel.log files in syslog-ng.conf"
+                SYSLOG_CONF="/etc/syslog-ng/syslog-ng.conf"
+                echo "* Backing up syslog-ng.conf"
+                cp $SYSLOG_CONF $SYSLOG_CONF.bak
+
+                if ! grep 'source s_bro_intel { file("/nsm/bro/logs/current/intel.log" flags(no-parse) program_override("bro_intel")); };' $SYSLOG_CONF >> /dev/null; then
+                    sed -i 's|^\(log {\)|source s_bro_intel { file("/nsm/bro/logs/current/intel.log" flags(no-parse) program_override("bro_intel")); };\n\1|' $SYSLOG_CONF
+                    sed -i 's|^\(log {\)|\1\n\tsource(s_bro_intel);|' $SYSLOG_CONF
+                fi
+                service syslog-ng restart
+                # Merge with pdbtool
+                PATTERNS_DIR=/etc/elsa/patterns.d/
+                DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+                cp $DEST_PATTERN $DEST_PATTERN.bak
+                pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR
+
+            fi
+        fi
+
+	# Bro 2.3 changed the format of ssl.log
+	if [ "$2" = "20131117-1ubuntu0securityonion41" ] || [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+		echo "Updating syslog-ng patterns."
+		PATTERNS_DIR=/etc/elsa/patterns.d/
+		DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+		cp $DEST_PATTERN $DEST_PATTERN.bak || echo "Error backing up $DEST_PATTERN."
+		pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR || echo "Error running pdbtool to merge patterns."
+		echo "Restarting syslog-ng."
+		service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
+	fi
+
+	# Parse ssl_version and ssl_cipher out of Bro ssl.log
+	if [ "$2" = "20131117-1ubuntu0securityonion43" ] || [ "$2" = "20131117-1ubuntu0securityonion41" ] || [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+		# Only update database if Setup has already been run
+		if [ -e /var/log/nsm/sosetup.log ]; then
+
+			echo "* Adding ssl_version and ssl_cipher to database."
+			mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("ssl_version", "string", "QSTRING");' || echo "Error adding ssl_version to fields table."
+			mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("ssl_cipher", "string", "QSTRING");'  || echo "Error adding ssl_cipher to fields table."
+			mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SSL"), (SELECT id FROM fields WHERE field="ssl_version"), 13);' || echo "Error adding ssl_version to fields_classes_map."
+			mysql -uroot -Dsyslog -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SSL"), (SELECT id FROM fields WHERE field="ssl_cipher"), 14);' || echo "Error adding ssl_cipher to fields_classes_map."
+
+			echo "Updating syslog-ng patterns."
+			PATTERNS_DIR=/etc/elsa/patterns.d/
+			DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+			cp $DEST_PATTERN $DEST_PATTERN.bak || echo "Error backing up $DEST_PATTERN."
+			pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR || echo "Error running pdbtool to merge patterns."
+			echo "Restarting syslog-ng."
+			service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
+		fi
+	fi
+
+	# Parse Bro x509.log
+	if [ "$2" = "20131117-1ubuntu0securityonion45" ] || [ "$2" = "20131117-1ubuntu0securityonion43" ] || [ "$2" = "20131117-1ubuntu0securityonion41" ] || [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+		# Only update database if Setup has already been run
+		if [ -e /var/log/nsm/sosetup.log ]; then
+
+			MYSQL="mysql -uroot -Dsyslog -e"
+
+			echo "* Adding Bro x509 fields to database."
+			$MYSQL 'REPLACE INTO classes(id, class) VALUES(26010, "BRO_X509");' || echo "Error adding BRO_X509 to classes table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_version", "int", "NUMBER");' || echo "Error adding cert_version to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_version"), 5);' || echo "Error adding cert_version to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_serial", "string", "QSTRING");' || echo "Error adding cert_serial to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_serial"), 11);' || echo "Error adding cert_serial to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_subject", "string", "QSTRING");' || echo "Error adding cert_subject to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_subject"), 12);' || echo "Error adding cert_subject to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_issuer", "string", "QSTRING");' || echo "Error adding cert_issuer to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_issuer"), 13);' || echo "Error adding cert_issuer to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_key_alg", "string", "QSTRING");' || echo "Error adding cert_key_alg to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_key_alg"), 14);' || echo "Error adding cert_key_alg to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_sig_alg", "string", "QSTRING");' || echo "Error adding cert_sig_alg to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_sig_alg"), 15);' || echo "Error adding cert_sig_alg to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_key_type", "string", "QSTRING");' || echo "Error adding cert_key_type to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_key_type"), 16);' || echo "Error adding cert_key_type to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_key_length", "int", "NUMBER");' || echo "Error adding cert_key_length to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_key_length"), 6);' || echo "Error adding cert_key_length to fields_classes_map table."
+
+			echo "* Adding Bro SNMP fields to database."
+			$MYSQL 'REPLACE INTO classes(id, class) VALUES(26011, "BRO_SNMP");' || echo "Error adding BRO_SNMP to classes table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="srcip"), 5);' || echo "Error adding srcip to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="srcport"), 6);' || echo "Error adding srcport to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="dstip"), 7);' || echo "Error adding dstip to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="dstport"), 8);' || echo "Error adding dstport to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("get_requests", "int", "NUMBER");' || echo "Error adding get_requests to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="get_requests"), 9);' || echo "Error adding get_requests to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("get_responses", "int", "NUMBER");' || echo "Error adding get_responses to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="get_responses"), 10);' || echo "Error adding get_responses to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("duration", "string", "QSTRING");' || echo "Error adding duration to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="duration"), 11);' || echo "Error adding duration to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="version"), 12);' || echo "Error adding version to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("community", "string", "QSTRING");' || echo "Error adding community to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="community"), 13);' || echo "Error adding community to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("display_string", "string", "QSTRING");' || echo "Error adding display_string to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="display_string"), 14);' || echo "Error adding display_string to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("up_since", "string", "QSTRING");' || echo "Error adding up_since to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="up_since"), 15);' || echo "Error adding up_since to fields_classes_map table."
+
+			echo "* Adding Bro RADIUS fields to database."
+			$MYSQL 'REPLACE INTO classes(id, class) VALUES(26012, "BRO_RADIUS");' || echo "Error adding BRO_RADIUS to classes table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_RADIUS"), (SELECT id FROM fields WHERE field="srcip"), 5);' || echo "Error adding srcip to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_RADIUS"), (SELECT id FROM fields WHERE field="srcport"), 6);'  || echo "Error adding srcport to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_RADIUS"), (SELECT id FROM fields WHERE field="dstip"), 7);' || echo "Error adding dstip to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_RADIUS"), (SELECT id FROM fields WHERE field="dstport"), 8);' || echo "Error adding dstport to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_RADIUS"), (SELECT id FROM fields WHERE field="user"), 11);' || echo "Error adding user to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_RADIUS"), (SELECT id FROM fields WHERE field="mac"), 12);' || echo "Error adding mac to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("remote_ip", "int", "IPv4");' || echo "Error adding remote_ip to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_RADIUS"), (SELECT id FROM fields WHERE field="remote_ip"), 9);' || echo "Error adding remote_ip to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("connect_info", "string", "QSTRING");' || echo "Error adding connect_info to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_RADIUS"), (SELECT id FROM fields WHERE field="connect_info"), 13);' || echo "Error adding connect_info to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("result", "string", "QSTRING");' || echo "Error adding result to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_RADIUS"), (SELECT id FROM fields WHERE field="result"), 14);' || echo "Error adding result to fields_classes_map table."
+
+			echo "* Updating syslog-ng patterns."
+			PATTERNS_DIR=/etc/elsa/patterns.d/
+			DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+			cp $DEST_PATTERN $DEST_PATTERN.bak || echo "Error backing up $DEST_PATTERN."
+			pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR || echo "Error running pdbtool to merge patterns."
+
+                	SYSLOG_CONF="/etc/syslog-ng/syslog-ng.conf"
+                    	if ! grep 'source s_bro_x509 { file("/nsm/bro/logs/current/x509.log" flags(no-parse) program_override("bro_x509")); };' $SYSLOG_CONF >> /dev/null; then
+				echo "* Updating $SYSLOG_CONF to monitor x509.log."
+				sed -i '/^source s_bro_ssh/a source s_bro_x509 { file("/nsm/bro/logs/current/x509.log" flags(no-parse) program_override("bro_x509")); };' $SYSLOG_CONF || echo "Error adding s_bro_x509 to $SYSLOG_CONF."
+				sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_x509);' $SYSLOG_CONF || echo "Error adding s_bro_x509 to $SYSLOG_CONF."
+			fi
+                        if ! grep 'source s_bro_snmp { file("/nsm/bro/logs/current/snmp.log" flags(no-parse) program_override("bro_snmp")); };' $SYSLOG_CONF >> /dev/null; then
+                                echo "* Updating $SYSLOG_CONF to monitor snmp.log."
+                                sed -i '/^source s_bro_ssh/a source s_bro_snmp { file("/nsm/bro/logs/current/snmp.log" flags(no-parse) program_override("bro_snmp")); };' $SYSLOG_CONF || echo "Error adding s_bro_snmp to $SYSLOG_CONF."
+                                sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_snmp);' $SYSLOG_CONF || echo "Error adding s_bro_snmp to $SYSLOG_CONF."
+                        fi
+                        if ! grep 'source s_bro_radius { file("/nsm/bro/logs/current/radius.log" flags(no-parse) program_override("bro_radius")); };' $SYSLOG_CONF >> /dev/null; then
+                                echo "* Updating $SYSLOG_CONF to monitor radius.log."
+                                sed -i '/^source s_bro_ssh/a source s_bro_radius { file("/nsm/bro/logs/current/radius.log" flags(no-parse) program_override("bro_radius")); };' $SYSLOG_CONF || echo "Error adding s_bro_radius to $SYSLOG_CONF."
+                                sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_radius);' $SYSLOG_CONF || echo "Error adding s_bro_radius to $SYSLOG_CONF."
+                        fi
+
+			echo "* Restarting syslog-ng."
+			service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
+		fi
+	fi
+
+
+	# Parse bro_conn resp_country_code
+	if [ "$2" = "20131117-1ubuntu0securityonion50" ] || [ "$2" = "20131117-1ubuntu0securityonion45" ] || [ "$2" = "20131117-1ubuntu0securityonion43" ] || [ "$2" = "20131117-1ubuntu0securityonion41" ] || [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+
+		# Only update database if Setup has already been run
+		if [ -e /var/log/nsm/sosetup.log ]; then
+
+			MYSQL="mysql -uroot -Dsyslog -e"
+
+                        echo "* Adding resp_country_code to BRO_CONN parser."
+                        $MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("resp_country_code", "string", "QSTRING");' || echo "Error adding resp_country_code to fields table."
+                        $MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_CONN"), (SELECT id FROM fields WHERE field="resp_country_code"), 16);' || echo "Error adding resp_country_code to fields_classes_map table."
+
+                        echo "* Updating syslog-ng patterns."
+                        PATTERNS_DIR=/etc/elsa/patterns.d/
+                        DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+                        cp $DEST_PATTERN $DEST_PATTERN.bak || echo "Error backing up $DEST_PATTERN."
+                        pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR || echo "Error running pdbtool to merge patterns."
+
+                        echo "* Restarting syslog-ng."
+                        service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
+		fi
+	fi
+
+	# Add new parser for BIND and updated parser for Bro dns.log
+	if [ "$2" = "20131117-1ubuntu0securityonion53" ] || [ "$2" = "20131117-1ubuntu0securityonion50" ] || [ "$2" = "20131117-1ubuntu0securityonion45" ] || [ "$2" = "20131117-1ubuntu0securityonion43" ] || [ "$2" = "20131117-1ubuntu0securityonion41" ] || [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+
+		# Only update database if Setup has already been run
+		if [ -e /var/log/nsm/sosetup.log ]; then
+
+			MYSQL="mysql -uroot -Dsyslog -e"
+
+                        echo "* Adding fields for updated BRO_DNS parser."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("query_class", "string", "QSTRING");' || echo "Error adding query_class to fields table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("query_type", "string", "QSTRING");' || echo "Error adding query_type to fields table."
+			$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("return_code", "string", "QSTRING");' || echo "Error adding return_code to fields table."
+			$MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_DNS"), (SELECT id FROM fields WHERE field="query_class"), 13);' || echo "Error adding query_class to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_DNS"), (SELECT id FROM fields WHERE field="query_type"), 14);' || echo "Error adding query_type to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_DNS"), (SELECT id FROM fields WHERE field="return_code"), 15);' || echo "Error adding return_code to fields_classes_map table."
+
+                        echo "* Adding fields for new BIND parser."
+			$MYSQL 'REPLACE INTO classes (id, class, parent_id) VALUES(11081, "BIND", 0);' || echo "Error adding BIND to classes table."
+			$MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BIND"), (SELECT id FROM fields WHERE field="srcip"), 5);' || echo "Error adding srcip to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BIND"), (SELECT id FROM fields WHERE field="srcport"), 6);' || echo "Error adding srcport to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BIND"), (SELECT id FROM fields WHERE field="dstip"), 7);' || echo "Error adding dstip to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BIND"), (SELECT id FROM fields WHERE field="domain"), 11);' || echo "Error adding domain to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BIND"), (SELECT id FROM fields WHERE field="query_class"), 12);' || echo "Error adding query_class to fields_classes_map table."
+			$MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BIND"), (SELECT id FROM fields WHERE field="query_type"), 13);' || echo "Error adding query_type to fields_classes_map table."
+
+                        echo "* Updating syslog-ng patterns."
+                        PATTERNS_DIR=/etc/elsa/patterns.d/
+                        DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+                        cp $DEST_PATTERN $DEST_PATTERN.bak || echo "Error backing up $DEST_PATTERN."
+                        pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR || echo "Error running pdbtool to merge patterns."
+
+                        echo "* Restarting syslog-ng."
+                        service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
+		fi
+	fi
+
+	# Add new parsers for sysmon and Windows process logs
+	if [ "$2" = "20131117-1ubuntu0securityonion56" ] || [ "$2" = "20131117-1ubuntu0securityonion53" ] || [ "$2" = "20131117-1ubuntu0securityonion50" ] || [ "$2" = "20131117-1ubuntu0securityonion45" ] || [ "$2" = "20131117-1ubuntu0securityonion43" ] || [ "$2" = "20131117-1ubuntu0securityonion41" ] || [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+
+		# Only update database if Setup has already been run
+		if [ -e /var/log/nsm/sosetup.log ]; then
+
+			# Store all SQL schema updates as files in $SQL_DIR
+			SQL_DIR="/opt/elsa/contrib/securityonion/contrib/sql"
+
+                        echo "* Adding fields for new SYSMON_PROCESS and SYSMON_NETWORK parsers."
+			SQL="$SQL_DIR/sysmon.sql"
+			mysql -uroot < $SQL || echo "Error importing $SQL."
+
+                        echo "* Adding fields for new WINDOWS_PROCESS parser."
+			SQL="$SQL_DIR/win_process_tracking.sql"
+			mysql -uroot < $SQL || echo "Error importing $SQL."
+
+                        echo "* Updating syslog-ng patterns."
+                        PATTERNS_DIR=/etc/elsa/patterns.d/
+                        DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+                        cp $DEST_PATTERN $DEST_PATTERN.bak || echo "Error backing up $DEST_PATTERN."
+                        pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR || echo "Error running pdbtool to merge patterns."
+
+                        echo "* Restarting syslog-ng."
+                        service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
+		fi
+	fi
+
+        ;;
+    abort-upgrade|abort-remove|abort-deconfigure)
+        ;;
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+        ;;
+esac
+
+# dh_installdeb will replace this with shell code automatically
+# generated by other debhelper scripts.
+
+#DEBHELPER#
+
+exit 0

@@ -1,0 +1,101 @@
+Description: Add support for Bro's intel framework logs
+
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion37) precise; urgency=low
+ .
+   * Add ruby1.9.1 as a dependency.
+Author: Scott Allen Runnels <srunnels@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/contrib/securityonion_parsers_sql.sh
++++ securityonion-elsa-extras-20131117/contrib/securityonion_parsers_sql.sh
+@@ -44,6 +44,7 @@ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWI
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO classes(id, class) VALUES(26006, "BRO_SOFTWARE");'
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO classes(id, class) VALUES(26007, "BRO_SSH");'
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO classes(id, class) VALUES(26008, "BRO_IRC");'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO classes(id, class) VALUES(26009, "BRO_INTEL");'
+ 
+ 
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_WEIRD"), (SELECT id FROM fields WHERE field="srcip"), 5);'
+@@ -156,4 +157,16 @@ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWI
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_IRC"), (SELECT id FROM fields WHERE field="file_size"), 9);'
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_IRC"), (SELECT id FROM fields WHERE field="mime_type"), 16);'
+ 
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("indicator", "string", "QSTRING");'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("indicator_type", "string", "QSTRING");'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("seen_where", "string", "QSTRING");'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("sources", "string", "QSTRING");'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="srcip"), 5);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="srcport"), 6);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="dstip"), 7);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="dstport"), 8);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="indicator"), 11);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="indicator_type"), 12);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="seen_where"), 13);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_INTEL"), (SELECT id FROM fields WHERE field="sources"), 14);'
+ 
+--- securityonion-elsa-extras-20131117.orig/contrib/securityonion-syslog-ng.conf
++++ securityonion-elsa-extras-20131117/contrib/securityonion-syslog-ng.conf
+@@ -45,6 +45,7 @@ source s_ossec { file("/var/ossec/logs/a
+ source s_bro_software { file("/nsm/bro/logs/current/software.log" flags(no-parse) program_override("bro_software")); };
+ source s_bro_irc { file("/nsm/bro/logs/current/irc.log" flags(no-parse) program_override("bro_irc")); };
+ source s_bro_ssh { file("/nsm/bro/logs/current/ssh.log" flags(no-parse) program_override("bro_ssh")); };
++source s_bro_intel { file("/nsm/bro/logs/current/intel.log" flags(no-parse) program_override("bro_intel")); };
+ 
+ destination d_elsa { program("perl /opt/elsa/node/elsa.pl -c /etc/elsa_node.conf" template(t_db_parsed)); };
+ 
+@@ -65,6 +66,7 @@ log {
+    	source(s_bro_irc);
+ 	source(s_bro_software);    
+   	source(s_bro_ssh); 
++  	source(s_bro_intel); 
+ 	source(s_ossec);
+ 	source(s_network);
+ 	source(s_syslog);
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/bro_intel
+@@ -0,0 +1,32 @@
++<ruleset name="bro_intel" id="26009">
++  <pattern>bro_intel</pattern>
++  <rules>
++    <rule provider="Security_Onion" class="26009" id="26009">
++      <patterns>
++        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:@</pattern>
++      </patterns>
++      <examples>
++        <example>
++          <test_message program="bro_intel">1391104904.213081|C4lG181iOhPyUt50k8|172.24.248.101|52490|199.7.91.13|53|-|-|-|travel.msnhome.org|Intel::DOMAIN|DNS::IN_REQUEST|Mandiant APT1 Report</test_message>
++          <!-- srcip -->
++          <test_value name="i0">172.24.248.101</test_value>
++          <!-- srcport -->
++          <test_value name="i1">52490</test_value>
++          <!-- dstip -->
++          <test_value name="i2">199.7.91.13</test_value>
++          <!-- dstport -->
++          <test_value name="i3">53</test_value>
++          <!-- indicator -->
++          <test_value name="s0">travel.msnhome.org</test_value>
++          <!-- indicator_type -->
++          <test_value name="s1">Intel::DOMAIN</test_value>
++          <!-- seen_where -->
++          <test_value name="s2">DNS::IN_REQUEST</test_value>
++          <!-- sources -->
++          <test_value name="s3">Mandiant APT1 Report</test_value>
++
++        </example>
++      </examples>
++    </rule>
++  </rules>
++</ruleset>

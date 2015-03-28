@@ -1,0 +1,55 @@
+Description: Include Version, Author, Revision, in elsa_web.conf
+
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion17) precise; urgency=low
+ .
+   * Correct typo in BRO_SOFTWARE fields_classes_map
+Author: Scott Allen Runnels <srunnels@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/bin/securityonion_elsa_register.rb
++++ securityonion-elsa-extras-20131117/bin/securityonion_elsa_register.rb
+@@ -38,7 +38,7 @@ class ELSAConfig
+     # Migrate specific entries from a previous config into a new version.
+     manifest = {
+       "versions" => {
+-        "1005" => {
++        "1090" => {
+           "web" => {
+             "apikeys" => {
+               "elsa" => "1"
+@@ -46,7 +46,7 @@ class ELSAConfig
+             "version" =>  {
+               "Author" => "mcholste",
+               "Date" => "2013-08-26 16:05:12 -0400 (Mon, 26 Aug 2013)",
+-              "Rev" => "1005",
++              "Rev" => "1090",
+               "Sphinx" => "Sphinx 2.0.7-id64-dev (rel20-r373)"
+             },
+             "peers" => {
+--- securityonion-elsa-extras-20131117.orig/contrib/securityonion-elsa-web.conf
++++ securityonion-elsa-extras-20131117/contrib/securityonion-elsa-web.conf
+@@ -1,5 +1,11 @@
+ {
+ 	"apikeys": { "elsa": "1" },
++    "version": {
++        "Author": "mcholste",
++        "Date": "2013-12-04 12:00:00 -0400 (Wed, 04 Dec 2013)",
++        "Rev": "1090",
++        "Sphinx": "Sphinx 2.0.7-id64-dev (rel20-r373)"
++    },
+   	"peers": {
+ 		"127.0.0.1": {
+ 			"url": "https://127.0.0.1:3154/",

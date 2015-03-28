@@ -1,0 +1,147 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion49) precise; urgency=low
+ .
+   * parse Bro snmp.log
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/contrib/securityonion_parsers_sql.sh
++++ securityonion-elsa-extras-20131117/contrib/securityonion_parsers_sql.sh
+@@ -177,22 +177,44 @@ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWI
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SSL"), (SELECT id FROM fields WHERE field="ssl_version"), 13);'
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SSL"), (SELECT id FROM fields WHERE field="ssl_cipher"), 14);'
+ 
++MYSQL="mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e"
++
+ # Additions for Bro x509.log
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO classes(id, class) VALUES(26010, "BRO_X509");'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_version", "int", "NUMBER");'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_version"), 5);'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_serial", "string", "QSTRING");'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_serial"), 11);'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_subject", "string", "QSTRING");'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_subject"), 12);'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_issuer", "string", "QSTRING");'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_issuer"), 13);'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_key_alg", "string", "QSTRING");'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_key_alg"), 14);'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_sig_alg", "string", "QSTRING");'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_sig_alg"), 15);'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_key_type", "string", "QSTRING");'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_key_type"), 16);'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_key_length", "int", "NUMBER");'
+-mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_key_length"), 6);'
++$MYSQL 'REPLACE INTO classes(id, class) VALUES(26010, "BRO_X509");'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_version", "int", "NUMBER");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_version"), 5);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_serial", "string", "QSTRING");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_serial"), 11);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_subject", "string", "QSTRING");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_subject"), 12);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_issuer", "string", "QSTRING");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_issuer"), 13);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_key_alg", "string", "QSTRING");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_key_alg"), 14);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_sig_alg", "string", "QSTRING");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_sig_alg"), 15);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_key_type", "string", "QSTRING");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_key_type"), 16);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("cert_key_length", "int", "NUMBER");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_X509"), (SELECT id FROM fields WHERE field="cert_key_length"), 6);'
++
++# Additions for Bro snmp.log
++$MYSQL 'REPLACE INTO classes(id, class) VALUES(26011, "BRO_SNMP");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="srcip"), 5);'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="srcport"), 6);'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="dstip"), 7);'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="dstport"), 8);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("get_requests", "int", "NUMBER");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="get_requests"), 9);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("get_responses", "int", "NUMBER");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="get_responses"), 10);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("duration", "string", "QSTRING");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="duration"), 11);'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="version"), 12);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("community", "string", "QSTRING");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="community"), 13);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("display_string", "string", "QSTRING");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="display_string"), 14);'
++$MYSQL 'REPLACE INTO fields (field, field_type, pattern_type) VALUES ("up_since", "string", "QSTRING");'
++$MYSQL 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_SNMP"), (SELECT id FROM fields WHERE field="up_since"), 15);'
+ 
+--- securityonion-elsa-extras-20131117.orig/contrib/securityonion-syslog-ng.conf
++++ securityonion-elsa-extras-20131117/contrib/securityonion-syslog-ng.conf
+@@ -47,6 +47,7 @@ source s_bro_irc { file("/nsm/bro/logs/c
+ source s_bro_ssh { file("/nsm/bro/logs/current/ssh.log" flags(no-parse) program_override("bro_ssh")); };
+ source s_bro_intel { file("/nsm/bro/logs/current/intel.log" flags(no-parse) program_override("bro_intel")); };
+ source s_bro_x509 { file("/nsm/bro/logs/current/x509.log" flags(no-parse) program_override("bro_x509")); };
++source s_bro_snmp { file("/nsm/bro/logs/current/snmp.log" flags(no-parse) program_override("bro_snmp")); };
+ 
+ destination d_elsa { program("perl /opt/elsa/node/elsa.pl -c /etc/elsa_node.conf" template(t_db_parsed)); };
+ 
+@@ -69,6 +70,7 @@ log {
+   	source(s_bro_ssh); 
+   	source(s_bro_intel); 
+   	source(s_bro_x509); 
++  	source(s_bro_snmp); 
+ 	source(s_ossec);
+ 	source(s_network);
+ 	source(s_syslog);
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/bro_snmp
+@@ -0,0 +1,37 @@
++	<ruleset>
++                <pattern>bro_snmp</pattern>
++                <rules>
++                        <rule class="26011" id="26011">
++                                <patterns>
++                                        <pattern>@ESTRING::|@@ESTRING::|@@IPv4:i0@|@NUMBER:i1@|@IPv4:i2@|@NUMBER:i3@|@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@NUMBER:i4@|@NUMBER:@|@NUMBER:i5@|@NUMBER:@|@ESTRING:s3:|@@ESTRING:s4:@</pattern>
++                                </patterns>
++                                <examples>
++                                        <example>
++						<test_message program='bro_snmp'>MESSAGE=1415311140.085077|ZZZOWu1ZZzzzQSVzzz|10.1.2.3|14224|1.1.6.2|162|0.000000|1|XXxxYYzz|789|14|803|0|-|1405533183.353428</test_message>
++                                                <!-- id.orig_h -->
++                                                <test_value name='i0'>10.1.2.3</test_value>
++                                                <!-- id.orig_p -->
++                                                <test_value name='i1'>14224</test_value>
++                                                <!-- id.resp_h -->
++                                                <test_value name='i2'>1.1.6.2</test_value>
++                                                <!-- id.resp_p -->
++                                                <test_value name='i3'>162</test_value>
++                                                <!-- duration -->
++                                                <test_value name='s0'>0.000000</test_value>
++                                                <!-- version -->
++                                                <test_value name='s1'>1</test_value>
++                                                <!-- community -->
++                                                <test_value name='s2'>XXxxYYzz</test_value>
++                                                <!-- get_requests -->
++                                                <test_value name='i4'>789</test_value>
++                                                <!-- get_responses -->
++                                                <test_value name='i5'>803</test_value>
++                                                <!-- display_string -->
++                                                <test_value name='s3'>-</test_value>
++                                                <!-- up_since -->
++                                                <test_value name='s4'>1405533183.353428</test_value>
++                                        </example>
++                                </examples>
++                        </rule>
++                </rules>
++        </ruleset>

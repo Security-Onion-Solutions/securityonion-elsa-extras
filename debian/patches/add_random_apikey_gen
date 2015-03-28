@@ -1,0 +1,59 @@
+Description: Add support for updating a random API key in elsa_web.conf
+
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion28) precise; urgency=low
+ .
+   * Correct the filename for the Bro tunnel.log file in syslog-ng's syslog-ng.conf
+Author: Scott Allen Runnels <srunnels@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/bin/securityonion_elsa_register.rb
++++ securityonion-elsa-extras-20131117/bin/securityonion_elsa_register.rb
+@@ -85,6 +85,11 @@ class ELSAConfig
+     self.config['apikeys'] = {"elsa" => "#{apikey}"}
+     self.config['peers']['127.0.0.1']['apikey'] = apikey
+   end
++
++  def randomize_apikey!
++    logger.debug "Randomizing API key."
++    self.config['apikeys'] = {"elsa" => "#{SecureRandom.hex}"}
++  end
+   
+   def parse_conf
+     # Strip comments out of the JSON file
+@@ -163,6 +168,9 @@ option_parser = OptionParser.new do |opt
+   opts.on("--update-apikey APIKEY") do |apikey|
+     options[:apikey] = apikey
+   end
++  opts.on("--random-apikey") do |apikey|
++    options[:randomapikey] = true
++  end
+   opts.on("--migrate-web REVISION") do |revision|
+     options[:migrate_web] = revision
+   end
+@@ -176,6 +184,13 @@ option_parser = OptionParser.new do |opt
+ end
+ option_parser.parse!
+ 
++if options[:randomapikey]
++  current_conf = ELSAConfig.new(:file => WEB_CONF_FILE)
++  current_conf.parse_conf
++  current_conf.randomize_apikey!
++  current_conf.write_conf(:force => true)
++end
++
+ if options[:migrate_web]
+   current_conf = ELSAConfig.new(:file => WEB_CONF_FILE)
+   current_conf.parse_conf

@@ -1,0 +1,35 @@
+<ruleset>
+  <pattern>bro_notice</pattern>
+  <rules>
+	<rule provider="Security_Onion" class="15" id="15">
+	  <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING:s4:|@@ESTRING:s5:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::@</pattern>
+	  </patterns>
+	  <examples>
+	    <example>
+          <test_message program="bro_notice">1384786661.610946|ClFR684ID34iQAkkH8|192.168.3.25|1054|89.187.51.0|80|F4mTaE3W2oCrLZFAw6|application/x-dosexec|http://pipiskin.hk/load.exe|tcp|TeamCymruMalwareHashRegistry::Match|Malware Hash Registry Detection rate: 56%  Last seen: 2010-06-25 19:07:15|https://www.virustotal.com/en/search/?query=3ddcf24f58664a92023cc0004a799b6e0ec411ac|192.168.3.25|89.187.51.0|80|-|Sandbox01-eth0-1|Notice::ACTION_LOG|3600.000000|F|-|-|-|-|-</test_message>
+	      <!-- srcip -->
+	      <test_value name="i0">192.168.3.25</test_value>
+	      <!-- srcport -->
+	      <test_value name="i1">1054</test_value>
+	      <!-- dstip -->
+	      <test_value name="i2">89.187.51.0</test_value>
+	      <!-- dstport -->
+	      <test_value name="i3">80</test_value>
+	      <!-- mime_type -->
+	      <test_value name="s0">application/x-dosexec</test_value>
+          <!-- description -->
+	      <test_value name="s1">http://pipiskin.hk/load.exe</test_value>
+          <!-- proto -->
+	      <test_value name="s2">tcp</test_value>
+          <!-- note -->
+	      <test_value name="s3">TeamCymruMalwareHashRegistry::Match</test_value>
+          <!-- msg -->
+	      <test_value name="s4">Malware Hash Registry Detection rate: 56%  Last seen: 2010-06-25 19:07:15</test_value>
+          <!-- sub -->
+	      <test_value name="s5">https://www.virustotal.com/en/search/?query=3ddcf24f58664a92023cc0004a799b6e0ec411ac</test_value>
+	    </example>
+	  </examples>
+	</rule>
+  </rules>
+</ruleset>

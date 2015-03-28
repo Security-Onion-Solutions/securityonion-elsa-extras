@@ -1,0 +1,74 @@
+Description: Support the new BRO_NOTICE formats from Bro 2.2
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion6) precise; urgency=low
+ .
+   * Correct the BRO_HTTP parser
+Author: Scott Allen Runnels <srunnels@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/contrib/securityonion_parsers_sql.sh
++++ securityonion-elsa-extras-20131117/contrib/securityonion_parsers_sql.sh
+@@ -92,3 +92,13 @@ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWI
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_HTTP"), (SELECT id FROM fields WHERE field="mime_type"), 16);'
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_HTTP"), (SELECT id FROM fields WHERE field="status_code"), 10);'
+ mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_HTTP"), (SELECT id FROM fields WHERE field="content_length"), 9);'
++
++# Support new BRO_NOTICE format
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("protocol", "string", "QSTRING");'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("sub_msg", "string", "QSTRING");'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_NOTICE"), (SELECT id FROM fields WHERE field="mime_type"), 11);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_NOTICE"), (SELECT id FROM fields WHERE field="desc"), 12);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_NOTICE"), (SELECT id FROM fields WHERE field="protocol"), 13);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_NOTICE"), (SELECT id FROM fields WHERE field="notice_type"), 14);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'REPLACE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_NOTICE"), (SELECT id FROM fields WHERE field="notice_msg"), 15);'
++mysql -u$MYSQL_ROOT_USER $MYSQL_PASS_SWITCH $MYSQL_NODE_DB -e 'INSERT IGNORE INTO fields_classes_map(class_id, field_id, field_order) VALUES( (SELECT id FROM classes WHERE class="BRO_NOTICE"), (SELECT id FROM fields WHERE field="sub_msg"), 16);'
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/bro_notice
+@@ -0,0 +1,35 @@
++<ruleset>
++  <pattern>bro_notice</pattern>
++  <rules>
++	<rule provider="Security_Onion" class="15" id="15">
++	  <patterns>
++        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING:s4:|@@ESTRING:s5:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::@</pattern>
++	  </patterns>
++	  <examples>
++	    <example>
++          <test_message program="bro_notice">1384786661.610946|ClFR684ID34iQAkkH8|192.168.3.25|1054|89.187.51.0|80|F4mTaE3W2oCrLZFAw6|application/x-dosexec|http://pipiskin.hk/load.exe|tcp|TeamCymruMalwareHashRegistry::Match|Malware Hash Registry Detection rate: 56%  Last seen: 2010-06-25 19:07:15|https://www.virustotal.com/en/search/?query=3ddcf24f58664a92023cc0004a799b6e0ec411ac|192.168.3.25|89.187.51.0|80|-|Sandbox01-eth0-1|Notice::ACTION_LOG|3600.000000|F|-|-|-|-|-</test_message>
++	      <!-- srcip -->
++	      <test_value name="i0">192.168.3.25</test_value>
++	      <!-- srcport -->
++	      <test_value name="i1">1054</test_value>
++	      <!-- dstip -->
++	      <test_value name="i2">89.187.51.0</test_value>
++	      <!-- dstport -->
++	      <test_value name="i3">80</test_value>
++	      <!-- mime_type -->
++	      <test_value name="s0">application/x-dosexec</test_value>
++          <!-- description -->
++	      <test_value name="s1">http://pipiskin.hk/load.exe</test_value>
++          <!-- proto -->
++	      <test_value name="s2">tcp</test_value>
++          <!-- note -->
++	      <test_value name="s3">TeamCymruMalwareHashRegistry::Match</test_value>
++          <!-- msg -->
++	      <test_value name="s4">Malware Hash Registry Detection rate: 56%  Last seen: 2010-06-25 19:07:15</test_value>
++          <!-- sub -->
++	      <test_value name="s5">https://www.virustotal.com/en/search/?query=3ddcf24f58664a92023cc0004a799b6e0ec411ac</test_value>
++	    </example>
++	  </examples>
++	</rule>
++  </rules>
++</ruleset>

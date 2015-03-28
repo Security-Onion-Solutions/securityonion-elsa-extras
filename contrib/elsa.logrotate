@@ -1,0 +1,9 @@
+/nsm/elsa/data/elsa/log/*log {                                                                                                                                                                           
+  size 100M
+  create 640 www-data root
+  rotate 4
+  missingok
+  notifempty
+  compress
+  maxage 60
+}

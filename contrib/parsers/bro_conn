@@ -1,0 +1,55 @@
+<ruleset name="bro_conn" id='20'>
+  <pattern>bro_conn</pattern>
+    <rules>
+      <rule class="20" id="20">
+        <patterns>
+          <!--ts  uid     id.orig_h       id.orig_p       id.resp_h       id.resp_p       proto   service duration        orig_bytes      resp_bytes      
+          conn_state      local_orig      missed_bytes    history orig_pkts       orig_ip_bytes   resp_pkts       resp_ip_bytes-->
+          <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:i5:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s5:|@</pattern>
+          <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@</pattern>
+        </patterns>
+        <examples>
+          <example>
+            <test_message program="bro_conn">1319824864.447838|g6XHk1uplZc|10.0.0.0|19427|80.175.58.76|80|tcp|...</test_message>
+              <!-- srcip -->
+              <test_value name="i0">10.0.0.0</test_value>
+              <!-- srcport -->
+              <test_value name="i1">19427</test_value>
+              <!-- dstip -->
+              <test_value name="i2">80.175.58.76</test_value>
+              <!-- dstport -->
+              <test_value name="i3">80</test_value>
+              <!-- proto -->
+              <test_value name="i4">tcp</test_value>
+           </example>
+           <example>
+             <test_message program="bro_conn">1355091922.994655|fOFtbJ91cG7|192.168.1.103|52949|206.12.19.9|80|tcp|http|3.970039|2829|574725|SF|-|3706|ShADadFf|200|14697|403|591995|(empty)|US|RU|</test_message>
+             <!-- srcip -->
+             <test_value name="i0">192.168.1.103</test_value>
+             <!-- srcport -->
+             <test_value name="i1">52949</test_value>
+             <!-- dstip -->
+             <test_value name="i2">206.12.19.9</test_value>
+             <!-- dstport -->
+             <test_value name="i3">80</test_value>
+             <!-- proto -->
+             <test_value name="i4">tcp</test_value>
+             <!-- service -->
+             <test_value name="s0">http</test_value>
+             <!-- duration -->
+             <test_value name="s1">3.970039</test_value>
+             <!-- orig_bytes -->
+             <test_value name="s2">2829</test_value>
+             <!-- resp_bytes -->
+             <test_value name="i5">574725</test_value>
+             <!-- orig_pkts -->
+             <test_value name="s3">200</test_value>
+             <!-- resp_pkts -->
+             <test_value name="s4">403</test_value>
+             <!-- resp_country_code -->
+             <test_value name="s5">RU</test_value>
+           </example>
+        </examples>
+     </rule>
+  </rules>
+</ruleset>

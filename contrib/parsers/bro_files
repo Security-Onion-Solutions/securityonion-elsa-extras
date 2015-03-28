@@ -1,0 +1,34 @@
+<ruleset name="bro_files" id='26004'>
+  <pattern>bro_files</pattern>
+  <rules>
+    <rule provider="Security_Onion" class='26004' id=''>
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING::|@@ESTRING:s2:|@@ESTRING::|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s4:|@@ESTRING:s5:|@@ESTRING::|@@ESTRING::@</pattern>
+        <!-- <pattern>@ESTRING:ts:|@@ESTRING:fuid:|@@ESTRING:tx_hosts:|@@ESTRING:rx_hosts:|@@ESTRING:conn_uids:|@@ESTRING:source:|@@ESTRING:depth:|@@ESTRING:analyzers:|@@ESTRING:mime_type:|@@ESTRING:filename:|@@ESTRING:duration:|@@ESTRING:local_orig:|@@ESTRING:is_orig:|@@ESTRING:seen_bytes:|@@ESTRING:total_bytes:|@@ESTRING:missed_bytes:|@@ESTRING:overfly_bytes:|@@ESTRING:timedout:|@@ESTRING:parent_fuid:|@@ESTRING:md5:|@@ESTRING:sha1:|@@ESTRING:sha256:|@@ESTRING:extracted:@</pattern> -->
+      </patterns>
+      <examples>
+        <example>
+          <test_message program="bro_files">1383923319.119506|FTry8K3ieMrV1QUPn2|91.189.91.15|192.168.4.204|Ctb0Yv1hADRWfy1Azi|HTTP|0|MD5,SHA1|application/x-bzip2|-|0.019398|F|F|36108|36108|0|0|F|-|332d000fadab5132ad02ce39ee28db19|7d7d4694925ebec1e18d0c8eeb6b7286a4f518b9|-|-</test_message>
+          <!-- tx_hosts -->
+          <test_value name="s0">91.189.91.15</test_value>
+          <!-- rx_hosts -->
+          <test_value name="s1">192.168.4.204</test_value>
+          <!-- source -->
+          <test_value name="s2">HTTP</test_value>
+          <!-- mime_type -->
+          <test_value name="s3">application/x-bzip2</test_value>
+          <!-- seen_bytes -->
+          <test_value name="i0">36108</test_value>
+          <!-- total_bytes -->
+          <test_value name="i1">36108</test_value>
+          <!-- missing_bytes -->
+          <test_value name="i2">0</test_value>
+          <!-- md5 -->
+          <test_value name="s4">332d000fadab5132ad02ce39ee28db19</test_value>
+          <!-- sha1 -->
+          <test_value name="s5">7d7d4694925ebec1e18d0c8eeb6b7286a4f518b9</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>

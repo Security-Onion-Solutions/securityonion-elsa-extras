@@ -1,0 +1,72 @@
+	<ruleset name='filterlog'>
+		<pattern>filterlog</pattern>
+		<rules>
+			<rule provider='ELSA' class='2' id='2'>
+				<patterns>
+					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@block,@ESTRING::,@4,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@ESTRING::,@@IPv4:i1:,@,@IPv4:i3:,@,@NUMBER:i2:,@,@NUMBER:i4:,@</pattern>
+                    <pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@block,@ESTRING::,@@NUMBER::,@,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,igmp,@ESTRING::,@@IPv4:i1,@,@IPv4:i3:,@,@ESTRING::@</pattern>
+					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@block,@ESTRING::,@6,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@IPv6:i1:,@,@IPv6:i3:,@,@NUMBER:i2:,@,@NUMBER:i4:,@</pattern>
+					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@block,@ESTRING::,@6,@ESTRING::,@@ESTRING::,@@ESTRING::,@Options,@NUMBER:i0:,@,@ESTRING::,@@IPv6:i1:,@,@IPv6:i3:,@,@ESTRING::@</pattern>
+					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@block,@ESTRING::,@4,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@ESTRING::,@@IPv4:i1:,@,@IPv4:i3:,@,@ESTRING::@</pattern>
+				</patterns>
+				<examples>
+					<example>
+						<test_message program="filterlog">171,16777216,,1424282996,em1,match,block,in,4,0x0,,1,30898,0,none,17,udp,50,192.168.1.10,224.0.0.252,63227,5355,30</test_message>
+						<test_value name="s1">em1</test_value>
+						<test_value name="i0">17</test_value>
+						<test_value name="i1">192.168.1.10</test_value>
+						<test_value name="i2">63227</test_value>
+						<test_value name="i3">224.0.0.252</test_value>
+						<test_value name="i4">5355</test_value>
+					</example>
+					<example>
+						<test_message program="filterlog">170,16777216,,1424282996,em0,match,block,in,4,0x0,,128,18835,0,DF,6,tcp,48,193.110.44.49,10.15.180.114,55253,25,0,S,2587172434,,8192,,mss;nop;nop;sackOK</test_message>
+						<test_value name="s1">em0</test_value>
+						<test_value name="i0">6</test_value>
+						<test_value name="i1">193.110.44.49</test_value>
+						<test_value name="i2">55253</test_value>
+						<test_value name="i3">10.15.180.114</test_value>
+						<test_value name="i4">25</test_value>
+					</example>
+				</examples>
+			</rule>
+			<rule provider='ELSA' class='3' id='3'>
+				<patterns>
+					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@pass,@ESTRING::,@4,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@ESTRING::,@@IPv4:i1:,@,@IPv4:i3:,@,@NUMBER:i2:,@,@NUMBER:i4:,@</pattern>
+					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@pass,@ESTRING::,@@NUMBER::,@,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,igmp,@ESTRING::,@@IPv4:i1,@,@IPv4:i3:,@,@ESTRING::@</pattern>
+					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@pass,@ESTRING::,@6,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@IPv6:i1:,@,@IPv6:i3:,@,@NUMBER:i2:,@,@NUMBER:i4:,@</pattern>
+					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@pass,@ESTRING::,@6,@ESTRING::,@@ESTRING::,@@ESTRING::,@Options,@NUMBER:i0:,@,@ESTRING::,@@IPv6:i1:,@,@IPv6:i3:,@,@ESTRING::@</pattern>
+					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@pass,@ESTRING::,@4,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@ESTRING::,@@IPv4:i1:,@,@IPv4:i3:,@,@ESTRING::@</pattern>
+				</patterns>
+				<examples>
+					<example>
+						<test_message program="filterlog">140,16777216,,1424282984,em1,match,pass,in,4,0x0,,128,4207,0,DF,6,tcp,52,192.168.0.3,216.58.208.66,65480,80,0,S,452276625,,8192,,mss;nop;wscale;nop;nop;sackOK</test_message>
+						<test_value name="s1">em1</test_value>
+						<test_value name="i0">6</test_value>
+						<test_value name="i1">192.168.0.3</test_value>
+						<test_value name="i2">65480</test_value>
+						<test_value name="i3">216.58.208.66</test_value>
+						<test_value name="i4">80</test_value>
+					</example> 
+					<example>
+						<test_message program="filterlog">5,16777216,,1000000103,em0,match,pass,in,4,0x0,,41,63030,0,none,1,icmp,107,222.233.210.210,109.88.162.79,unreachport,222.233.210.210,UDP,5387</test_message>
+						<test_value name="s1">em0</test_value>
+						<test_value name="i0">1</test_value>
+						<test_value name="i1">222.233.210.210</test_value>
+						<test_value name="i2"></test_value>
+						<test_value name="i3">109.88.162.79</test_value>
+						<test_value name="i4"></test_value>
+					</example> 
+					<example>
+						<test_message program="filterlog">141,16777216,,1424282984,em1,match,pass,in,4,0x0,,128,26522,0,DF,6,tcp,52,192.168.1.13,74.125.136.159,63408,443,0,S,942122724,,8192,,mss;nop;wscale;nop;nop;sackOK</test_message>		
+						<test_value name="s1">em1</test_value>
+						<test_value name="i0">6</test_value>
+						<test_value name="i1">192.168.1.13</test_value>
+						<test_value name="i2">63408</test_value>
+						<test_value name="i3">74.125.136.159</test_value>
+						<test_value name="i4">443</test_value>
+					</example>
+				</examples>
+			</rule>
+		</rules>
+	</ruleset>

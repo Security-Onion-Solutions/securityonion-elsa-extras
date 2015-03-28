@@ -1,0 +1,15 @@
+Source: securityonion-elsa-extras
+Section: net
+Priority: extra
+Maintainer: Scott Allen Runnels <srunnels@gmail.com>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.3
+Homepage: http://securityonion.blogspot.com
+
+Package: securityonion-elsa-extras
+Architecture: all
+Depends: ${misc:Depends}, 
+ securityonion-elsa,
+ libjs-yui,
+ ruby1.9.1
+Description: SecurityOnion specific elsa config files

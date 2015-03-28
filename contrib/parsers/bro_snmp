@@ -1,0 +1,37 @@
+	<ruleset>
+                <pattern>bro_snmp</pattern>
+                <rules>
+                        <rule class="26011" id="26011">
+                                <patterns>
+                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING:i5:|@@ESTRING::|@@ESTRING:s3:|@@ESTRING:s4:@</pattern>
+                                </patterns>
+                                <examples>
+                                        <example>
+						<test_message program='bro_snmp'>MESSAGE=1415311140.085077|ZZZOWu1ZZzzzQSVzzz|10.1.2.3|14224|1.1.6.2|162|0.000000|1|XXxxYYzz|789|14|803|0|-|1405533183.353428</test_message>
+                                                <!-- id.orig_h -->
+                                                <test_value name='i0'>10.1.2.3</test_value>
+                                                <!-- id.orig_p -->
+                                                <test_value name='i1'>14224</test_value>
+                                                <!-- id.resp_h -->
+                                                <test_value name='i2'>1.1.6.2</test_value>
+                                                <!-- id.resp_p -->
+                                                <test_value name='i3'>162</test_value>
+                                                <!-- duration -->
+                                                <test_value name='s0'>0.000000</test_value>
+                                                <!-- version -->
+                                                <test_value name='s1'>1</test_value>
+                                                <!-- community -->
+                                                <test_value name='s2'>XXxxYYzz</test_value>
+                                                <!-- get_requests -->
+                                                <test_value name='i4'>789</test_value>
+                                                <!-- get_responses -->
+                                                <test_value name='i5'>803</test_value>
+                                                <!-- display_string -->
+                                                <test_value name='s3'>-</test_value>
+                                                <!-- up_since -->
+                                                <test_value name='s4'>1405533183.353428</test_value>
+                                        </example>
+                                </examples>
+                        </rule>
+                </rules>
+        </ruleset>

@@ -1,0 +1,34 @@
+Description: More changes to ELSA cron
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion21) precise; urgency=low
+ .
+   * Apply the changes to BRO_NOTICE in the correct order
+Author: Scott Allen Runnels <srunnels@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/contrib/elsa.cron
++++ securityonion-elsa-extras-20131117/contrib/elsa.cron
+@@ -1,8 +1,8 @@
+-# /etc/cron.d/sensor-newday
++# /etc/cron.d/elsa
+ #
+-# crontab entry to restart the sensor processes ensuring rotation of logs.
++# crontab entry for ELSA
+ 
+ SHELL=/bin/sh
+ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+ 
+-* * * * * perl /opt/elsa/web/cron.pl -c /etc/elsa_web.conf > /dev/null 2>&1
++* * * * * root perl /opt/elsa/web/cron.pl -c /etc/elsa_web.conf > /dev/null 2>&1

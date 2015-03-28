@@ -1,0 +1,27 @@
+<ruleset name="bro_tunnel" id='26002'>
+  <pattern>bro_tunnel</pattern>
+  <rules>
+    <rule provider="Security_Onion" class='26002' id=''>
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program="bro_tunnel">1375125910.892967|RamHZItz989|172.24.241.83|53003|10.0.0.50|3544|Tunnel::TEREDO|Tunnel::DISCOVER</test_message>
+          <!-- srcip -->
+          <test_value name="i0">172.24.241.83</test_value>
+          <!-- srcport -->
+          <test_value name="i1">53003</test_value>
+          <!-- dstip -->
+          <test_value name="i2">10.0.0.50</test_value>
+          <!-- dstport -->
+          <test_value name="i3">3544</test_value>
+          <!-- tunnel_type -->
+          <test_value name="s0">Tunnel::TEREDO</test_value>
+          <!-- action -->
+          <test_value name="s1">Tunnel::DISCOVER</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>   

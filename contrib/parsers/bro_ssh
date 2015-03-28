@@ -1,0 +1,35 @@
+<ruleset name="bro_ssh" id="26007">
+  <pattern>bro_ssh</pattern>
+  <rules>
+    <rule provider="Security_Onion" class="26007" id="26007">
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING:s4:|@@ESTRING:s5:|@@ESTRING::|@@ESTRING::|@@ESTRING::@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program="bro_ssh">1385320083.369326|CPGlXxZ5k36JLyD8k|192.168.4.151|46133|192.168.4.150|22|success|OUTBOUND|SSH-2.0-OpenSSH_5.9p1 Debian-5ubuntu1.1|-|-|-|-|-|-</test_message>
+          <!-- srcip -->
+          <test_value name="i0">192.168.4.151</test_value>
+          <!-- srcport -->
+          <test_value name="i1">46133</test_value>
+          <!-- dstip -->
+          <test_value name="i2">192.168.4.150</test_value>
+          <!-- dstport -->
+          <test_value name="i3">22</test_value>
+          <!-- status -->
+          <test_value name="s0">success</test_value>
+          <!-- direction -->
+          <test_value name="s1">OUTBOUND</test_value>
+          <!-- client -->
+          <test_value name="s2">SSH-2.0-OpenSSH_5.9p1 Debian-5ubuntu1.1</test_value>
+          <!-- server -->
+          <test_value name="s3">-</test_value>
+          <!-- country -->
+          <test_value name="s4">-</test_value>
+          <!-- region -->
+          <test_value name="s5">-</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>   

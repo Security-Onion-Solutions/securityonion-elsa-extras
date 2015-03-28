@@ -1,0 +1,37 @@
+<ruleset name="bro_irc" id="26008">
+  <pattern>bro_irc</pattern>
+  <rules>
+    <rule provider="Security_Onion" class="26008" id="26008">
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING:i4:|@@ESTRING:s5:|@@ESTRING::@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program="bro_irc">1385362967.853268|CiCjeA4fH8qmmiS981|192.168.10.103|44880|82.96.64.4|6667|-|-|JOIN|test|(empty)|-|-|-|-</test_message>
+          <!-- srcip -->
+          <test_value name="i0">192.168.10.103</test_value>
+          <!-- srcport -->
+          <test_value name="i1">44880</test_value>
+          <!-- dstip -->
+          <test_value name="i2">82.96.64.4</test_value>
+          <!-- dstport -->
+          <test_value name="i3">6667</test_value>
+          <!-- nick -->
+          <test_value name="s0">-</test_value>
+          <!-- user -->
+          <test_value name="s1">-</test_value>
+          <!-- command -->
+          <test_value name="s2">JOIN</test_value>
+          <!-- value -->
+          <test_value name="s3">test</test_value>
+          <!-- dcc_file_name -->
+          <test_value name="s4">-</test_value>
+          <!-- dcc_file_size -->
+          <test_value name="i4">-</test_value>
+          <!-- dcc_mime_type -->
+          <test_value name="s5">-</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>   

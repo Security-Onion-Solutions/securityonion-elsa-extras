@@ -1,0 +1,263 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion57) precise; urgency=low
+ .
+   * parsers for pfsense, sysmon, and windows process auditing
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/contrib/securityonion_parsers_sql.sh
++++ securityonion-elsa-extras-20131117/contrib/securityonion_parsers_sql.sh
+@@ -252,3 +252,14 @@ $MYSQL 'REPLACE INTO fields_classes_map
+ $MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BIND"), (SELECT id FROM fields WHERE field="domain"), 11);'
+ $MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BIND"), (SELECT id FROM fields WHERE field="query_class"), 12);'
+ $MYSQL 'REPLACE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BIND"), (SELECT id FROM fields WHERE field="query_type"), 13);'
++
++# Store all SQL schema updates as files in $SQL_DIR
++SQL_DIR="/opt/elsa/contrib/securityonion/contrib/sql"
++
++# Additions for WINDOWS_PROCESS class & associated fields
++SQL="$SQL_DIR/win_process_tracking.sql"
++mysql -uroot < $SQL || echo "Error importing $SQL."
++
++# Additions for SYSMON_PROCESS and SYSMON_NETWORK parsers
++SQL="$SQL_DIR/sysmon.sql"
++mysql -uroot < $SQL || echo "Error importing $SQL."
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/pfsense
+@@ -0,0 +1,72 @@
++	<ruleset name='filterlog'>
++		<pattern>filterlog</pattern>
++		<rules>
++			<rule provider='ELSA' class='2' id='2'>
++				<patterns>
++					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@block,@ESTRING::,@4,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@ESTRING::,@@IPv4:i1:,@,@IPv4:i3:,@,@NUMBER:i2:,@,@NUMBER:i4:,@</pattern>
++                    <pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@block,@ESTRING::,@@NUMBER::,@,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,igmp,@ESTRING::,@@IPv4:i1,@,@IPv4:i3:,@,@ESTRING::@</pattern>
++					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@block,@ESTRING::,@6,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@IPv6:i1:,@,@IPv6:i3:,@,@NUMBER:i2:,@,@NUMBER:i4:,@</pattern>
++					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@block,@ESTRING::,@6,@ESTRING::,@@ESTRING::,@@ESTRING::,@Options,@NUMBER:i0:,@,@ESTRING::,@@IPv6:i1:,@,@IPv6:i3:,@,@ESTRING::@</pattern>
++					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@block,@ESTRING::,@4,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@ESTRING::,@@IPv4:i1:,@,@IPv4:i3:,@,@ESTRING::@</pattern>
++				</patterns>
++				<examples>
++					<example>
++						<test_message program="filterlog">171,16777216,,1424282996,em1,match,block,in,4,0x0,,1,30898,0,none,17,udp,50,192.168.1.10,224.0.0.252,63227,5355,30</test_message>
++						<test_value name="s1">em1</test_value>
++						<test_value name="i0">17</test_value>
++						<test_value name="i1">192.168.1.10</test_value>
++						<test_value name="i2">63227</test_value>
++						<test_value name="i3">224.0.0.252</test_value>
++						<test_value name="i4">5355</test_value>
++					</example>
++					<example>
++						<test_message program="filterlog">170,16777216,,1424282996,em0,match,block,in,4,0x0,,128,18835,0,DF,6,tcp,48,193.110.44.49,10.15.180.114,55253,25,0,S,2587172434,,8192,,mss;nop;nop;sackOK</test_message>
++						<test_value name="s1">em0</test_value>
++						<test_value name="i0">6</test_value>
++						<test_value name="i1">193.110.44.49</test_value>
++						<test_value name="i2">55253</test_value>
++						<test_value name="i3">10.15.180.114</test_value>
++						<test_value name="i4">25</test_value>
++					</example>
++				</examples>
++			</rule>
++			<rule provider='ELSA' class='3' id='3'>
++				<patterns>
++					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@pass,@ESTRING::,@4,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@ESTRING::,@@IPv4:i1:,@,@IPv4:i3:,@,@NUMBER:i2:,@,@NUMBER:i4:,@</pattern>
++					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@pass,@ESTRING::,@@NUMBER::,@,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,igmp,@ESTRING::,@@IPv4:i1,@,@IPv4:i3:,@,@ESTRING::@</pattern>
++					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@pass,@ESTRING::,@6,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@IPv6:i1:,@,@IPv6:i3:,@,@NUMBER:i2:,@,@NUMBER:i4:,@</pattern>
++					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@pass,@ESTRING::,@6,@ESTRING::,@@ESTRING::,@@ESTRING::,@Options,@NUMBER:i0:,@,@ESTRING::,@@IPv6:i1:,@,@IPv6:i3:,@,@ESTRING::@</pattern>
++					<pattern>@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s1:,@@ESTRING::,@pass,@ESTRING::,@4,@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@NUMBER:i0:,@,@ESTRING::,@@ESTRING::,@@IPv4:i1:,@,@IPv4:i3:,@,@ESTRING::@</pattern>
++				</patterns>
++				<examples>
++					<example>
++						<test_message program="filterlog">140,16777216,,1424282984,em1,match,pass,in,4,0x0,,128,4207,0,DF,6,tcp,52,192.168.0.3,216.58.208.66,65480,80,0,S,452276625,,8192,,mss;nop;wscale;nop;nop;sackOK</test_message>
++						<test_value name="s1">em1</test_value>
++						<test_value name="i0">6</test_value>
++						<test_value name="i1">192.168.0.3</test_value>
++						<test_value name="i2">65480</test_value>
++						<test_value name="i3">216.58.208.66</test_value>
++						<test_value name="i4">80</test_value>
++					</example> 
++					<example>
++						<test_message program="filterlog">5,16777216,,1000000103,em0,match,pass,in,4,0x0,,41,63030,0,none,1,icmp,107,222.233.210.210,109.88.162.79,unreachport,222.233.210.210,UDP,5387</test_message>
++						<test_value name="s1">em0</test_value>
++						<test_value name="i0">1</test_value>
++						<test_value name="i1">222.233.210.210</test_value>
++						<test_value name="i2"></test_value>
++						<test_value name="i3">109.88.162.79</test_value>
++						<test_value name="i4"></test_value>
++					</example> 
++					<example>
++						<test_message program="filterlog">141,16777216,,1424282984,em1,match,pass,in,4,0x0,,128,26522,0,DF,6,tcp,52,192.168.1.13,74.125.136.159,63408,443,0,S,942122724,,8192,,mss;nop;wscale;nop;nop;sackOK</test_message>		
++						<test_value name="s1">em1</test_value>
++						<test_value name="i0">6</test_value>
++						<test_value name="i1">192.168.1.13</test_value>
++						<test_value name="i2">63408</test_value>
++						<test_value name="i3">74.125.136.159</test_value>
++						<test_value name="i4">443</test_value>
++					</example>
++				</examples>
++			</rule>
++		</rules>
++	</ruleset>
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/win_process_tracking
+@@ -0,0 +1,25 @@
++<!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com -->
++
++<ruleset name="WIN-PROCESS-TRACKING" id='780'>
++   <pattern>ossec_archive</pattern>
++	<rules>
++		<rule provider="DefensiveDepth" class='10780' id='10780'>
++                <patterns>
++                    <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Name: @@ESTRING:s2: Token Elevation Type: @@ESTRING:s3: Creator@</pattern>
++                </patterns>
++                <examples>
++			<example>
++                        <test_message program="ossec_archive">2015 Feb 04 22:05:18 (COLLECT02) 192.168.160.18->WinEvtLog 2015 Feb 04 17:05:14 WinEvtLog: Security: AUDIT_SUCCESS(4688): Microsoft-Windows-Security-Auditing: (no user): no domain: DD-COLLECT-01.DD.US: A new process has been created. Subject: Security ID: S-1-5-18 Account Name: DD-COLLECT-01$ Account Domain: DD.US Logon ID: 0x3e7 Process Information: New Process ID: 0x68c New Process Name: C:\Windows\System32\taskhost.exe Token Elevation Type: %%1936 Creator Process ID: 0x2d0</test_message>
++                        <!-- hostname-->
++                        <test_value name="s0">DD-COLLECT-01.DD.US</test_value>
++                        <!-- user-->
++                        <test_value name="s1">DD-COLLECT-01$</test_value>
++                        <!-- image-->
++                        <test_value name="s2">C:\Windows\System32\taskhost.exe</test_value>
++                        <!-- token_elevation-->
++                        <test_value name="s3">%%1936</test_value>
++			</example>
++		</examples>
++		</rule>
++	</rules>
++</ruleset>
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/sysmon
+@@ -0,0 +1,57 @@
++<!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com-->
++
++<ruleset name="SYSMON" id='777'>
++   <pattern>ossec_archive</pattern>
++	<rules>
++		<rule provider="DefensiveDepth" class='10778' id='10778'>
++			<patterns>
++				<pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2: CommandLine: @@ESTRING::User: @@ESTRING:s3: LogonGuid:@@ESTRING::Hash: @@ESTRING:s4: @@ESTRING::ParentImage: @@ESTRING:s5: ParentCommandLine:@</pattern>
++	                </patterns>
++
++			<examples>
++				<example>
++					<test_message program="ossec_archive">2014 Dec 02 20:28:29 (10.0.15.14) 10.0.15.14->WinEvtLog 2014 Dec 02 15:26:07 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(1): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-U93G48C7BOP: Process Create: UtcTime: 12/2/2014 8:26 PM ProcessGuid: {00000000-205F-547E-0000-00100D090800} ProcessId: 1412 Image: C:\Windows\system32\taskhost.exe CommandLine: taskhost.exe U User: WIN-U93G48C7BOP\Administrator LogonGuid: {00000000-D448-547C-0000-0020C5460200} LogonId: 0x246C5 TerminalSessionId: 2 IntegrityLevel: High HashType: SHA1 Hash: 8570E08F5103FD0F496B1DE9ADEF6E49E237433F ParentProcessGuid: {00000000-D425-547C-0000-0010A1A40000} ParentProcessId: 736 ParentImage: C:\Windows\system32\svchost.exe ParentCommandLine: C:\Windows\system32\svchost.exe -k netsvcs</test_message>
++						<!-- host-->
++						<test_value name="s0">WIN-U93G48C7BOP</test_value>
++						<!-- processguid-->
++						<test_value name="s1">00000000-205F-547E-0000-00100D090800</test_value>
++						<!-- image-->
++						<test_value name="s2">C:\Windows\system32\taskhost.exe</test_value>
++						<!-- user-->
++						<test_value name="s3">WIN-U93G48C7BOP\Administrator</test_value>
++						<!-- hash-->
++						<test_value name="s4">8570E08F5103FD0F496B1DE9ADEF6E49E237433F</test_value>
++						<!-- parentimage-->
++						<test_value name="s5">C:\Windows\system32\svchost.exe</test_value>
++				</example>
++			</examples>
++		</rule>
++
++		<rule provider="DefensiveDepth" class='10779' id='10779'>
++			<patterns>
++				<pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2: User: @@ESTRING:s3: Protocol: @@ESTRING::: @@ESTRING:s4: @@ESTRING::SourceIp: @@ESTRING:: @@ESTRING::SourcePort: @@ESTRING:i0: @@ESTRING::DestinationIp: @@ESTRING:s5: @@ESTRING::DestinationPort: @@ESTRING:i1: @</pattern>
++			</patterns>
++			<examples>
++				<example>
++				<test_message program="ossec_archive">2014 Dec 02 20:28:31 (10.0.15.14) 10.0.15.14->WinEvtLog 2014 Dec 02 15:26:08 WinEvtLog: Microsoft-Windows-Sysmon/Operational:INFORMATION(3): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-U93G48C7BOP: Network connection detected: UtcTime: 12/1/2014 9:03 PM ProcessGuid: {00000000-D426-547C-0000-00103DB40000} ProcessId: 868 Image: C:\Windows\system32\svchost.exe User: NT AUTHORITY\NETWORK SERVICE Protocol: udp Initiated: true SourceIsIpv6: true SourceIp: a00:f0e:0:0:1822:ad8d:1e0:ffff SourceHostname: SourcePort: 60352 SourcePortName: DestinationIsIpv6: true DestinationIp: a00:f01:7200:6500:6100:2000:4300:6f00 DestinationHostname: DestinationPort: 53 DestinationPortName: domain</test_message>
++				<!-- hostname-->
++				<test_value name="s0">WIN-U93G48C7BOP</test_value>
++				<!-- processguid-->
++				<test_value name="s1">00000000-D426-547C-0000-00103DB40000</test_value>
++				<!-- image-->
++				<test_value name="s2">C:\Windows\system32\svchost.exe</test_value>
++				<!-- user-->
++				<test_value name="s3">NT AUTHORITY\NETWORK SERVICE</test_value>
++				<!-- initiated-->
++				<test_value name="s4">true</test_value>
++				<!-- sourceport-->
++				<test_value name="i0">60352</test_value>
++				<!-- destip-->
++				<test_value name="s5">a00:f01:7200:6500:6100:2000:4300:6f00</test_value>
++				<!-- destport-->
++				<test_value name="i1">53</test_value>
++				</example>
++			</examples>
++		</rule>
++	</rules>
++</ruleset>
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/sql/sysmon.sql
+@@ -0,0 +1,37 @@
++/*  v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com */
++
++use syslog;
++
++/*  Creates SYSMON_PROCESS Class & associated fields */
++INSERT IGNORE INTO classes (id, class) VALUES (10778, "SYSMON_PROCESS");
++
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("hostname","string", "QSTRING");  
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("processguid","string", "QSTRING");
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("image","string", "QSTRING");
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("hash","string", "QSTRING");
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("parentimage","string", "QSTRING");
++
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_PROCESS"), (SELECT id FROM fields WHERE field="hostname"), 11);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_PROCESS"), (SELECT id FROM fields WHERE field="processguid"), 12);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_PROCESS"), (SELECT id FROM fields WHERE field="image"), 13);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_PROCESS"), (SELECT id FROM fields WHERE field="user"), 14);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_PROCESS"), (SELECT id FROM fields WHERE field="hash"), 15);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_PROCESS"), (SELECT id FROM fields WHERE field="parentimage"), 16);
++
++
++/*  Creates SYSMON_NETWORK Class & associated fields */
++INSERT IGNORE INTO classes (id, class) VALUES (10779, "SYSMON_NETWORK");
++
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("initiated","string", "QSTRING");
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("destip","string", "QSTRING");
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("sourceport","string", "QSTRING");
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("destport","string", "QSTRING");
++	
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="hostname"), 11);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="processguid"), 12);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="image"), 13);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="user"), 14);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="initiated"), 15);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="destip"), 16);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="sourceport"), 5);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="destport"), 6);
+\ No newline at end of file
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/sql/win_process_tracking.sql
+@@ -0,0 +1,13 @@
++/*  v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com */
++
++use syslog;
++
++/*  Creates WINDOWS_PROCESS Class & associated fields */
++INSERT IGNORE INTO classes (id, class) VALUES (10780, "WINDOWS_PROCESS");
++
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("token-elevation","string", "QSTRING");
++
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="WINDOWS_PROCESS"), (SELECT id FROM fields WHERE field="hostname"), 11);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="WINDOWS_PROCESS"), (SELECT id FROM fields WHERE field="user"), 12);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="WINDOWS_PROCESS"), (SELECT id FROM fields WHERE field="image"), 13);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="WINDOWS_PROCESS"), (SELECT id FROM fields WHERE field="token-elevation"), 14);
+\ No newline at end of file

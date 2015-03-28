@@ -1,0 +1,32 @@
+Description: Randomize the API key for master nodes in setup
+
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion33) precise; urgency=low
+ .
+   * Add support for updating elsa_web.conf with a random API key.
+Author: Scott Allen Runnels <srunnels@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/bin/securityonion-elsa-config.sh
++++ securityonion-elsa-extras-20131117/bin/securityonion-elsa-config.sh
+@@ -370,6 +370,8 @@ elif [ "$NODE_TYPE" = "WEB" ]; then
+ 	config_lognode
+ 	config_webnode
+     check_config_perms
++    # Randomize the API key for master nodes.
++    /usr/bin/securityonion_elsa_register.rb --random-apikey
+ elif [ "$NODE_TYPE" = "API" ]; then
+     MYSQL_PORT="-P50000"
+     config_lognode_webapi

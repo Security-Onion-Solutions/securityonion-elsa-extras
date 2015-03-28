@@ -1,0 +1,65 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion55) precise; urgency=low
+ .
+   * fix bro_dns parser
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/contrib/parsers/bro_dns
++++ securityonion-elsa-extras-20131117/contrib/parsers/bro_dns
+@@ -1,28 +1,29 @@
+-<!-- PLEASE NOTE: REPLACE EXISTING bro_dns WITH THIS ONE!!! -->
+ 	<ruleset>
+ 		<pattern>bro_dns</pattern>
+ 		<rules>
+ 			<rule class="14" id="14">
+ 				<patterns>
+-					<pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ANYSTRING:s1@</pattern>
++					<pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s1:|@@ANYSTRING::@</pattern>
++                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ANYSTRING:s1@</pattern>
++                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING:s0:|@</pattern>
+ 				</patterns>
+ 				<examples>
+ 					<example>
+-						<test_message program="bro_dns">1318443095.831281|0L5Ro2iPit1|10.0.0.0|23657|69.22.154.225|53|udp|31608|e2932.c.akamaiedge.net|1|C_INTERNET|1|A|0|NOERROR|F|T|F|F|F|1|20.000000|23.0.124.9</test_message>
++						<test_message program="bro_dns">1420831379.950431|CsQlNY1bfzq9sW2tsc|192.168.10.101|1036|193.108.91.137|53|udp|3753|www.ask.com.edgesuite.net|1|C_INTERNET|1|A|0|NOERROR|T|F|F|F|0|a1230.b.akamai.net|21600.000000|F</test_message>
+ 						<!-- srcip -->
+-						<test_value name="i0">10.0.0.0</test_value>
++						<test_value name="i0">192.168.10.101</test_value>
+ 						<!-- srcport -->
+-						<test_value name="i1">23657</test_value>
++						<test_value name="i1">1036</test_value>
+ 						<!-- dstip -->
+-						<test_value name="i2">69.22.154.225</test_value>
++						<test_value name="i2">193.108.91.137</test_value>
+ 						<!-- dstport -->
+ 						<test_value name="i3">53</test_value>
+ 						<!-- proto -->
+ 						<test_value name="i4">udp</test_value>
+ 						<!-- hostname -->
+-						<test_value name="s0">e2932.c.akamaiedge.net</test_value>
++						<test_value name="s0">www.ask.com.edgesuite.net</test_value>
+ 						<!-- answer -->
+-						<test_value name="s1">23.0.124.9</test_value>
++						<test_value name="s1">a1230.b.akamai.net</test_value>
+ 						<!-- query_class -->
+ 						<test_value name="s2">C_INTERNET</test_value>
+ 						<!-- query_type -->

@@ -1,0 +1,32 @@
+	<ruleset>
+                <pattern>bro_x509</pattern>
+                <rules>
+                        <rule class="26010" id="26010">
+                                <patterns>
+                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING::|@@ESTRING::|@@ESTRING:s3:|@@ESTRING:s4:|@@ESTRING:s5:|@@ESTRING:i1:|@@ESTRING::|@@ESTRING::|@@ANYSTRING::@</pattern>
+                                </patterns>
+                                <examples>
+                                        <example>
+						<test_message program='bro_x509'>MESSAGE=1415311199.833031|F3VSq0483VV4thwTR7|3|1D8583A4A355533105C783EAF328F16D|CN=www.amazon.com,O=Amazon.com Inc.,L=Seattle,ST=Washington,C=US|CN=VeriSign Class 3 Secure Server CA - G3,OU=Terms of use at https://www.verisign.com/rpa (c)10,OU=VeriSign Trust Network,O=VeriSign, Inc.,C=US|1393459200.000000|1425167999.000000|rsaEncryption|sha1WithRSAEncryption|rs|2048|65537|-|uedata.amazon.com,amazon.com,amzn.com,www.amzn.com,www.amazon.com|-|-|-|F|-</test_message>
+
+                                                <!-- certificate.version -->
+                                                <test_value name='i0'>3</test_value>
+                                                <!-- certificate.serial -->
+                                                <test_value name='s0'>1D8583A4A355533105C783EAF328F16D</test_value>
+                                                <!-- certificate.subject -->
+                                                <test_value name='s1'>CN=www.amazon.com,O=Amazon.com Inc.,L=Seattle,ST=Washington,C=US</test_value>
+                                                <!-- certificate.issuer -->
+                                                <test_value name='s2'>CN=VeriSign Class 3 Secure Server CA - G3,OU=Terms of use at https://www.verisign.com/rpa (c)10,OU=VeriSign Trust Network,O=VeriSign, Inc.,C=US</test_value>
+                                                <!-- certificate.key_alg -->
+                                                <test_value name='s3'>rsaEncryption</test_value>
+                                                <!-- certificate.sig_alg -->
+                                                <test_value name='s4'>sha1WithRSAEncryption</test_value>
+                                                <!-- certificate.key_type -->
+                                                <test_value name='s5'>rs</test_value>
+                                                <!-- certificate.key_length -->
+                                                <test_value name='i1'>2048</test_value>
+                                        </example>
+                                </examples>
+                        </rule>
+                </rules>
+        </ruleset>

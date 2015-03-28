@@ -1,0 +1,47 @@
+Description: Update the localhost peer when randomizing the API key
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion34) precise; urgency=low
+ .
+   * Randomize the API key for web nodes during config
+Author: Scott Allen Runnels <srunnels@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/bin/securityonion_elsa_register.rb
++++ securityonion-elsa-extras-20131117/bin/securityonion_elsa_register.rb
+@@ -8,7 +8,12 @@ require 'optparse'
+ 
+ 
+ module Logging
+-  LOG_FILE = "/var/log/nsm/so-elsa/elsa_registration_logfile-#{Time.now.to_i}.log"
++  LOG_DIR = "/var/log/nsm/so-elsa"
++  LOG_FILE = "/elsa_registration_logfile-#{Time.now.to_i}.log"
++  unless File.directory? LOG_DIR
++    Dir::mkdir LOG_DIR
++  end
++  
+   def logger
+     @logger ||= Logger.new(LOG_FILE)
+   end
+@@ -88,7 +93,9 @@ class ELSAConfig
+ 
+   def randomize_apikey!
+     logger.debug "Randomizing API key."
+-    self.config['apikeys'] = {"elsa" => "#{SecureRandom.hex}"}
++    new_api_key = SecureRandom.hex
++    self.config['apikeys'] = {"elsa" => "#{new_api_key}"}
++    self.config['peers']['127.0.0.1']['apikey'] = new_api_key
+   end
+   
+   def parse_conf

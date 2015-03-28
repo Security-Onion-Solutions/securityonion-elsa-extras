@@ -1,0 +1,31 @@
+<ruleset name="bro_weird" id='26000'>
+  <pattern>bro_weird</pattern>
+  <rules>
+    <rule provider="Security_Onion" class='26000' id=''>
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program="bro_weird">1375126169.694954|9rhrNop4vR3|172.16.1.9|55534|192.168.9.4|80|above_hole_data_without_any_acks|-|F|so-hq-2-eth2</test_message>
+          <!-- srcip -->
+          <test_value name="i0">172.16.1.9</test_value>
+          <!-- srcport -->
+          <test_value name="i1">55534</test_value>
+          <!-- dstip -->
+          <test_value name="i2">192.168.9.4</test_value>
+          <!-- dstport -->
+          <test_value name="i3">80</test_value>
+          <!-- name -->
+          <test_value name="s0">above_hole_data_without_any_acks</test_value>
+          <!-- addl -->
+          <test_value name="s1">-</test_value>
+          <!-- notice -->
+          <test_value name="s2">F</test_value>
+          <!-- peer -->
+          <test_value name="s3">so-hq-2-eth2</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>   

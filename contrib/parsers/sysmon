@@ -1,0 +1,57 @@
+<!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com-->
+
+<ruleset name="SYSMON" id='777'>
+   <pattern>ossec_archive</pattern>
+	<rules>
+		<rule provider="DefensiveDepth" class='10778' id='10778'>
+			<patterns>
+				<pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2: CommandLine: @@ESTRING::User: @@ESTRING:s3: LogonGuid:@@ESTRING::Hash: @@ESTRING:s4: @@ESTRING::ParentImage: @@ESTRING:s5: ParentCommandLine:@</pattern>
+	                </patterns>
+
+			<examples>
+				<example>
+					<test_message program="ossec_archive">2014 Dec 02 20:28:29 (10.0.15.14) 10.0.15.14->WinEvtLog 2014 Dec 02 15:26:07 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(1): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-U93G48C7BOP: Process Create: UtcTime: 12/2/2014 8:26 PM ProcessGuid: {00000000-205F-547E-0000-00100D090800} ProcessId: 1412 Image: C:\Windows\system32\taskhost.exe CommandLine: taskhost.exe U User: WIN-U93G48C7BOP\Administrator LogonGuid: {00000000-D448-547C-0000-0020C5460200} LogonId: 0x246C5 TerminalSessionId: 2 IntegrityLevel: High HashType: SHA1 Hash: 8570E08F5103FD0F496B1DE9ADEF6E49E237433F ParentProcessGuid: {00000000-D425-547C-0000-0010A1A40000} ParentProcessId: 736 ParentImage: C:\Windows\system32\svchost.exe ParentCommandLine: C:\Windows\system32\svchost.exe -k netsvcs</test_message>
+						<!-- host-->
+						<test_value name="s0">WIN-U93G48C7BOP</test_value>
+						<!-- processguid-->
+						<test_value name="s1">00000000-205F-547E-0000-00100D090800</test_value>
+						<!-- image-->
+						<test_value name="s2">C:\Windows\system32\taskhost.exe</test_value>
+						<!-- user-->
+						<test_value name="s3">WIN-U93G48C7BOP\Administrator</test_value>
+						<!-- hash-->
+						<test_value name="s4">8570E08F5103FD0F496B1DE9ADEF6E49E237433F</test_value>
+						<!-- parentimage-->
+						<test_value name="s5">C:\Windows\system32\svchost.exe</test_value>
+				</example>
+			</examples>
+		</rule>
+
+		<rule provider="DefensiveDepth" class='10779' id='10779'>
+			<patterns>
+				<pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2: User: @@ESTRING:s3: Protocol: @@ESTRING::: @@ESTRING:s4: @@ESTRING::SourceIp: @@ESTRING:: @@ESTRING::SourcePort: @@ESTRING:i0: @@ESTRING::DestinationIp: @@ESTRING:s5: @@ESTRING::DestinationPort: @@ESTRING:i1: @</pattern>
+			</patterns>
+			<examples>
+				<example>
+				<test_message program="ossec_archive">2014 Dec 02 20:28:31 (10.0.15.14) 10.0.15.14->WinEvtLog 2014 Dec 02 15:26:08 WinEvtLog: Microsoft-Windows-Sysmon/Operational:INFORMATION(3): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-U93G48C7BOP: Network connection detected: UtcTime: 12/1/2014 9:03 PM ProcessGuid: {00000000-D426-547C-0000-00103DB40000} ProcessId: 868 Image: C:\Windows\system32\svchost.exe User: NT AUTHORITY\NETWORK SERVICE Protocol: udp Initiated: true SourceIsIpv6: true SourceIp: a00:f0e:0:0:1822:ad8d:1e0:ffff SourceHostname: SourcePort: 60352 SourcePortName: DestinationIsIpv6: true DestinationIp: a00:f01:7200:6500:6100:2000:4300:6f00 DestinationHostname: DestinationPort: 53 DestinationPortName: domain</test_message>
+				<!-- hostname-->
+				<test_value name="s0">WIN-U93G48C7BOP</test_value>
+				<!-- processguid-->
+				<test_value name="s1">00000000-D426-547C-0000-00103DB40000</test_value>
+				<!-- image-->
+				<test_value name="s2">C:\Windows\system32\svchost.exe</test_value>
+				<!-- user-->
+				<test_value name="s3">NT AUTHORITY\NETWORK SERVICE</test_value>
+				<!-- initiated-->
+				<test_value name="s4">true</test_value>
+				<!-- sourceport-->
+				<test_value name="i0">60352</test_value>
+				<!-- destip-->
+				<test_value name="s5">a00:f01:7200:6500:6100:2000:4300:6f00</test_value>
+				<!-- destport-->
+				<test_value name="i1">53</test_value>
+				</example>
+			</examples>
+		</rule>
+	</rules>
+</ruleset>

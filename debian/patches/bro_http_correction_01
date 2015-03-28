@@ -1,0 +1,49 @@
+Description: Correct BRO_HTTP parser
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion5) precise; urgency=low
+ .
+   * Update BRO_HTTP parser to support Bro v2.2
+Author: Scott Allen Runnels <srunnels@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/contrib/parsers/bro_http
++++ securityonion-elsa-extras-20131117/contrib/parsers/bro_http
+@@ -3,7 +3,7 @@
+   <rules>
+     <rule provider="Security_Onion" class="19" id="19">
+       <patterns>
+-        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING:s4:|@@ESTRING::|@@ESTRING:i4:|@@ESTRING:i5:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s5:|@</pattern>
++        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING:s4:|@@ESTRING::|@@ESTRING:i4:|@@ESTRING:i5:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s5:@</pattern>
+       </patterns>
+       <examples>
+         <example>
+@@ -21,7 +21,7 @@
+           <!-- host -->
+           <test_value name="s1">clients2.google.com</test_value>
+           <!-- uri -->
+-          <test_value name="s2">/service/update2/crx?os=linux&arch=x64&nacl_arch=x86-64&prod=chrome&prodchannel=unknown&prodversion=28.0.1500.71&x=id=npdjjkjlcidkjlamlmmdelcjbcpdjocm&v=0.0.0.0&uc&x=id=hfnkpimlhhgieaddgfemjhofmfblmnib&v=1301&uc|-|Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/28.0.1500.71 Chrome/28.0.1500.71 Safari/537.36|0|380|200|OK|-|-|-|(empty)|-|-|-|-|-|F6XqFl1L5YkUsflHK8|application/xml</test_message></test_value>
++          <test_value name="s2">-</test_value>
+           <!-- referer -->
+           <test_value name="s3">-</test_value>
+           <!-- user_agent -->
+@@ -31,7 +31,7 @@
+           <!-- status_code -->
+           <test_value name="i5">200</test_value>
+           <!-- mime_type -->
+-          <test_value name="s5">-</test_value>
++          <test_value name="s5">application/xml</test_value>
+         </example>
+       </examples>
+     </rule>
