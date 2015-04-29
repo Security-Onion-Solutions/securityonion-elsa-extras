@@ -1,0 +1,90 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion59) precise; urgency=low
+ .
+   * migrate elsa_web.conf for ELSA 1205
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- /dev/null
++++ securityonion-elsa-extras-20131117/README.md
+@@ -0,0 +1 @@
++# securityonion-elsa-extras
+--- securityonion-elsa-extras-20131117.orig/bin/securityonion_elsa_register.rb
++++ securityonion-elsa-extras-20131117/bin/securityonion_elsa_register.rb
+@@ -77,7 +77,22 @@ class ELSAConfig
+             },
+             "min_expected_hosts" => "2"
+           }
+-        }
++        },
++	"1205" => {
++	  "web" => {
++            "data_db" =>  {
++            "db" => "syslog",
++            "username" => "elsa",
++            "password" => "biglog",
++            },
++            "version" =>  {
++              "Author" => "mcholste",
++              "Date" => "2014-07-17 15:12:58 -0700 (Thu, 17 Jul 2014)",
++              "Rev" => "1205",
++              "Sphinx" => "Sphinx 2.1.9"
++            }
++	  }
++	}
+       }
+     }
+ 
+@@ -91,6 +106,11 @@ class ELSAConfig
+     self.config['peers']['127.0.0.1']['apikey'] = apikey
+   end
+ 
++  def delete_node! node
++    logger.debug "Deleting node."
++    self.config.delete(node)
++  end
++    
+   def randomize_apikey!
+     logger.debug "Randomizing API key."
+     new_api_key = SecureRandom.hex
+@@ -187,10 +207,22 @@ option_parser = OptionParser.new do |opt
+   opts.on("--trim-nodes") do
+     options[:trim_nodes] = true
+   end
++  opts.on("--migrate-web-1205") do
++    options[:migrate_web_1205] = true
++  end
+ 
+ end
+ option_parser.parse!
+ 
++if options[:migrate_web_1205]
++  current_conf = ELSAConfig.new(:file => WEB_CONF_FILE)
++  current_conf.parse_conf
++  current_conf.delete_node! "nodes"
++  current_conf.delete_node! "version"
++  current_conf.migrate_conf 1205, "web"
++  current_conf.write_conf(:force => true)
++end
++
+ if options[:randomapikey]
+   current_conf = ELSAConfig.new(:file => WEB_CONF_FILE)
+   current_conf.parse_conf

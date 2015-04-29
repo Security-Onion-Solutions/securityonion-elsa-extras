@@ -77,7 +77,22 @@ class ELSAConfig
             },
             "min_expected_hosts" => "2"
           }
-        }
+        },
+	"1205" => {
+	  "web" => {
+            "data_db" =>  {
+            "db" => "syslog",
+            "username" => "elsa",
+            "password" => "biglog",
+            },
+            "version" =>  {
+              "Author" => "mcholste",
+              "Date" => "2014-07-17 15:12:58 -0700 (Thu, 17 Jul 2014)",
+              "Rev" => "1205",
+              "Sphinx" => "Sphinx 2.1.9"
+            }
+	  }
+	}
       }
     }
 
@@ -91,6 +106,11 @@ class ELSAConfig
     self.config['peers']['127.0.0.1']['apikey'] = apikey
   end
 
+  def delete_node! node
+    logger.debug "Deleting node."
+    self.config.delete(node)
+  end
+    
   def randomize_apikey!
     logger.debug "Randomizing API key."
     new_api_key = SecureRandom.hex
@@ -187,9 +207,21 @@ option_parser = OptionParser.new do |opts|
   opts.on("--trim-nodes") do
     options[:trim_nodes] = true
   end
+  opts.on("--migrate-web-1205") do
+    options[:migrate_web_1205] = true
+  end
 
 end
 option_parser.parse!
+
+if options[:migrate_web_1205]
+  current_conf = ELSAConfig.new(:file => WEB_CONF_FILE)
+  current_conf.parse_conf
+  current_conf.delete_node! "nodes"
+  current_conf.delete_node! "version"
+  current_conf.migrate_conf 1205, "web"
+  current_conf.write_conf(:force => true)
+end
 
 if options[:randomapikey]
   current_conf = ELSAConfig.new(:file => WEB_CONF_FILE)

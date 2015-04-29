@@ -556,6 +556,38 @@ case "$1" in
 		fi
 	fi
 
+	# Update /etc/elsa_web.conf for ELSA 1205
+	if [ "$2" = "20131117-1ubuntu0securityonion58" ] || [ "$2" = "20131117-1ubuntu0securityonion56" ] || [ "$2" = "20131117-1ubuntu0securityonion53" ] || [ "$2" = "20131117-1ubuntu0securityonion50" ] || [ "$2" = "20131117-1ubuntu0securityonion45" ] || [ "$2" = "20131117-1ubuntu0securityonion43" ] || [ "$2" = "20131117-1ubuntu0securityonion41" ] || [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+
+		# All boxes with ELSA enabled (masters and sensors) need /etc/elsa_web.conf migrated to 1205 format
+		CONF="/etc/elsa_web.conf"
+		# Only update /etc/elsa_web.conf if Setup has already been run
+		if [ -f /var/log/nsm/sosetup.log ] && [ -f $CONF ]; then
+
+			check_config_perms
+			
+			DATE=`date '+%Y%m%d'`
+			CONFBAK="$CONF.$DATE"
+			echo "Backing up $CONF to $CONFBAK."
+			cp $CONF $CONFBAK || echo "Error backing up $CONF to $CONFBAK."
+			/usr/bin/securityonion_elsa_register.rb --migrate-web-1205 || echo "Error updating $CONF for ELSA 1205."
+
+			echo "* Restarting ELSA web server."
+			# Is this a master server or a sensor-only box?
+			if [ -d /var/lib/mysql/securityonion_db ]; then
+				# This is a master server, so restart Apache
+				apache2ctl restart || echo "Error restarting Apache."
+			else
+				if [ -f /etc/init.d/starman ]; then
+				# This is a sensor-only box, so restart starman
+				/etc/init.d/starman stop || echo "Error stopping starman."
+				/etc/init.d/starman start || echo "Error starting starman."
+				fi
+			fi
+
+		fi
+	fi
+
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;

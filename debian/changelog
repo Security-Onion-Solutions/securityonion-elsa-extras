@@ -1,3 +1,33 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion63) precise; urgency=low
+
+  * restart web server after updating /etc/elsa_web.conf 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 29 Apr 2015 15:07:26 -0400
+
+securityonion-elsa-extras (20131117-1ubuntu0securityonion62) precise; urgency=low
+
+  * masters and sensors need to migrate /etc/elsa_web.conf to 1205 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sat, 25 Apr 2015 19:34:43 -0400
+
+securityonion-elsa-extras (20131117-1ubuntu0securityonion61) precise; urgency=low
+
+  * backup /etc/elsa_web.conf before modifying 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 24 Apr 2015 16:48:19 -0400
+
+securityonion-elsa-extras (20131117-1ubuntu0securityonion60) precise; urgency=low
+
+  * fix postinst 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 24 Apr 2015 16:39:47 -0400
+
+securityonion-elsa-extras (20131117-1ubuntu0securityonion59) precise; urgency=low
+
+  * migrate elsa_web.conf for ELSA 1205 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 24 Apr 2015 16:20:05 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion58) precise; urgency=low
 
   * fix order of sql statements 
