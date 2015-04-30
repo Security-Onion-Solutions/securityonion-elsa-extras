@@ -35,3 +35,4 @@ parsers-for-pfsense,-sysmon,-and-windows-process-auditing
 fix-order-of-sql-statements
 migrate-elsa_web.conf-for-ELSA-1205
 ELSA-syslog-ng.conf-rewrite-r_pipes-#447
+only-replace-pipes-for-Bro-logs
