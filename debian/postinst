@@ -565,7 +565,7 @@ case "$1" in
 			# Going to backup files with today's date as file extension
 			DATE=`date '+%Y%m%d'`
 
-			# Issue 447: rewrite pipes in Bro logs
+			# Bro logs: rewrite pipes and filter out headers
 			CONF="/etc/syslog-ng/syslog-ng.conf"
 			if [ -f $CONF ]; then
 			
@@ -579,6 +579,12 @@ case "$1" in
                 	                sed -i "/^rewrite r_snare/a rewrite r_from_pipes { subst('\\\|', \"%7C\", value(\"MESSAGE\") flags(global) condition(program(\"bro_*\" type(glob)))); };" $CONF || echo "Error adding rewrite r_from_pipes to $CONF."
                         	        sed -i '/rewrite(r_snare);/a \\trewrite(r_from_pipes);' $CONF || echo "Error adding r_from_pipes to $CONF."
 	                        fi
+
+	                        if ! grep "^filter f_bro_headers" $CONF >> /dev/null; then
+					sed -i "/^filter f_rewrite_cisco_program_3/a filter f_bro_headers { message(\"^#\") };" $CONF || echo "Error adding filter f_bro_headers to $CONF."
+					sed -i '/rewrite(r_extracted_host);/a \\tlog { filter(f_bro_headers); flags(final); };' $CONF || echo "Error adding f_bro_headers to $CONF."
+					sed -i 's|destination(d_elsa);|log { destination(d_elsa); };|' $CONF || echo "Error adding f_bro_headers to $CONF."
+				fi
 
                         	echo "* Updating syslog-ng patterns."
 	                        PATTERNS_DIR=/etc/elsa/patterns.d/
