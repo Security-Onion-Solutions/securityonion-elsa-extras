@@ -571,7 +571,7 @@ case "$1" in
 			
 				# Backup syslog-ng.conf
 				CONFBAK="$CONF.$DATE"
-				echo "Backing up $CONF to $CONFBAK."
+				echo "* Backing up $CONF to $CONFBAK."
 				cp $CONF $CONFBAK || echo "Error backing up $CONF to $CONFBAK."
 
 	                        if ! grep "^rewrite r_from_pipes" $CONF >> /dev/null; then
@@ -579,6 +579,12 @@ case "$1" in
                 	                sed -i "/^rewrite r_snare/a rewrite r_from_pipes { subst('\\\|', \"%7C\", value(\"MESSAGE\") flags(global)); };" $CONF || echo "Error adding rewrite r_from_pipes to $CONF."
                         	        sed -i '/rewrite(r_snare);/a \\trewrite(r_from_pipes);' $CONF || echo "Error adding r_from_pipes to $CONF."
 	                        fi
+
+                        	echo "* Updating syslog-ng patterns."
+	                        PATTERNS_DIR=/etc/elsa/patterns.d/
+        	                DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+                	        cp $DEST_PATTERN $DEST_PATTERN.bak || echo "Error backing up $DEST_PATTERN."
+                        	pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR || echo "Error running pdbtool to merge patterns."
 
 				echo "* Restarting syslog-ng."
 				service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
@@ -591,7 +597,7 @@ case "$1" in
 				check_config_perms
 				
 				CONFBAK="$CONF.$DATE"
-				echo "Backing up $CONF to $CONFBAK."
+				echo "* Backing up $CONF to $CONFBAK."
 				cp $CONF $CONFBAK || echo "Error backing up $CONF to $CONFBAK."
 				/usr/bin/securityonion_elsa_register.rb --migrate-web-1205 || echo "Error updating $CONF for ELSA 1205."
 
