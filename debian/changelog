@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion66) precise; urgency=low
+
+  * backup syslog-ng.conf before making changes 
+
+ -- Doug Burks <doug.burks@gmail.com>  Thu, 30 Apr 2015 11:00:57 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion65) precise; urgency=low
 
   * fix SYSLOG_CONF in postinst 

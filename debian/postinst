@@ -562,13 +562,22 @@ case "$1" in
 		# Only update if Setup has already been run
 		if [ -f /var/log/nsm/sosetup.log ] ; then
 
+			# Going to backup files with today's date as file extension
+			DATE=`date '+%Y%m%d'`
+
 			# Issue 447: rewrite pipes in Bro logs
-			SYSLOG_CONF="/etc/syslog-ng/syslog-ng.conf"
-			if [ -f $SYSLOG_CONF ]; then
-	                        if ! grep "^rewrite r_from_pipes" $SYSLOG_CONF >> /dev/null; then
-        	                        echo "* Updating $SYSLOG_CONF with rewrite r_from_pipes."
-                	                sed -i "/^rewrite r_snare/a rewrite r_from_pipes { subst('\\\|', \"%7C\", value(\"MESSAGE\") flags(global)); };" $SYSLOG_CONF || echo "Error adding rewrite r_from_pipes to $SYSLOG_CONF."
-                        	        sed -i '/rewrite(r_snare);/a \\trewrite(r_from_pipes);' $SYSLOG_CONF || echo "Error adding r_from_pipes to $SYSLOG_CONF."
+			CONF="/etc/syslog-ng/syslog-ng.conf"
+			if [ -f $CONF ]; then
+			
+				# Backup syslog-ng.conf
+				CONFBAK="$CONF.$DATE"
+				echo "Backing up $CONF to $CONFBAK."
+				cp $CONF $CONFBAK || echo "Error backing up $CONF to $CONFBAK."
+
+	                        if ! grep "^rewrite r_from_pipes" $CONF >> /dev/null; then
+        	                        echo "* Updating $CONF with rewrite r_from_pipes."
+                	                sed -i "/^rewrite r_snare/a rewrite r_from_pipes { subst('\\\|', \"%7C\", value(\"MESSAGE\") flags(global)); };" $CONF || echo "Error adding rewrite r_from_pipes to $CONF."
+                        	        sed -i '/rewrite(r_snare);/a \\trewrite(r_from_pipes);' $CONF || echo "Error adding r_from_pipes to $CONF."
 	                        fi
 
 				echo "* Restarting syslog-ng."
@@ -581,7 +590,6 @@ case "$1" in
 
 				check_config_perms
 				
-				DATE=`date '+%Y%m%d'`
 				CONFBAK="$CONF.$DATE"
 				echo "Backing up $CONF to $CONFBAK."
 				cp $CONF $CONFBAK || echo "Error backing up $CONF to $CONFBAK."
