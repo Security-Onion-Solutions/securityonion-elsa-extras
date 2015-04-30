@@ -564,7 +564,7 @@ case "$1" in
 
 			# Issue 447: rewrite pipes in Bro logs
 			SYSLOG_CONF="/etc/syslog-ng/syslog-ng.conf"
-			if [ -f $CONF ]; then
+			if [ -f $SYSLOG_CONF ]; then
 	                        if ! grep "^rewrite r_from_pipes" $SYSLOG_CONF >> /dev/null; then
         	                        echo "* Updating $SYSLOG_CONF with rewrite r_from_pipes."
                 	                sed -i "/^rewrite r_snare/a rewrite r_from_pipes { subst('\\\|', \"%7C\", value(\"MESSAGE\") flags(global)); };" $SYSLOG_CONF || echo "Error adding rewrite r_from_pipes to $SYSLOG_CONF."

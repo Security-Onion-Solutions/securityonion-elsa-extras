@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion65) precise; urgency=low
+
+  * fix SYSLOG_CONF in postinst 
+
+ -- Doug Burks <doug.burks@gmail.com>  Thu, 30 Apr 2015 10:50:31 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion64) precise; urgency=low
 
   * ELSA syslog-ng.conf rewrite r_pipes #447 
