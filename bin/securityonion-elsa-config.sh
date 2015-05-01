@@ -1,6 +1,8 @@
 #!/bin/bash
 
-LOG="/var/log/securityonion-elsa-config.log"
+LOG_DIR="/var/log/nsm"
+mkdir -p $LOG_DIR
+LOG="$LOG_DIR/securityonion-elsa-config.log"
 LOGGER="tee -a $LOG"
 BASE_DIR="/opt"
 DATA_DIR="/nsm/elsa/data"
@@ -134,7 +136,7 @@ function config_lognode() {
 	cp /opt/elsa/contrib/securityonion/contrib/elsa.logrotate /etc/logrotate.d/elsa
 	
 	echo "* Initializing empty sphinx indexes" | $LOGGER
-	/usr/bin/indexer --config "/etc/sphinxsearch/sphinx.conf" --rotate --all
+	/usr/bin/indexer --config "/etc/sphinxsearch/sphinx.conf" --rotate --all > $LOG_DIR/sphinx_initialization.log
 
 	echo "* Setting START=yes in /etc/default/sphinxsearch" | $LOGGER
 	sed -i 's|START=no|START=yes|g' /etc/default/sphinxsearch
