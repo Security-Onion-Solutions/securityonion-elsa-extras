@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion73) precise; urgency=low
+
+  * relocate securityonion-elsa-schema.sql 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 01 May 2015 06:34:52 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion72) precise; urgency=low
 
   * log to /var/log/nsm/ and send sphinx output to separate log 

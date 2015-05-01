@@ -40,3 +40,4 @@ Issue-512:-ELSA-syslog-ng.conf-filter-f_bro_headers
 securityonion-elsa-web.conf
 fix-database-schema-for-new-installs-and-clean-up-securityonion-elsa-config.sh
 log-to-varlognsm-and-send-sphinx-output-to-separate-log
+relocate-securityonion-elsa-schema.sql
