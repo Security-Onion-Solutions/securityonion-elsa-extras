@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion71) precise; urgency=low
+
+  * fix database schema for new installs and clean up securityonion-elsa-config.sh 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 01 May 2015 05:52:21 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion70) precise; urgency=low
 
   * update securityonion-elsa-web.conf 
