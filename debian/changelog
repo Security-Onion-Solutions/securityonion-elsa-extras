@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion75) precise; urgency=low
+
+  * set Apache mpm_prefork_module MaxRequestsPerChild to 2 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sun, 03 May 2015 15:59:16 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion74) precise; urgency=low
 
   * remove elsa_orig.sql 
