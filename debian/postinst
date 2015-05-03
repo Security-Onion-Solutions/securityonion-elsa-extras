@@ -605,7 +605,7 @@ case "$1" in
 				cp $CONF $CONFBAK || echo "Error backing up $CONF to $CONFBAK."
 
 				echo "* Setting Apache mpm_prefork_module MaxRequestsPerChild to 2"
-				perl -le 'use Apache::Admin::Config; my $ap = new Apache::Admin::Config("$ARGV[0]"); my @ar = $ap->select(-name => "IfModule", -value => "mpm_preform_module"); use Data::Dumper; $ar[0]->directive("MaxRequestsPerChild")->set_value(2); $ap->save();' $CONF || echo "Error updating $CONF."
+				perl -le 'use Apache::Admin::Config; my $ap = new Apache::Admin::Config("$ARGV[0]"); my @ar = $ap->select(-name => "IfModule", -value => "mpm_prefork_module"); use Data::Dumper; $ar[0]->directive("MaxRequestsPerChild")->set_value(2); $ap->save();' $CONF || echo "Error updating $CONF."
 
 			fi
 
