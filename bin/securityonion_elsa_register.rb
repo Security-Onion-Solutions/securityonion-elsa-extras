@@ -91,6 +91,7 @@ class ELSAConfig
               "Rev" => "1205",
               "Sphinx" => "Sphinx 2.1.9"
             },
+	    "query_timeout" => "55",
             "transforms" => {
                 "whois" => {
                         "known_subnets" => {
@@ -300,6 +301,7 @@ if options[:migrate_web_1205]
   current_conf = ELSAConfig.new(:file => WEB_CONF_FILE)
   current_conf.parse_conf
   current_conf.delete_node! "nodes"
+  current_conf.delete_node! "query_timeout"
   current_conf.delete_node! "transforms"
   current_conf.delete_node! "version"
   current_conf.migrate_conf 1205, "web"
