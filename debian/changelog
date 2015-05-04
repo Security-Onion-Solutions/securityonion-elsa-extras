@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion78) precise; urgency=low
+
+  * a2enmod perl 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sun, 03 May 2015 22:59:59 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion77) precise; urgency=low
 
   * more apache config 

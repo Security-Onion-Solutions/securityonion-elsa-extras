@@ -623,6 +623,7 @@ case "$1" in
 					echo "PerlPostConfigRequire /etc/apache2/elsa_startup.pl" >> $PERL_CONF || echo "Error writing to $PERL_CONF."
 				fi
 			fi
+			a2enmod perl
 
 			# All boxes with ELSA enabled (masters and sensors) need /etc/elsa_web.conf migrated to 1205 format
 			CONF="/etc/elsa_web.conf"
