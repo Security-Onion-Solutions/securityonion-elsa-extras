@@ -213,6 +213,35 @@ function config_webnode() {
 	mysql -uroot $MYSQL_PORT -e "GRANT ALL ON elsa_web.* TO \"elsa\"@\"%\" IDENTIFIED BY \"biglog\"" 
 	mysql -uelsa $MYSQL_PORT -pbiglog elsa_web -e "source $BASE_DIR/elsa/web/conf/meta_db_schema.mysql"
 
+	# Ensure that Apache has the right prefork settings
+        CONF="/etc/apache2/apache2.conf"
+	if [ -f $CONF ]; then
+
+        	CONFBAK="$CONF.$DATE"
+                echo "* Backing up $CONF to $CONFBAK."
+                cp $CONF $CONFBAK || echo "Error backing up $CONF to $CONFBAK."
+
+                echo "* Setting Apache mpm_prefork_module MaxRequestsPerChild to 2"
+                perl -le 'use Apache::Admin::Config; my $ap = new Apache::Admin::Config("$ARGV[0]"); my @ar = $ap->select(-name => "IfModule", -value => "mpm_prefork_module"); use Data::Dumper; $ar[0]->directive("MaxRequestsPerChild")->set_value(2); $ap->save();' $CONF || echo "Error updating $CONF."
+
+	fi
+
+	# More Apache config
+	BASE_DIR="/opt"
+	ELSA_STARTUP="/etc/apache2/elsa_startup.pl"
+	cat "$BASE_DIR/elsa/web/conf/startup.pl" | sed -e "s|\/usr\/local|$BASE_DIR|g" | sed -e "s|\/data|$DATA_DIR|g" > $ELSA_STARTUP ||
+		echo "Error writing $ELSA_STARTUP."
+	PERL_CONF="/etc/apache2/mods-available/perl.conf"
+	if [ ! -f $PERL_CONF ]; then
+		echo "PerlPostConfigRequire /etc/apache2/elsa_startup.pl" > $PERL_CONF || echo "Error writing $PERL_CONF."
+	else
+		grep elsa_startup.pl $PERL_CONF
+		if [ $? -ne 0 ]; then
+			echo "PerlPostConfigRequire /etc/apache2/elsa_startup.pl" >> $PERL_CONF || echo "Error writing to $PERL_CONF."
+		fi
+	fi
+	a2enmod perl
+
 	# Activate ELSA and restart Apache
 	cp /opt/elsa/contrib/securityonion/contrib/securityonion_apache_site.conf /etc/apache2/sites-available/elsa	
 	echo "* Configuring ELSA with Apache" | $LOGGER

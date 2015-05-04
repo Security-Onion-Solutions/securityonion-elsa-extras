@@ -44,3 +44,4 @@ relocate-securityonion-elsa-schema.sql
 add-new-transforms-to-etcelsa_web.conf
 reset-query_timeout-to-ELSA-default
 fix-elsa_web.conf-for-new-installs
+update-Apache-config-for-new-installs
