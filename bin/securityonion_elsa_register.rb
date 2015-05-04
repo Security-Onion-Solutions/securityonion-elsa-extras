@@ -90,7 +90,89 @@ class ELSAConfig
               "Date" => "2014-07-17 15:12:58 -0700 (Thu, 17 Jul 2014)",
               "Rev" => "1205",
               "Sphinx" => "Sphinx 2.1.9"
-            }
+            },
+            "transforms" => {
+                "whois" => {
+                        "known_subnets" => {
+                                "10.0.0.0" => {
+                                        "end" => "10.255.255.255",
+                                        "org" => "MyOrg"
+                                },
+                                "192.168.0.0" => {
+                                        "end" => "192.168.255.255",
+                                        "org" => "MyOrg"
+                                },
+                                "172.16.0.0" => {
+                                        "end" => "172.31.255.255",
+                                        "org" => "MyOrg"
+                                }
+                        },
+                        "known_orgs" => {
+                                "MyOrg" => {
+                                        "name" => "MyOrg",
+                                        "org" => "MyOrg",
+                                        "descr" => "MyOrg",
+                                        "cc" => "US",
+                                        "country" => "United States",
+                                        "city" => "Anytown",
+                                        "state" => "Somestate"
+                                }
+                        }
+                },
+                "parse" => {
+                        "tld" => [
+                                {
+                                        "field" => "domain",
+                                        "pattern" => "\\.([a-zA-Z]+)$",
+                                        "extractions" => [
+                                                "tld"
+                                        ]
+                                },
+                                {
+                                        "field" => "site",
+                                        "pattern" => "\\.([a-zA-Z]+)$",
+                                        "extractions" => [
+                                                "tld"
+                                        ]
+                                },
+                                {
+                                        "field" => "uri",
+                                        "pattern" => "\\.([a-zA-Z]+)(:|/|$)",
+                                        "extractions" => [
+                                                "tld"
+                                        ]
+                                }
+                        ],
+                        "url" => [
+                                {
+                                        "field" => "uri",
+                                        "pattern" => "(?:(?<proto>[a-zA-Z]+)://)?(?:(?<username>[^/]+):(?<password>[^/]+)@)?(?<domain>\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}|[^/]+\\.(?<tld>[a-zA-Z]+))(?::(?<port>\\d+))?(?<resource>/[^?]*)?(?:\\?(?<query_string>.*))?$",
+                                        "extractions" => [
+                                                "proto",
+                                                "username",
+                                                "password",
+                                                "domain",
+                                                "tld",
+                                                "port",
+                                                "resource",
+                                                "query_string"
+                                        ]
+                                }
+                        ],
+                        "mimetype" => [
+                                {
+                                        "field" => "msg",
+                                        "pattern"  => "[\"'\\(\\[\\s\\|;:](?<mime>(?<type>application|audio|chemical|image|message|model|multipart|text|video)/(?<subtype>[\\w-_]+))[\"'\\)\\]\\s\\|;:]",
+                                        "extractions" => [
+                                                "mime",
+                                                "type",
+                                                "subtype"
+                                        ]
+                                }
+                        ]
+                }
+                },
+
 	  }
 	}
       }
@@ -218,6 +300,7 @@ if options[:migrate_web_1205]
   current_conf = ELSAConfig.new(:file => WEB_CONF_FILE)
   current_conf.parse_conf
   current_conf.delete_node! "nodes"
+  current_conf.delete_node! "transforms"
   current_conf.delete_node! "version"
   current_conf.migrate_conf 1205, "web"
   current_conf.write_conf(:force => true)
