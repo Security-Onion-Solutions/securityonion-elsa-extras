@@ -43,3 +43,4 @@ log-to-varlognsm-and-send-sphinx-output-to-separate-log
 relocate-securityonion-elsa-schema.sql
 add-new-transforms-to-etcelsa_web.conf
 reset-query_timeout-to-ELSA-default
+fix-elsa_web.conf-for-new-installs
