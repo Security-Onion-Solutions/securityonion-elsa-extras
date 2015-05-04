@@ -609,6 +609,21 @@ case "$1" in
 
 			fi
 
+			# More Apache config
+			BASE_DIR="/opt"
+			ELSA_STARTUP="/etc/apache2/elsa_startup.pl"
+			cat "$BASE_DIR/elsa/web/conf/startup.pl" | sed -e "s|\/usr\/local|$BASE_DIR|g" | sed -e "s|\/data|$DATA_DIR|g" > $ELSA_STARTUP || 
+				echo "Error writing $ELSA_STARTUP."
+			PERL_CONF="/etc/apache2/mods-available/perl.conf"
+			if [ ! -f $PERL_CONF ]; then
+				echo "PerlPostConfigRequire /etc/apache2/elsa_startup.pl" > $PERL_CONF || echo "Error writing $PERL_CONF."
+			else
+				grep elsa_startup.pl $PERL_CONF
+				if [ $? -ne 0 ]; then
+					echo "PerlPostConfigRequire /etc/apache2/elsa_startup.pl" >> $PERL_CONF || echo "Error writing to $PERL_CONF."
+				fi
+			fi
+
 			# All boxes with ELSA enabled (masters and sensors) need /etc/elsa_web.conf migrated to 1205 format
 			CONF="/etc/elsa_web.conf"
 			if [ -f $CONF ]; then
