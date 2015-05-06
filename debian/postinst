@@ -589,7 +589,7 @@ case "$1" in
 
 	                        if ! grep "^filter f_snort" $CONF >> /dev/null; then
         	                        echo "* Updating $CONF with filter f_snort."
-					sed -i "/^filter f_rewrite_cisco_program_3/a filter f_bro_headers { message(\"^#\") };" $CONF || echo "Error adding filter f_snort to $CONF."
+					sed -i "/^filter f_rewrite_cisco_program_3/a filter f_snort { match('snort:' value("MSGHDR")); };" $CONF || echo "Error adding filter f_snort to $CONF."
 				fi
 
 	                        if ! grep "^log { source(s_syslog); filter(f_auth); destination(d_auth)" $CONF >> /dev/null; then
