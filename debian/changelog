@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion84) precise; urgency=low
+
+  * Issue 726: ELSA syslog-ng.conf - add filesystem destinations 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 06 May 2015 16:09:18 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion83) precise; urgency=low
 
   * add cli.sh 

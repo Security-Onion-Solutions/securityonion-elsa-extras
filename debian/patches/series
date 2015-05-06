@@ -46,3 +46,4 @@ reset-query_timeout-to-ELSA-default
 fix-elsa_web.conf-for-new-installs
 update-Apache-config-for-new-installs
 add-cli.sh
+Issue-726:-ELSA-syslog-ng.conf---add-filesystem-destinations

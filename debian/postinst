@@ -581,9 +581,20 @@ case "$1" in
 	                        fi
 
 	                        if ! grep "^filter f_bro_headers" $CONF >> /dev/null; then
+        	                        echo "* Updating $CONF with filter f_bro_headers."
 					sed -i "/^filter f_rewrite_cisco_program_3/a filter f_bro_headers { message(\"^#\") };" $CONF || echo "Error adding filter f_bro_headers to $CONF."
 					sed -i '/rewrite(r_extracted_host);/a \\tlog { filter(f_bro_headers); flags(final); };' $CONF || echo "Error adding f_bro_headers to $CONF."
 					sed -i 's|destination(d_elsa);|log { destination(d_elsa); };|' $CONF || echo "Error adding f_bro_headers to $CONF."
+				fi
+
+	                        if ! grep "^filter f_snort" $CONF >> /dev/null; then
+        	                        echo "* Updating $CONF with filter f_snort."
+					sed -i "/^filter f_rewrite_cisco_program_3/a filter f_bro_headers { message(\"^#\") };" $CONF || echo "Error adding filter f_snort to $CONF."
+				fi
+
+	                        if ! grep "^log { source(s_syslog); filter(f_auth); destination(d_auth)" $CONF >> /dev/null; then
+        	                        echo "* Updating $CONF with filesystem destinations."
+					cat /opt/elsa/contrib/securityonion/contrib/securityonion-syslog-ng-local.conf >> $CONF || echo "Error adding filesystem destinations to $CONF."
 				fi
 
                         	echo "* Updating syslog-ng patterns."
