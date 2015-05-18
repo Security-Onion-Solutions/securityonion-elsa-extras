@@ -48,3 +48,4 @@ update-Apache-config-for-new-installs
 add-cli.sh
 Issue-726:-ELSA-syslog-ng.conf---add-filesystem-destinations
 fix-filter-f_snort
+ELSA:-update-bro_notice-parser-to-parse-src-and-dst-fields-#674
