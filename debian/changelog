@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion87) precise; urgency=low
+
+  * update bro_notice parser 
+
+ -- Doug Burks <doug.burks@gmail.com>  Tue, 19 May 2015 07:01:45 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion86) precise; urgency=low
 
   * ELSA: update bro_notice parser to parse src and dst fields #674 
