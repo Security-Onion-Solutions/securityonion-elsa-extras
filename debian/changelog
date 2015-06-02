@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion88) precise; urgency=low
+
+  * sensors running Setup need new elsa_web.conf options 
+
+ -- Doug Burks <doug.burks@gmail.com>  Tue, 02 Jun 2015 10:02:57 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion87) precise; urgency=low
 
   * update bro_notice parser 
