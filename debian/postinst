@@ -664,6 +664,23 @@ case "$1" in
 		fi
 	fi
 
+	if [ "$2" = "20131117-1ubuntu0securityonion88" ] || [ "$2" = "20131117-1ubuntu0securityonion58" ] || [ "$2" = "20131117-1ubuntu0securityonion56" ] || [ "$2" = "20131117-1ubuntu0securityonion53" ] || [ "$2" = "20131117-1ubuntu0securityonion50" ] || [ "$2" = "20131117-1ubuntu0securityonion45" ] || [ "$2" = "20131117-1ubuntu0securityonion43" ] || [ "$2" = "20131117-1ubuntu0securityonion41" ] || [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+		FILE="/etc/apache2/mods-enabled/perl.conf"
+		if [ -f $FILE ]; then
+			echo "* $FILE exists."
+			FILE="/etc/elsa_web.conf"
+			if [ -f $FILE ]; then
+				echo "* $FILE exists."
+			else
+				echo "* $FILE doesn't exist."
+				echo "* Disabling perl module."
+				a2dismod perl || echo "Error disabling perl module."
+				echo "* Restarting apache."
+				service apache2 restart || echo "Error restarting apache."
+			fi
+		fi
+	fi
+
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;

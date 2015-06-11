@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion89) precise; urgency=low
+
+  * ELSA 1205 package enabled perl module on non-ELSA systems #746 
+
+ -- Doug Burks <doug.burks@gmail.com>  Thu, 11 Jun 2015 16:31:40 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion88) precise; urgency=low
 
   * sensors running Setup need new elsa_web.conf options 
