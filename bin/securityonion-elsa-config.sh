@@ -217,6 +217,7 @@ function config_webnode() {
         CONF="/etc/apache2/apache2.conf"
 	if [ -f $CONF ]; then
 
+		DATE=`date '+%Y%m%d'`
         	CONFBAK="$CONF.$DATE"
                 echo "* Backing up $CONF to $CONFBAK."
                 cp $CONF $CONFBAK || echo "Error backing up $CONF to $CONFBAK."

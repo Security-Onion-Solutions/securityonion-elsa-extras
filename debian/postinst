@@ -665,18 +665,44 @@ case "$1" in
 	fi
 
 	if [ "$2" = "20131117-1ubuntu0securityonion88" ] || [ "$2" = "20131117-1ubuntu0securityonion58" ] || [ "$2" = "20131117-1ubuntu0securityonion56" ] || [ "$2" = "20131117-1ubuntu0securityonion53" ] || [ "$2" = "20131117-1ubuntu0securityonion50" ] || [ "$2" = "20131117-1ubuntu0securityonion45" ] || [ "$2" = "20131117-1ubuntu0securityonion43" ] || [ "$2" = "20131117-1ubuntu0securityonion41" ] || [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
-		FILE="/etc/apache2/mods-enabled/perl.conf"
-		if [ -f $FILE ]; then
-			echo "* $FILE exists."
-			FILE="/etc/elsa_web.conf"
+		if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
+			echo "* ELSA is enabled on this box."
+		else
+			echo "* ELSA is not enabled on this box."
+			echo "* Checking for error conditions."
+
+			FILE="/etc/apache2/mods-enabled/perl.conf"
 			if [ -f $FILE ]; then
 				echo "* $FILE exists."
-			else
-				echo "* $FILE doesn't exist."
-				echo "* Disabling perl module."
-				a2dismod perl || echo "Error disabling perl module."
-				echo "* Restarting apache."
-				service apache2 restart || echo "Error restarting apache."
+				FILE="/etc/elsa_web.conf"
+				if [ -f $FILE ]; then
+					echo "* $FILE exists."
+				else
+					echo "* $FILE doesn't exist."
+					echo "* Disabling perl module."
+					a2dismod perl || echo "Error disabling perl module."
+					echo "* Restarting apache."
+					service apache2 restart || echo "Error restarting apache."
+				fi
+			fi
+			
+			FILE="/etc/syslog-ng/syslog-ng.conf"
+			if [ -f $FILE ]; then
+				echo "* $FILE exists."
+				echo "* Checking for duplicate entries."
+				COUNT=`grep "destination d_auth" $FILE | wc -l`
+				if [ $COUNT -gt 1 ]; then
+					echo "* Duplicate entries found in $FILE."
+					if ls /etc/syslog-ng/syslog-ng.conf.201????? >/dev/null 2>&1; then
+						BACKUP=`ls /etc/syslog-ng/syslog-ng.conf.201????? | tail -1`
+						echo "* Found backup copy at $BACKUP."
+						echo "* Reverting $FILE to backup copy."
+						echo "* Backing up $FILE to $FILE.duplicates."
+						cp $FILE $FILE.duplicates || echo "Error copying $FILE to $FILE.duplicates."
+						echo "* Copying $BACKUP to $FILE."
+						cp $BACKUP $FILE || echo "Error copying $BACKUP to $FILE."
+					fi
+				fi
 			fi
 		fi
 	fi

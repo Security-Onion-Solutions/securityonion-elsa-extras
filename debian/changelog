@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion90) precise; urgency=low
+
+  * ELSA 1205 package duplicated syslog-ng.conf entries on non-ELSA systems #747
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 12 Jun 2015 09:17:02 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion89) precise; urgency=low
 
   * ELSA 1205 package enabled perl module on non-ELSA systems #746 
