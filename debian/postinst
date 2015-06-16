@@ -707,6 +707,19 @@ case "$1" in
 		fi
 	fi
 
+	# Always check to see if ELSA is enabled and, if so, update patterns
+	if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
+		echo "* ELSA is enabled on this box."
+               	echo "* Updating syslog-ng patterns."
+                PATTERNS_DIR=/etc/elsa/patterns.d/
+		DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
+                cp $DEST_PATTERN $DEST_PATTERN.bak || echo "Error backing up $DEST_PATTERN."
+                pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR || echo "Error running pdbtool to merge patterns."
+
+		echo "* Restarting syslog-ng."
+		service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
+	fi
+
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;

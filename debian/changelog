@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion91) precise; urgency=low
+
+  * always check to see if ELSA is enabled and, if so, update patterns 
+
+ -- Doug Burks <doug.burks@gmail.com>  Tue, 16 Jun 2015 11:37:46 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion90) precise; urgency=low
 
   * ELSA 1205 package duplicated syslog-ng.conf entries on non-ELSA systems #747
