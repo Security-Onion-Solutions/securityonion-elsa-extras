@@ -5,7 +5,7 @@
         <patterns>
           <!--ts  uid     id.orig_h       id.orig_p       id.resp_h       id.resp_p       proto   service duration        orig_bytes      resp_bytes      
           conn_state      local_orig      missed_bytes    history orig_pkts       orig_ip_bytes   resp_pkts       resp_ip_bytes-->
-          <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:i5:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s5:|@</pattern>
+          <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:i5:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s5:|@</pattern>
           <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@</pattern>
         </patterns>
         <examples>
@@ -23,7 +23,7 @@
               <test_value name="i4">tcp</test_value>
            </example>
            <example>
-             <test_message program="bro_conn">1355091922.994655|fOFtbJ91cG7|192.168.1.103|52949|206.12.19.9|80|tcp|http|3.970039|2829|574725|SF|-|3706|ShADadFf|200|14697|403|591995|(empty)|US|RU|</test_message>
+             <test_message program="bro_conn">1355091922.994655|fOFtbJ91cG7|192.168.1.103|52949|206.12.19.9|80|tcp|http|3.970039|2829|574725|SF|-|-|3706|ShADadFf|200|14697|403|591995|(empty)|US|RU|</test_message>
              <!-- srcip -->
              <test_value name="i0">192.168.1.103</test_value>
              <!-- srcport -->

@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion92) precise; urgency=low
+
+  * securityonion-elsa-extras: update bro_conn parser for Bro 2.4 #762 
+
+ -- Doug Burks <doug.burks@gmail.com>  Tue, 23 Jun 2015 09:35:34 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion91) precise; urgency=low
 
   * always check to see if ELSA is enabled and, if so, update patterns 

@@ -52,3 +52,4 @@ ELSA:-update-bro_notice-parser-to-parse-src-and-dst-fields-#674
 update-bro_notice-parser
 sensors-running-Setup-need-new-elsa_web.conf-options
 missing-DATE-variable
+securityonion-elsa-extras:-update-bro_conn-parser-for-Bro-2.4-#762
