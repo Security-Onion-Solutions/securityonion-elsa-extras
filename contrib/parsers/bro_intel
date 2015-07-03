@@ -3,11 +3,11 @@
   <rules>
     <rule provider="Security_Onion" class="26009" id="26009">
       <patterns>
-        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:@</pattern>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:s3:@</pattern>
       </patterns>
       <examples>
         <example>
-          <test_message program="bro_intel">1391104904.213081|C4lG181iOhPyUt50k8|172.24.248.101|52490|199.7.91.13|53|-|-|-|travel.msnhome.org|Intel::DOMAIN|DNS::IN_REQUEST|Mandiant APT1 Report</test_message>
+          <test_message program='bro_intel'>1391104904.213081|C4lG181iOhPyUt50k8|172.24.248.101|52490|199.7.91.13|53|-|-|-|travel.msnhome.org|Intel::DOMAIN|DNS::IN_REQUEST|nsm.local-eth1-1|Mandiant APT1 Report</test_message>
           <!-- srcip -->
           <test_value name="i0">172.24.248.101</test_value>
           <!-- srcport -->
