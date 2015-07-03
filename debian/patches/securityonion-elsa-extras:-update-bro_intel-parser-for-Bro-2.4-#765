@@ -1,0 +1,41 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion93) precise; urgency=low
+ .
+   * securityonion-elsa-extras: update bro_intel parser for Bro 2.4 #765
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/contrib/parsers/bro_intel
++++ securityonion-elsa-extras-20131117/contrib/parsers/bro_intel
+@@ -3,11 +3,11 @@
+   <rules>
+     <rule provider="Security_Onion" class="26009" id="26009">
+       <patterns>
+-        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:@</pattern>
++        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:s3:@</pattern>
+       </patterns>
+       <examples>
+         <example>
+-          <test_message program="bro_intel">1391104904.213081|C4lG181iOhPyUt50k8|172.24.248.101|52490|199.7.91.13|53|-|-|-|travel.msnhome.org|Intel::DOMAIN|DNS::IN_REQUEST|Mandiant APT1 Report</test_message>
++          <test_message program='bro_intel'>1391104904.213081|C4lG181iOhPyUt50k8|172.24.248.101|52490|199.7.91.13|53|-|-|-|travel.msnhome.org|Intel::DOMAIN|DNS::IN_REQUEST|nsm.local-eth1-1|Mandiant APT1 Report</test_message>
+           <!-- srcip -->
+           <test_value name="i0">172.24.248.101</test_value>
+           <!-- srcport -->
