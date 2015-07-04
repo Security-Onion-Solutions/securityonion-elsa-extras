@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion94) precise; urgency=low
+
+  * securityonion-elsa-extras: update bro_ssl parser for Bro 2.4 #768 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sat, 04 Jul 2015 09:52:44 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion93) precise; urgency=low
 
   * securityonion-elsa-extras: update bro_intel parser for Bro 2.4 #765 

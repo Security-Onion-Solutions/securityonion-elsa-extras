@@ -54,3 +54,4 @@ sensors-running-Setup-need-new-elsa_web.conf-options
 missing-DATE-variable
 securityonion-elsa-extras:-update-bro_conn-parser-for-Bro-2.4-#762
 securityonion-elsa-extras:-update-bro_intel-parser-for-Bro-2.4-#765
+securityonion-elsa-extras:-update-bro_ssl-parser-for-Bro-2.4-#768

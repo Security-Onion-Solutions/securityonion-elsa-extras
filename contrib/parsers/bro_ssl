@@ -3,28 +3,27 @@
                 <rules>
                         <rule class="18" id="18">
                                 <patterns>
-                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s1:|@@ESTRING::|@@ANYSTRING::@</pattern>
+                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s1:|@@ESTRING::|@@ANYSTRING::@</pattern>
                                 </patterns>
                                 <examples>
                                         <example>
-                                                <test_message program='bro_ssl'>1302877869.222761|CYHAWd43r0NyQZj8W|10.60.0.54|43799|157.55.60.190|443|TLSv10|TLS_RSA_WITH_AES_128_CBC_SHA|-|urs.microsoft.com|ce1f0000da8bd6e8df6831a030b049db959edaa10d74c33f2f07e24803ff893b|-|T|FNql1aNsJ8PmVfkcg,FWkGi41De3K8WMvS48,F0YJIs3JPSvwqlV23e|(empty)|CN=urs.microsoft.com,OU=Windows Live Operations,O=Microsoft Corporation,L=Redmond,ST=Washington,C=US        CN=Microsoft Online Services GFS CA2,OU=GFS,O=Microsoft Corporation,L=Redmond,ST=Washington,C=US|-|-</test_message>
-
+						<test_message program='bro_ssl'>1436016829.925795|Cxv4932gV6K9jqa59c|192.168.137.62|50399|173.194.116.111|443|TLSv10|TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA|secp256r1|www.google.at|F|-|-|T|FIBC8e4vBsWOhjH0j3,Fc304f4t38UZkr4Xd3,Fa3gjca6mOcXkNpxl|(empty)|CN=*.google.at,O=Google Inc,L=Mountain View,ST=California,C=US|CN=Google Internet Authority G2,O=Google Inc,C=US|-|-|certificate has expired</test_message>
                                                 <!-- srcip -->
-                                                <test_value name='i0'>10.60.0.54</test_value>
+                                                <test_value name='i0'>192.168.137.62</test_value>
                                                 <!-- srcport -->
-                                                <test_value name='i1'>43799</test_value>
+                                                <test_value name='i1'>50399</test_value>
                                                 <!-- dstip -->
-                                                <test_value name='i2'>157.55.60.190</test_value>
+                                                <test_value name='i2'>173.194.116.111</test_value>
                                                 <!-- dstport -->
                                                 <test_value name='i3'>443</test_value>
                                                 <!-- hostname -->
-                                                <test_value name='s0'>urs.microsoft.com</test_value>
+                                                <test_value name='s0'>www.google.at</test_value>
                                                 <!-- subject -->
-                                                <test_value name='s1'>CN=urs.microsoft.com,OU=Windows Live Operations,O=Microsoft Corporation,L=Redmond,ST=Washington,C=US        CN=Microsoft Online Services GFS CA2,OU=GFS,O=Microsoft Corporation,L=Redmond,ST=Washington,C=US</test_value>
+                                                <test_value name='s1'>CN=*.google.at,O=Google Inc,L=Mountain View,ST=California,C=US</test_value>
                                                 <!-- ssl_version -->
                                                 <test_value name='s2'>TLSv10</test_value>
                                                 <!-- ssl_cipher -->
-                                                <test_value name='s3'>TLS_RSA_WITH_AES_128_CBC_SHA</test_value>
+                                                <test_value name='s3'>TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA</test_value>
                                         </example>
                                 </examples>
                         </rule>
