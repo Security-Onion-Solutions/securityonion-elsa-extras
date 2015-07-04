@@ -22,8 +22,8 @@
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Kerberos pre-authentication failed.@ESTRING::Account Name: @@ESTRING:s1: Service Information: @</pattern>
 
                 <!-- 4770s -->
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos service ticket was renewed.@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos service ticket was renewed.@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos service ticket was renewed.@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Service Information: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos service ticket was renewed.@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Service Information: @</pattern>
 
                 <!-- 4742s -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A computer account was changed.@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Changed Attributes: @</pattern>
