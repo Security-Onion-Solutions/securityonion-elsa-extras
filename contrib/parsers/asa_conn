@@ -4,7 +4,7 @@
                 <rule provider="ELSA" class='3' id='3'>
                 <patterns>
                 <!-- Cisco ASA conn teardowns can very depending on how they are built
-                     these patterns will catch all of the possbilities but acn abe expanded upon as needed -->
+                     these patterns will not catch all of the possbilities but can be expanded upon as needed -->
                 <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/(@@ESTRING:: to @@ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5: @</pattern>
                 <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @to @ESTRING:s1::@@ESTRING::__@@IPv4:i3:_@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5:@</pattern>
                 <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @to @ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5: @</pattern>
