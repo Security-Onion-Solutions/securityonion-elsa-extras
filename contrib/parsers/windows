@@ -4,14 +4,14 @@
                 <rule provider="ELSA" class='4' id='4'>
                 <patterns>
                 <!-- 4624s -->
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon ID:@@ESTRING::Source Network Address: @@ESTRING:i1: Source Port:@</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon ID:@@ESTRING::Source Network Address: - @</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon ID:@@ESTRING::Source Network Address: ::1 @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon ID:@@ESTRING::Source Network Address: @@ESTRING:i1: Source Port:@</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon ID:@@ESTRING::Source Network Address: - @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon ID:@@ESTRING::Source Network Address: ::1 @</pattern>
 
                 <!-- 4625s -->
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@@ESTRING::Source Network Address: @@ESTRING:i1: Source Port:@</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@@ESTRING::Source Network Address: - @</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@@ESTRING::Source Network Address: ::1 @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@@ESTRING::Source Network Address: @@ESTRING:i1: Source Port:@</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@@ESTRING::Source Network Address: - @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@@ESTRING::Source Network Address: ::1 @</pattern>
 
                 <!-- 4768s -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name: @@ESTRING:s1: Supplied Realm Name: @@ESTRING:s2: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
@@ -26,31 +26,31 @@
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos service ticket was renewed.@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Service Information: @</pattern>
 
                 <!-- 4742s -->
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A computer account was changed.@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Changed Attributes: @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A computer account was changed.@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Changed Attributes: @</pattern>
 
                 <!-- 4738s -->
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A user account was changed.@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Changed Attributes: @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A user account was changed.@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Changed Attributes: @</pattern>
 
                 <!-- 5145s some contained IPv4 and others contained IPv6 source IPs -->
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @File @IPv4:i1:@@ESTRING:: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s4: 0x@</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @File @ESTRING:: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s4: 0x@</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @File @IPv4:i1:@@ESTRING:: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s4: 0x@</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @File @ESTRING:: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s4: 0x@</pattern>
 
                 <!-- 4648s -->
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A logon was attempted using explicit credentials.@ESTRING:: Account Whose Credentials Were Used: Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING:: Network Address: @@IPv4:i1: @</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A logon was attempted using explicit credentials.@ESTRING:: Account Whose Credentials Were Used: Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A logon was attempted using explicit credentials.@ESTRING:: Account Whose Credentials Were Used: Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING:: Network Address: @@IPv4:i1: @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A logon was attempted using explicit credentials.@ESTRING:: Account Whose Credentials Were Used: Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @</pattern>
 
                 <!-- 18453s and 18454s -->
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s2:\\@@ESTRING:s1:'. @@ESTRING::CLIENT: @@ESTRING:i1:]@</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s2:\\@@ESTRING:s1:'. @</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s1:'. @@ESTRING::CLIENT: @@ESTRING:i1:]@</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s1:'. @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s2:\\@@ESTRING:s1:'. @@ESTRING::CLIENT: @@ESTRING:i1:]@</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s2:\\@@ESTRING:s1:'. @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s1:'. @@ESTRING::CLIENT: @@ESTRING:i1:]@</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s1:'. @</pattern>
 
                 <!-- generic patterns -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::User Name: @@ESTRING:s1: |@@ESTRING::Domain: |@@ESTRING:s2: |@@ESTRING::Source Network Address: @@IPv4:i1: @</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::User Name: |@@ESTRING:s1: |@@ESTRING::Domain: |@@ESTRING:s2: |@@ESTRING::Client Address: |@@IPv4:i1: |@</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon @@ESTRING::ffff:@@IPv4:i1: @</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon@</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name: @@ESTRING:s1: LOGON Account Domain: @@ESTRING:s2: Logon@</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon @@ESTRING::ffff:@@IPv4:i1: @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon@</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name: @@ESTRING:s1: LOGON Account Domain: @@ESTRING:s2: Logon@</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Primary User Name: @@ESTRING:s1: |@@ESTRING::Primary Domain: @@ESTRING:s2: |@</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Source Network Address: @@IPv4:i1: @</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
