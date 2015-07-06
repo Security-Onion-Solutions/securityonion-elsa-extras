@@ -31,15 +31,15 @@
                 <!-- 4738s -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A user account was changed.@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Changed Attributes: @</pattern>
 
-                <!-- 5145s some contained IPv4 and others contained IPv6 source IPs-->
+                <!-- 5145s some contained IPv4 and others contained IPv6 source IPs -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @File @IPv4:i1:@@ESTRING:: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s4: 0x@</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @File @ESTRING:: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s4: 0x@</pattern>
 
-                <!-- 4648s-->
+                <!-- 4648s -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A logon was attempted using explicit credentials.@ESTRING:: Account Whose Credentials Were Used: Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING:: Network Address: @@IPv4:i1: @</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A logon was attempted using explicit credentials.@ESTRING:: Account Whose Credentials Were Used: Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @</pattern>
 
-                <!-- 18453s-->
+                <!-- 18453s -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s2:\\@@ESTRING:s1:'. @@ESTRING::CLIENT: @@ESTRING:i1:]@</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s2:\\@@ESTRING:s1:'. @</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:)@: @ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s1:'. @@ESTRING::CLIENT: @@ESTRING:i1:]@</pattern>
