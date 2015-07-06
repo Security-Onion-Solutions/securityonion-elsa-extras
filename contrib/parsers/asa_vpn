@@ -1,0 +1,67 @@
+<ruleset name="CISCO_VPN" id='36'>
+   <pattern>ossec_archive</pattern>
+        <rules>
+                <rule provider="ELSA" class='36' id='36'>
+                <patterns>
+                <pattern>@ESTRING::ASA-@@ESTRING::Group &lt;@@ESTRING:s0:&gt; User &lt;@@ESTRING:s1:&gt; IP &lt;@@IPv4:i0:&gt;@</pattern>
+                <pattern>@ESTRING::ASA-@@ESTRING::Group = @@ESTRING:s0:, Username = @@ESTRING:s1:, IP = @@IPv4:i0:, @</pattern>
+                </patterns>
+                <examples>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 04 06:49:32 ossec->10.1.2.3 Jul 04 2015 06:49:32: %ASA-3-713167: Group = CISCO_VPN, Username = CONTOSO\\bsmith, IP = 1.1.1.1, Remote peer has failed user authentication - check configured username and password</test_message>
+                        <!-- Group Name -->
+                        <test_value name="s0">CISCO_VPN</test_value>
+                        <!-- User -->
+                        <test_value name="s1">CONTOSO\\bsmith</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 04 06:49:32 ossec->10.1.2.3 Jul 04 2015 06:49:32: %ASA-3-713167: Group = CISCO_VPN, Username = bsmith, IP = 1.1.1.1, Remote peer has failed user authentication - check configured username and password</test_message>
+                        <!-- Group Name -->
+                        <test_value name="s0">CISCO_VPN</test_value>
+                        <!-- User -->
+                        <test_value name="s1">bsmith</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 04 20:10:09 ossec->10.1.2.3 Jul 04 2015 20:10:09: %ASA-6-716002: Group &lt;CISCO_ANY-Connect&gt; User &lt;bsmith@contoso.com&gt; IP &lt;1.1.1.1&gt; WebVPN session terminated: Idle Timeout.</test_message>
+                        <!-- Group Name -->
+                        <test_value name="s0">CISCO_ANY-Connect</test_value>
+                        <!-- User -->
+                        <test_value name="s1">bsmith@contoso.com</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 03 21:53:27 ossec->10.1.2.3 Jul 03 2015 21:53:27: %ASA-4-113019: Group = CISCO_VPN, Username = bsmith@contoso.com, IP = 1.1.1.1, Session disconnected. Session Type: IPsecOverNatT, Duration: 1h:24m:44s, Bytes xmt: 646652, Bytes rcv: 3905286, Reason: User Requested</test_message>
+                        <!-- Group Name -->
+                        <test_value name="s0">CISCO_VPN</test_value>
+                        <!-- User -->
+                        <test_value name="s1">bsmith@contoso.com</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 04 05:48:11 ossec->10.1.2.3 Jul 04 2015 05:48:11: %ASA-6-713228: Group = CISCO_VPN, Username = bsmith@contoso.com, IP = 1.1.1.1, Assigned private IP address 10.1.2.15 to remote user</test_message>
+                        <!-- Group Name -->
+                        <test_value name="s0">CISCO_VPN</test_value>
+                        <!-- User -->
+                        <test_value name="s1">bsmith@contoso.com</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 04 15:22:50 ossec->10.1.2.3 Jul 04 2015 15:22:50: %ASA-4-722051: Group &lt;CISCO_ANY-Connect&gt; User &lt;bsmith@contoso.com&gt; IP &lt;1.1.1.1&gt; IPv4 Address &lt;10.1.2.10&gt; IPv6 address &lt;::&gt; assigned to session</test_message>
+                        <!-- Group Name -->
+                        <test_value name="s0">CISCO_ANY-Connect</test_value>
+                        <!-- User -->
+                        <test_value name="s1">bsmith@contoso.com</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        </example>
+                    </examples>
+                </rule>
+        </rules>
+</ruleset>
