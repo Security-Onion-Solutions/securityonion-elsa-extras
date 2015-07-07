@@ -64,6 +64,19 @@
                 </patterns>
                 <examples>
                         <example>
+                        <test_message program="ossec_archive">2015 Jul 05 01:13:12 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 04 21:13:08 WinEvtLog: Security: AUDIT_FAILURE(4625): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: An account failed to log on. Subject: Security ID: S-1-0-0 Account Name: - Account Domain: - Logon ID: 0x0 Logon Type: 3 Account For Which Logon Failed: Security ID: S-1-0-0 Account Name: bsmith Account Domain: WRKSTATION01 Failure Information: Failure Reason: %%2313 Status: 0xc000006d Sub Status: 0xc0000064 Process Information: Caller Process ID: 0x0 Caller Process Name: - Network Information: Workstation Name: WRKSTATION01 Source Network Address: 192.1.2.3 Source Port: 51900 Detailed Authentication Information: Logon Process: NtLmSsp Authentication Package: NTLM Transited Services: - Package Name (NTLM only): - Key Length: 0 This event is generated when a logon request fails. It is generated on the computer where access was attempted.</test_message>
+                        <!-- Event ID -->
+                        <test_value name="i0">4625</test_value>
+                        <!-- Source Name -->
+                        <test_value name="s0">SERVER01.contoso.com</test_value>
+                        <!-- User -->
+                        <test_value name="s1">bsmith</test_value>
+                        <!-- User Domain -->
+                        <test_value name="s2">WRKSTATION01</test_value>
+                        <!-- Source Network Address -->
+                        <test_value name="i1">192.1.2.3</test_value>
+                        </example>
+                        <example>
                         <test_message program="ossec_archive">2015 Jul 04 03:39:09 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 03 23:39:09 WinEvtLog: Application: AUDIT_SUCCESS(18454): MSSQL$DB: (no user): no domain: SERVER01.contoso.com: Login succeeded for user 'bsmith'. Connection made using SQL Server authentication. [CLIENT: 192.1.2.3]</test_message>
                         <!-- Event ID -->
                         <test_value name="i0">18454</test_value>
