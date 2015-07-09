@@ -11,6 +11,9 @@
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account failed to log on. @ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@@ESTRING::Source Network Address: @@IPv4:i1: Source Port:@</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account failed to log on. @ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@</pattern>
 
+                <!-- 6278s -->
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Network Policy Server @ESTRING::\\@@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING::Client IP Address: @@IPv4:i1: @</pattern>
+
                 <!-- 4768s -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos authentication ticket (TGT) was requested. @ESTRING::Account Name: @@ESTRING:s1: Supplied Realm Name: @@ESTRING:s2: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos authentication ticket (TGT) was requested. @ESTRING::Account Name: @@ESTRING:s1: Supplied Realm Name: @@ESTRING:s2: @</pattern>
@@ -61,6 +64,32 @@
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @</pattern>
                 </patterns>
                 <examples>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 08 20:13:35 (SERVER01) 10.27.201.19->WinEvtLog 2015 Jul 08 15:13:31 WinEvtLog: Security: AUDIT_SUCCESS(540): Security: bsmith: CONTOSO: SERVER01: Successful Network Logon: |User Name: bsmith |Domain: |CONTOSO |Logon ID: |(0x0,0x78684DF) |Logon Type: 3 |Logon Process: Kerberos |Authentication Package: Kerberos |Workstation Name: |Logon GUID: {b79cc57c-2bff-c0c8-3cb8-3844a701b3c1} |Caller User Name: - |Caller Domain: - |Caller Logon ID: - |Caller Process ID: - |Transited Services: - |Source Network Address: 192.1.2.3 |Source Port: 0</test_message>
+                        <!-- Event ID -->
+                        <test_value name="i0">540</test_value>
+                        <!-- Source Name -->
+                        <test_value name="s0">SERVER01</test_value>
+                        <!-- User -->
+                        <test_value name="s1">bsmith</test_value>
+                        <!-- User Domain -->
+                        <test_value name="s2">CONTOSO</test_value>
+                        <!-- Source Network Address -->
+                        <test_value name="i1">192.1.2.3</test_value>
+                        </example>
+                       <example>
+                        <test_message program="ossec_archive">2015 Jul 07 03:38:33 (SERVER01) 192.168.100.14->WinEvtLog 2015 Jul 07 05:38:32 WinEvtLog: Security: AUDIT_SUCCESS(6278): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: Network Policy Server granted full access to a user because the host met the defined health policy. User: Security ID: S-1-5-21-1202660629-2052122202-682003330-41919 Account Name: CONTOSO\\bsmith Account Domain: CONTOSO Fully Qualified Account Name: CONTOSO\\bsmith  Client Machine: Security ID: S-1-0-0 Account Name: - Fully Qualified Account Name: - OS-Version: - Called Station Identifier: e05f.b222.aca0 Calling Station Identifier: 5cc5.d4b1.d111 NAS: NAS IPv4 Address: 192.1.1.1 NAS IPv6 Address: - NAS Identifier: WAP NAS Port-Type: Wireless - IEEE 802.11 NAS Port: 78415 RADIUS Client: Client Friendly Name: WAP Client IP Address: 192.1.1.1 Authentication Details: Proxy Policy Name: Use Windows authentication for all users Network Policy Name: Wifi Validation Authentication Provider: Windows Authentication Server: SERVER01.contoso.com Authentication Type: PEAP EAP Type: Microsoft: Secured password (EAP-MSCHAP v2) Account Session Identifier: - Quarantine Information: Result: Full Access Extended-Result: - Session Identifier: - Help URL: - System Health Validator Result(s): -</test_message>
+                        <!-- Event ID -->
+                        <test_value name="i0">6278</test_value>
+                        <!-- Source Name -->
+                        <test_value name="s0">SERVER01.contoso.com</test_value>
+                        <!-- User -->
+                        <test_value name="s1">bsmith</test_value>
+                        <!-- User Domain -->
+                        <test_value name="s2">CONTOSO</test_value>
+                        <!-- Source Network Address -->
+                        <test_value name="i1">192.1.1.1</test_value>
+                        </example>
                         <example>
                         <test_message program="ossec_archive">2015 Jul 05 01:13:12 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 04 21:13:08 WinEvtLog: Security: AUDIT_FAILURE(4625): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: An account failed to log on. Subject: Security ID: S-1-0-0 Account Name: - Account Domain: - Logon ID: 0x0 Logon Type: 3 Account For Which Logon Failed: Security ID: S-1-0-0 Account Name: bsmith Account Domain: WRKSTATION01 Failure Information: Failure Reason: %%2313 Status: 0xc000006d Sub Status: 0xc0000064 Process Information: Caller Process ID: 0x0 Caller Process Name: - Network Information: Workstation Name: WRKSTATION01 Source Network Address: 192.1.2.3 Source Port: 51900 Detailed Authentication Information: Logon Process: NtLmSsp Authentication Package: NTLM Transited Services: - Package Name (NTLM only): - Key Length: 0 This event is generated when a logon request fails. It is generated on the computer where access was attempted.</test_message>
                         <!-- Event ID -->
