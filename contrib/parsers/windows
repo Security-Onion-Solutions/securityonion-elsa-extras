@@ -13,6 +13,7 @@
 
                 <!-- 6278s -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Network Policy Server @ESTRING::\\@@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING::Client IP Address: @@IPv4:i1: @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Network Policy Server @ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING::Client IP Address: @@IPv4:i1: @</pattern>
 
                 <!-- 4768s -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos authentication ticket (TGT) was requested. @ESTRING::Account Name: @@ESTRING:s1: Supplied Realm Name: @@ESTRING:s2: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
