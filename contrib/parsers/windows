@@ -1,3 +1,90 @@
+<!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com-->
+
+<ruleset name="SYSMON" id='777'>
+   <pattern>ossec_archive</pattern>
+	<rules>
+		<rule provider="DefensiveDepth" class='10778' id='10778'>
+			<patterns>
+				<pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2: CommandLine: @@ESTRING::User: @@ESTRING:s3: LogonGuid:@@ESTRING::Hash: @@ESTRING:s4: @@ESTRING::ParentImage: @@ESTRING:s5: ParentCommandLine:@</pattern>
+	            </patterns>
+			<examples>
+				<example>
+					<test_message program="ossec_archive">2014 Dec 02 20:28:29 (10.0.15.14) 10.0.15.14->WinEvtLog 2014 Dec 02 15:26:07 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(1): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-U93G48C7BOP: Process Create: UtcTime: 12/2/2014 8:26 PM ProcessGuid: {00000000-205F-547E-0000-00100D090800} ProcessId: 1412 Image: C:\Windows\system32\taskhost.exe CommandLine: taskhost.exe U User: WIN-U93G48C7BOP\Administrator LogonGuid: {00000000-D448-547C-0000-0020C5460200} LogonId: 0x246C5 TerminalSessionId: 2 IntegrityLevel: High HashType: SHA1 Hash: 8570E08F5103FD0F496B1DE9ADEF6E49E237433F ParentProcessGuid: {00000000-D425-547C-0000-0010A1A40000} ParentProcessId: 736 ParentImage: C:\Windows\system32\svchost.exe ParentCommandLine: C:\Windows\system32\svchost.exe -k netsvcs</test_message>
+						<!-- host-->
+						<test_value name="s0">WIN-U93G48C7BOP</test_value>
+						<!-- processguid-->
+						<test_value name="s1">00000000-205F-547E-0000-00100D090800</test_value>
+						<!-- image-->
+						<test_value name="s2">C:\Windows\system32\taskhost.exe</test_value>
+						<!-- user-->
+						<test_value name="s3">WIN-U93G48C7BOP\Administrator</test_value>
+						<!-- hash-->
+						<test_value name="s4">8570E08F5103FD0F496B1DE9ADEF6E49E237433F</test_value>
+						<!-- parentimage-->
+						<test_value name="s5">C:\Windows\system32\svchost.exe</test_value>
+				</example>
+			</examples>
+		</rule>
+
+		<rule provider="DefensiveDepth" class='10779' id='10779'>
+			<patterns>
+				<pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2: User: @@ESTRING:s3: Protocol: @@ESTRING::: @@ESTRING:s4: @@ESTRING::SourceIp: @@ESTRING:: @@ESTRING::SourcePort: @@ESTRING:i0: @@ESTRING::DestinationIp: @@ESTRING:s5: @@ESTRING::DestinationPort: @@ESTRING:i1: @</pattern>
+			</patterns>
+			<examples>
+				<example>
+				<test_message program="ossec_archive">2014 Dec 02 20:28:31 (10.0.15.14) 10.0.15.14->WinEvtLog 2014 Dec 02 15:26:08 WinEvtLog: Microsoft-Windows-Sysmon/Operational:INFORMATION(3): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-U93G48C7BOP: Network connection detected: UtcTime: 12/1/2014 9:03 PM ProcessGuid: {00000000-D426-547C-0000-00103DB40000} ProcessId: 868 Image: C:\Windows\system32\svchost.exe User: NT AUTHORITY\NETWORK SERVICE Protocol: udp Initiated: true SourceIsIpv6: true SourceIp: a00:f0e:0:0:1822:ad8d:1e0:ffff SourceHostname: SourcePort: 60352 SourcePortName: DestinationIsIpv6: true DestinationIp: a00:f01:7200:6500:6100:2000:4300:6f00 DestinationHostname: DestinationPort: 53 DestinationPortName: domain</test_message>
+				<!-- hostname-->
+				<test_value name="s0">WIN-U93G48C7BOP</test_value>
+				<!-- processguid-->
+				<test_value name="s1">00000000-D426-547C-0000-00103DB40000</test_value>
+				<!-- image-->
+				<test_value name="s2">C:\Windows\system32\svchost.exe</test_value>
+				<!-- user-->
+				<test_value name="s3">NT AUTHORITY\NETWORK SERVICE</test_value>
+				<!-- initiated-->
+				<test_value name="s4">true</test_value>
+				<!-- sourceport-->
+				<test_value name="i0">60352</test_value>
+				<!-- destip-->
+				<test_value name="s5">a00:f01:7200:6500:6100:2000:4300:6f00</test_value>
+				<!-- destport-->
+				<test_value name="i1">53</test_value>
+				</example>
+			</examples>
+		</rule>
+	</rules>
+</ruleset>
+
+
+<!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com -->
+
+<ruleset name="WIN-PROCESS-TRACKING" id='780'>
+   <pattern>ossec_archive</pattern>
+	<rules>
+		<rule provider="DefensiveDepth" class='10780' id='10780'>
+                <patterns>
+                    <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Name: @@ESTRING:s2: Token Elevation Type: @@ESTRING:s3: Creator@</pattern>
+                </patterns>
+                <examples>
+			<example>
+                        <test_message program="ossec_archive">2015 Feb 04 22:05:18 (COLLECT02) 192.168.160.18->WinEvtLog 2015 Feb 04 17:05:14 WinEvtLog: Security: AUDIT_SUCCESS(4688): Microsoft-Windows-Security-Auditing: (no user): no domain: DD-COLLECT-01.DD.US: A new process has been created. Subject: Security ID: S-1-5-18 Account Name: DD-COLLECT-01$ Account Domain: DD.US Logon ID: 0x3e7 Process Information: New Process ID: 0x68c New Process Name: C:\Windows\System32\taskhost.exe Token Elevation Type: %%1936 Creator Process ID: 0x2d0</test_message>
+                        <!-- hostname-->
+                        <test_value name="s0">DD-COLLECT-01.DD.US</test_value>
+                        <!-- user-->
+                        <test_value name="s1">DD-COLLECT-01$</test_value>
+                        <!-- image-->
+                        <test_value name="s2">C:\Windows\System32\taskhost.exe</test_value>
+                        <!-- token_elevation-->
+                        <test_value name="s3">%%1936</test_value>
+			</example>
+		</examples>
+		</rule>
+	</rules>
+</ruleset>
+
+
+<!-- v. 7/10/2015 --- Brian Kellogg -->
+
 <ruleset name="WINDOWS" id='4'>
    <pattern>ossec_archive</pattern>
         <rules>
@@ -10,10 +97,6 @@
                 <!-- 4625s -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account failed to log on. @ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@@ESTRING::Source Network Address: @@IPv4:i1: Source Port:@</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account failed to log on. @ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@</pattern>
-
-                <!-- 6278s -->
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Network Policy Server @ESTRING::\\@@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING::Client IP Address: @@IPv4:i1: @</pattern>
-                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Network Policy Server @ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING::Client IP Address: @@IPv4:i1: @</pattern>
 
                 <!-- 4768s -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos authentication ticket (TGT) was requested. @ESTRING::Account Name: @@ESTRING:s1: Supplied Realm Name: @@ESTRING:s2: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
@@ -47,6 +130,10 @@
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s1:'. @@ESTRING::CLIENT: @@IPv4:i1:]@</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s1:'. @</pattern>
 
+				    <!-- 6278s -->
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Network Policy Server @ESTRING::\\@@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING::Client IP Address: @@IPv4:i1: @</pattern>
+                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Network Policy Server @ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING::Client IP Address: @@IPv4:i1: @</pattern>
+				
                 <!-- generic patterns -->
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::User Name: @@ESTRING:s1: |@@ESTRING::Domain: |@@ESTRING:s2: |@@ESTRING::Source Network Address: @@IPv4:i1: @</pattern>
                 <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::User Name: |@@ESTRING:s1: |@@ESTRING::Domain: |@@ESTRING:s2: |@@ESTRING::Client Address: |@@IPv4:i1: |@</pattern>
@@ -78,7 +165,7 @@
                         <!-- Source Network Address -->
                         <test_value name="i1">192.1.2.3</test_value>
                         </example>
-                       <example>
+                        <example>
                         <test_message program="ossec_archive">2015 Jul 07 03:38:33 (SERVER01) 192.168.100.14->WinEvtLog 2015 Jul 07 05:38:32 WinEvtLog: Security: AUDIT_SUCCESS(6278): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: Network Policy Server granted full access to a user because the host met the defined health policy. User: Security ID: S-1-5-21-1202660629-2052122202-682003330-41919 Account Name: CONTOSO\\bsmith Account Domain: CONTOSO Fully Qualified Account Name: CONTOSO\\bsmith  Client Machine: Security ID: S-1-0-0 Account Name: - Fully Qualified Account Name: - OS-Version: - Called Station Identifier: e05f.b222.aca0 Calling Station Identifier: 5cc5.d4b1.d111 NAS: NAS IPv4 Address: 192.1.1.1 NAS IPv6 Address: - NAS Identifier: WAP NAS Port-Type: Wireless - IEEE 802.11 NAS Port: 78415 RADIUS Client: Client Friendly Name: WAP Client IP Address: 192.1.1.1 Authentication Details: Proxy Policy Name: Use Windows authentication for all users Network Policy Name: Wifi Validation Authentication Provider: Windows Authentication Server: SERVER01.contoso.com Authentication Type: PEAP EAP Type: Microsoft: Secured password (EAP-MSCHAP v2) Account Session Identifier: - Quarantine Information: Result: Full Access Extended-Result: - Session Identifier: - Help URL: - System Health Validator Result(s): -</test_message>
                         <!-- Event ID -->
                         <test_value name="i0">6278</test_value>
@@ -129,7 +216,7 @@
                         <test_value name="i1">192.1.2.3</test_value>
                         </example>
                         <example>
-                        <test_message program="ossec_archive">2015 Jul 04 03:38:27 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 03 22:38:24 WinEvtLog: Security: AUDIT_SUCCESS(4648): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A logon was attempted using explicit credentials. Subject: Security ID: S-1-5-18 Account Name: SERVER01$ Account Domain: CONTOSO Logon ID: 0x3e7 Logon GUID: {00000000-0000-0000-0000-000000000000} Account Whose Credentials Were Used: Account Name: bsmith Account Domain: CONTOSO Logon GUID: {6AE9596A-077D-663D-A943-510BE2222840} Target Server: Target Server Name: localhost Additional Information: localhost Process Information: Process ID: 0xc8c Process Name: C:\\Windows\\System32\\inetsrv\\w3wp.exe Network Information: Network Address: 192.1.2.3 Port: 55893 This event is generated when a process attempts to log on an account by explicitly specifying that accountÃ¢Â�Â�s credentials. This most commonly occurs in batch-type configurations such as scheduled tasks, or when using the RUNAS command.</test_message>
+                        <test_message program="ossec_archive">2015 Jul 04 03:38:27 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 03 22:38:24 WinEvtLog: Security: AUDIT_SUCCESS(4648): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A logon was attempted using explicit credentials. Subject: Security ID: S-1-5-18 Account Name: SERVER01$ Account Domain: CONTOSO Logon ID: 0x3e7 Logon GUID: {00000000-0000-0000-0000-000000000000} Account Whose Credentials Were Used: Account Name: bsmith Account Domain: CONTOSO Logon GUID: {6AE9596A-077D-663D-A943-510BE2222840} Target Server: Target Server Name: localhost Additional Information: localhost Process Information: Process ID: 0xc8c Process Name: C:\\Windows\\System32\\inetsrv\\w3wp.exe Network Information: Network Address: 192.1.2.3 Port: 55893 This event is generated when a process attempts to log on an account by explicitly specifying that accountÃ¢Â?Â?s credentials. This most commonly occurs in batch-type configurations such as scheduled tasks, or when using the RUNAS command.</test_message>
                         <!-- Event ID -->
                         <test_value name="i0">4648</test_value>
                         <!-- Source Name -->
