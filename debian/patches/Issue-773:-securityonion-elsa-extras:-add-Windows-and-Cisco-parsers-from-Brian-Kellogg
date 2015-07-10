@@ -1,0 +1,715 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion95) precise; urgency=low
+ .
+   * Issue 773: securityonion-elsa-extras: add Windows and Cisco parsers from Brian Kellogg
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/asa_vpn
+@@ -0,0 +1,67 @@
++<ruleset name="CISCO_VPN" id='36'>
++   <pattern>ossec_archive</pattern>
++        <rules>
++                <rule provider="ELSA" class='36' id='36'>
++                <patterns>
++                <pattern>@ESTRING::ASA-@@ESTRING::Group &lt;@@ESTRING:s0:&gt; User &lt;@@ESTRING:s1:&gt; IP &lt;@@IPv4:i0:&gt;@</pattern>
++                <pattern>@ESTRING::ASA-@@ESTRING::Group = @@ESTRING:s0:, Username = @@ESTRING:s1:, IP = @@IPv4:i0:, @</pattern>
++                </patterns>
++                <examples>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 06:49:32 ossec->10.1.2.3 Jul 04 2015 06:49:32: %ASA-3-713167: Group = CISCO_VPN, Username = CONTOSO\\bsmith, IP = 1.1.1.1, Remote peer has failed user authentication - check configured username and password</test_message>
++                        <!-- Group Name -->
++                        <test_value name="s0">CISCO_VPN</test_value>
++                        <!-- User -->
++                        <test_value name="s1">CONTOSO\\bsmith</test_value>
++                        <!-- Source IP -->
++                        <test_value name="i0">1.1.1.1</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 06:49:32 ossec->10.1.2.3 Jul 04 2015 06:49:32: %ASA-3-713167: Group = CISCO_VPN, Username = bsmith, IP = 1.1.1.1, Remote peer has failed user authentication - check configured username and password</test_message>
++                        <!-- Group Name -->
++                        <test_value name="s0">CISCO_VPN</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- Source IP -->
++                        <test_value name="i0">1.1.1.1</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 20:10:09 ossec->10.1.2.3 Jul 04 2015 20:10:09: %ASA-6-716002: Group &lt;CISCO_ANY-Connect&gt; User &lt;bsmith@contoso.com&gt; IP &lt;1.1.1.1&gt; WebVPN session terminated: Idle Timeout.</test_message>
++                        <!-- Group Name -->
++                        <test_value name="s0">CISCO_ANY-Connect</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith@contoso.com</test_value>
++                        <!-- Source IP -->
++                        <test_value name="i0">1.1.1.1</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 03 21:53:27 ossec->10.1.2.3 Jul 03 2015 21:53:27: %ASA-4-113019: Group = CISCO_VPN, Username = bsmith@contoso.com, IP = 1.1.1.1, Session disconnected. Session Type: IPsecOverNatT, Duration: 1h:24m:44s, Bytes xmt: 646652, Bytes rcv: 3905286, Reason: User Requested</test_message>
++                        <!-- Group Name -->
++                        <test_value name="s0">CISCO_VPN</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith@contoso.com</test_value>
++                        <!-- Source IP -->
++                        <test_value name="i0">1.1.1.1</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 05:48:11 ossec->10.1.2.3 Jul 04 2015 05:48:11: %ASA-6-713228: Group = CISCO_VPN, Username = bsmith@contoso.com, IP = 1.1.1.1, Assigned private IP address 10.1.2.15 to remote user</test_message>
++                        <!-- Group Name -->
++                        <test_value name="s0">CISCO_VPN</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith@contoso.com</test_value>
++                        <!-- Source IP -->
++                        <test_value name="i0">1.1.1.1</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 15:22:50 ossec->10.1.2.3 Jul 04 2015 15:22:50: %ASA-4-722051: Group &lt;CISCO_ANY-Connect&gt; User &lt;bsmith@contoso.com&gt; IP &lt;1.1.1.1&gt; IPv4 Address &lt;10.1.2.10&gt; IPv6 address &lt;::&gt; assigned to session</test_message>
++                        <!-- Group Name -->
++                        <test_value name="s0">CISCO_ANY-Connect</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith@contoso.com</test_value>
++                        <!-- Source IP -->
++                        <test_value name="i0">1.1.1.1</test_value>
++                        </example>
++                    </examples>
++                </rule>
++        </rules>
++</ruleset>
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/asa_conn
+@@ -0,0 +1,101 @@
++<ruleset name="CISCO_TEARDOWN" id='3'>
++   <pattern>ossec_archive</pattern>
++        <rules>
++                <rule provider="ELSA" class='3' id='3'>
++                <patterns>
++                <!-- Cisco ASA conn teardowns can very depending on how they are built
++                     these patterns will not catch all of the possbilities but can be expanded upon as needed -->
++                <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/(@@ESTRING:: to @@ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5: @</pattern>
++                <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @to @ESTRING:s1::@@ESTRING::__@@IPv4:i3:_@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5:@</pattern>
++                <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @to @ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5: @</pattern>
++                <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @to @ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5:@</pattern>
++                </patterns>
++                <examples>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 05 11:38:00 ossec->10.1.2.3 Jul 05 2015 13:37:59: %ASA-6-302016: Teardown UDP connection 982861325 for outside-test:192.1.2.3/53 to inside:10.5.6.7/62350 duration 0:02:01 bytes 36</test_message>
++                        <!-- Proto -->
++                        <test_value name="i0">UDP</test_value>
++                        <!-- Src IP -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        <!-- Src Port -->
++                        <test_value name="i2">53</test_value>
++                        <!-- Dst IP -->
++                        <test_value name="i3">10.5.6.7</test_value>
++                        <!-- Dst Port -->
++                        <test_value name="i4">62350</test_value>
++                        <!-- Conn Bytes -->
++                        <test_value name="i5">36</test_value>
++                        <!-- O Int -->
++                        <test_value name="s0">outside-test</test_value>
++                        <!-- I Int -->
++                        <test_value name="s1">inside</test_value>
++                        <!-- Conn Durration -->
++                        <test_value name="s2">0:02:01</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 05 11:38:00 ossec->10.1.2.3 Jul 05 2015 11:37:59: %ASA-6-302014: Teardown TCP connection 750288225 for OUTSIDE:192.1.2.3/64393(LOCAL\\bsmith@contoso.com) to INSIDE:10.1.2.15/445 duration 0:02:32 bytes 16058 TCP Reset-O (bsmith@contoso.com)</test_message>
++                        <!-- Proto -->
++                        <test_value name="i0">TCP</test_value>
++                        <!-- Src IP -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        <!-- Src Port -->
++                        <test_value name="i2">64393</test_value>
++                        <!-- Dst IP -->
++                        <test_value name="i3">10.1.2.15</test_value>
++                        <!-- Dst Port -->
++                        <test_value name="i4">445</test_value>
++                        <!-- Conn Bytes -->
++                        <test_value name="i5">16058</test_value>
++                        <!-- O Int -->
++                        <test_value name="s0">OUTSIDE</test_value>
++                        <!-- I Int -->
++                        <test_value name="s1">INSIDE</test_value>
++                        <!-- Conn Durration -->
++                        <test_value name="s2">0:02:32</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 05 11:37:59 ossec>10.1.2.3 Jul 05 2015 11:37:59: %ASA-4-302014: Teardown TCP connection 2066296 for INSIDE:192.1.2.3/445 to OUTSIDE:1.1.1.1/56381 duration 0:00:40 bytes 323 SYN Timeout</test_message>
++                        <!-- Proto -->
++                        <test_value name="i0">TCP</test_value>
++                        <!-- Src IP -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        <!-- Src Port -->
++                        <test_value name="i2">445</test_value>
++                        <!-- Dst IP -->
++                        <test_value name="i3">1.1.1.1</test_value>
++                        <!-- Dst Port -->
++                        <test_value name="i4">56381</test_value>
++                        <!-- Conn Bytes -->
++                        <test_value name="i5">323</test_value>
++                        <!-- O Int -->
++                        <test_value name="s0">INSIDE</test_value>
++                        <!-- I Int -->
++                        <test_value name="s1">OUTSIDE</test_value>
++                        <!-- Conn Durration -->
++                        <test_value name="s2">0:00:40</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 05 11:37:59 ossec->10.1.2.3 Jul 05 2015 11:37:59: %ASA-6-302016: Teardown UDP connection 4232125765 for OUTSIDE:1.1.1.1/53 to INSIDE:IP__192.1.2.3__TEST-DNS-SERVER-1/60855 duration 0:00:40 bytes 323</test_message>
++                        <!-- Proto -->
++                        <test_value name="i0">UDP</test_value>
++                        <!-- Src IP -->
++                        <test_value name="i1">1.1.1.1</test_value>
++                        <!-- Src Port -->
++                        <test_value name="i2">53</test_value>
++                        <!-- Dst IP -->
++                        <test_value name="i3">192.1.2.3</test_value>
++                        <!-- Dst Port -->
++                        <test_value name="i4">60855</test_value>
++                        <!-- Conn Bytes -->
++                        <test_value name="i5">323</test_value>
++                        <!-- O Int -->
++                        <test_value name="s0">OUTSIDE</test_value>
++                        <!-- I Int -->
++                        <test_value name="s1">INSIDE</test_value>
++                        <!-- Conn Durration -->
++                        <test_value name="s2">0:00:40</test_value>
++                        </example>
++                    </examples>
++                </rule>
++        </rules>
++</ruleset>
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/asa_deny
+@@ -0,0 +1,112 @@
++<ruleset name="CISCO_DENY" id='2'>
++   <pattern>ossec_archive</pattern>
++        <rules>
++                <rule provider="ELSA" class='2' id='2'>
++                <patterns>
++                <!-- Cisco ASA denies can very depending on how they are built
++                     these patterns will not catch all of the possbilities but can be expanded upon as needed -->
++                <pattern>@ESTRING::ASA-@@ESTRING:: Deny @@ESTRING:i0: src @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @dst @ESTRING:s1::@@ESTRING::__@@IPv4:i3:_@@ESTRING::/@@ESTRING:i4: by @access-group @QSTRING:s2:"@</pattern>
++                <pattern>@ESTRING::ASA-@@ESTRING:: Deny @@ESTRING:i0: src @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @dst @ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @by access-group @QSTRING:s2:"@</pattern>
++                <pattern>@ESTRING::ASA-@@ESTRING:: access-list @@ESTRING:s2: denied @@ESTRING:i0: @@ESTRING:s0:/@@ESTRING::__@@IPv4:i1:_@@ESTRING::(@@ESTRING:i2:)@ -&gt; @ESTRING:s1:/@@IPv4:i3:@@QSTRING:i4:()@ hit</pattern>
++                <pattern>@ESTRING::ASA-@@ESTRING:: access-list @@ESTRING:s2: denied @@ESTRING:i0: @@ESTRING:s0:/@@IPv4:i1:@@QSTRING:i2:()@ -&gt; @ESTRING:s1:/@@IPv4:i3:@@QSTRING:i4:()@ hit</pattern>
++                </patterns>
++                <examples>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 15:21:14 ossec->10.27.200.11 Jul 04 2015 15:21:14: %ASA-1-106100: access-list INSIDE denied udp INSIDE/IP__192.1.2.3__TEST-DNS-SERVER-1(62341) -> OUTSIDE/1.1.1.1(53) hit-cnt 1 first hit [0x17e24468, 0xeddf9cf4]</test_message>
++                        <!-- Proto -->
++                        <test_value name="i0">udp</test_value>
++                        <!-- Src IP -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        <!-- Src Port -->
++                        <test_value name="i2">62341</test_value>
++                        <!-- Dst IP -->
++                        <test_value name="i3">1.1.1.1</test_value>
++                        <!-- Dst Port -->
++                        <test_value name="i4">53</test_value>
++                        <!-- O Int -->
++                        <test_value name="s0">INSIDE</test_value>
++                        <!-- I Int -->
++                        <test_value name="s1">OUTSIDE</test_value>
++                        <!-- Access Group -->
++                        <test_value name="s2">INSIDE</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 06 01:26:35 ossec-->10.1.2.3 Jul 06 2015 01:26:35: %ASA-1-106100: access-list INSIDE denied tcp INSIDE/192.1.2.3(62341) -> OUTSIDE/1.1.1.1(80) hit-cnt 2 300-second interval [0x17e24468, 0xdb1224c4]</test_message>
++                        <!-- Proto -->
++                        <test_value name="i0">tcp</test_value>
++                        <!-- Src IP -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        <!-- Src Port -->
++                        <test_value name="i2">62341</test_value>
++                        <!-- Dst IP -->
++                        <test_value name="i3">1.1.1.1</test_value>
++                        <!-- Dst Port -->
++                        <test_value name="i4">80</test_value>
++                        <!-- O Int -->
++                        <test_value name="s0">INSIDE</test_value>
++                        <!-- I Int -->
++                        <test_value name="s1">OUTSIDE</test_value>
++                        <!-- Access Group -->
++                        <test_value name="s2">INSIDE</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 02 23:03:25 ossec->10.1.2.3 Jul 02 2015 23:03:25: %ASA-4-106023: Deny udp src INSIDE:10.15.16.17/1353 dst OUTSIDE:1.1.1.1/2000 by access-group "INSIDE" [0x0, 0x0]</test_message>
++                        <!-- Proto -->
++                        <test_value name="i0">udp</test_value>
++                        <!-- Src IP -->
++                        <test_value name="i1">10.15.16.17</test_value>
++                        <!-- Src Port -->
++                        <test_value name="i2">1353</test_value>
++                        <!-- Dst IP -->
++                        <test_value name="i3">1.1.1.1</test_value>
++                        <!-- Dst Port -->
++                        <test_value name="i4">2000</test_value>
++                        <!-- O Int -->
++                        <test_value name="s0">INSIDE</test_value>
++                        <!-- I Int -->
++                        <test_value name="s1">OUTSIDE</test_value>
++                        <!-- Access Group -->
++                        <test_value name="s2">INSIDE</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 05 07:38:30 ossec->10.1.2.3 Jul 05 2015 07:38:30: %ASA-4-106023: Deny tcp src OUTSIDE:1.1.1.1/30961 dst DMZ:192.1.2.3/443 by access-group "OUTSIDE" [0xdc7d8c8a, 0x84a85def]</test_message>
++                        <!-- Proto -->
++                        <test_value name="i0">tcp</test_value>
++                        <!-- Src IP -->
++                        <test_value name="i1">1.1.1.1</test_value>
++                        <!-- Src Port -->
++                        <test_value name="i2">30961</test_value>
++                        <!-- Dst IP -->
++                        <test_value name="i3">192.1.2.3</test_value>
++                        <!-- Dst Port -->
++                        <test_value name="i4">443</test_value>
++                        <!-- O Int -->
++                        <test_value name="s0">OUTSIDE</test_value>
++                        <!-- I Int -->
++                        <test_value name="s1">DMZ</test_value>
++                        <!-- Access Group -->
++                        <test_value name="s2">OUTSIDE</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 05 11:37:59 ossec->2015 Jul 05 07:38:30 ossec->10.1.2.3 Jul 05 2015 07:38:30: %ASA-4-106023: Deny tcp src DMZ:192.1.2.3/56409 dst INSIDE:IP__10.15.16.17__TEST-DNS-SERVER-3/49155 by access-group "DMZ" [0x0, 0x0]</test_message>
++                        <!-- Proto -->
++                        <test_value name="i0">tcp</test_value>
++                        <!-- Src IP -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        <!-- Src Port -->
++                        <test_value name="i2">56409</test_value>
++                        <!-- Dst IP -->
++                        <test_value name="i3">10.15.16.17</test_value>
++                        <!-- Dst Port -->
++                        <test_value name="i4">49155</test_value>
++                        <!-- O Int -->
++                        <test_value name="s0">DMZ</test_value>
++                        <!-- I Int -->
++                        <test_value name="s1">INSIDE</test_value>
++                        <!-- Access Group -->
++                        <test_value name="s2">DMZ</test_value>
++                        </example>
++                    </examples>
++                </rule>
++        </rules>
++</ruleset>
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/windows
+@@ -0,0 +1,398 @@
++<!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com-->
++<ruleset name="SYSMON" id='777'>
++   <pattern>ossec_archive</pattern>
++	<rules>
++		<rule provider="DefensiveDepth" class='10778' id='10778'>
++			<patterns>
++				<pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2: CommandLine: @@ESTRING::User: @@ESTRING:s3: LogonGuid:@@ESTRING::Hash: @@ESTRING:s4: @@ESTRING::ParentImage: @@ESTRING:s5: ParentCommandLine:@</pattern>
++	            </patterns>
++			<examples>
++				<example>
++					<test_message program="ossec_archive">2014 Dec 02 20:28:29 (10.0.15.14) 10.0.15.14->WinEvtLog 2014 Dec 02 15:26:07 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(1): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-U93G48C7BOP: Process Create: UtcTime: 12/2/2014 8:26 PM ProcessGuid: {00000000-205F-547E-0000-00100D090800} ProcessId: 1412 Image: C:\Windows\system32\taskhost.exe CommandLine: taskhost.exe U User: WIN-U93G48C7BOP\Administrator LogonGuid: {00000000-D448-547C-0000-0020C5460200} LogonId: 0x246C5 TerminalSessionId: 2 IntegrityLevel: High HashType: SHA1 Hash: 8570E08F5103FD0F496B1DE9ADEF6E49E237433F ParentProcessGuid: {00000000-D425-547C-0000-0010A1A40000} ParentProcessId: 736 ParentImage: C:\Windows\system32\svchost.exe ParentCommandLine: C:\Windows\system32\svchost.exe -k netsvcs</test_message>
++						<!-- host-->
++						<test_value name="s0">WIN-U93G48C7BOP</test_value>
++						<!-- processguid-->
++						<test_value name="s1">00000000-205F-547E-0000-00100D090800</test_value>
++						<!-- image-->
++						<test_value name="s2">C:\Windows\system32\taskhost.exe</test_value>
++						<!-- user-->
++						<test_value name="s3">WIN-U93G48C7BOP\Administrator</test_value>
++						<!-- hash-->
++						<test_value name="s4">8570E08F5103FD0F496B1DE9ADEF6E49E237433F</test_value>
++						<!-- parentimage-->
++						<test_value name="s5">C:\Windows\system32\svchost.exe</test_value>
++				</example>
++			</examples>
++		</rule>
++
++		<rule provider="DefensiveDepth" class='10779' id='10779'>
++			<patterns>
++				<pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2: User: @@ESTRING:s3: Protocol: @@ESTRING::: @@ESTRING:s4: @@ESTRING::SourceIp: @@ESTRING:: @@ESTRING::SourcePort: @@ESTRING:i0: @@ESTRING::DestinationIp: @@ESTRING:s5: @@ESTRING::DestinationPort: @@ESTRING:i1: @</pattern>
++			</patterns>
++			<examples>
++				<example>
++				<test_message program="ossec_archive">2014 Dec 02 20:28:31 (10.0.15.14) 10.0.15.14->WinEvtLog 2014 Dec 02 15:26:08 WinEvtLog: Microsoft-Windows-Sysmon/Operational:INFORMATION(3): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-U93G48C7BOP: Network connection detected: UtcTime: 12/1/2014 9:03 PM ProcessGuid: {00000000-D426-547C-0000-00103DB40000} ProcessId: 868 Image: C:\Windows\system32\svchost.exe User: NT AUTHORITY\NETWORK SERVICE Protocol: udp Initiated: true SourceIsIpv6: true SourceIp: a00:f0e:0:0:1822:ad8d:1e0:ffff SourceHostname: SourcePort: 60352 SourcePortName: DestinationIsIpv6: true DestinationIp: a00:f01:7200:6500:6100:2000:4300:6f00 DestinationHostname: DestinationPort: 53 DestinationPortName: domain</test_message>
++				<!-- hostname-->
++				<test_value name="s0">WIN-U93G48C7BOP</test_value>
++				<!-- processguid-->
++				<test_value name="s1">00000000-D426-547C-0000-00103DB40000</test_value>
++				<!-- image-->
++				<test_value name="s2">C:\Windows\system32\svchost.exe</test_value>
++				<!-- user-->
++				<test_value name="s3">NT AUTHORITY\NETWORK SERVICE</test_value>
++				<!-- initiated-->
++				<test_value name="s4">true</test_value>
++				<!-- sourceport-->
++				<test_value name="i0">60352</test_value>
++				<!-- destip-->
++				<test_value name="s5">a00:f01:7200:6500:6100:2000:4300:6f00</test_value>
++				<!-- destport-->
++				<test_value name="i1">53</test_value>
++				</example>
++			</examples>
++		</rule>
++	</rules>
++</ruleset>
++
++
++<!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com -->
++<ruleset name="WIN-PROCESS-TRACKING" id='780'>
++   <pattern>ossec_archive</pattern>
++	<rules>
++		<rule provider="DefensiveDepth" class='10780' id='10780'>
++                <patterns>
++                    <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Name: @@ESTRING:s2: Token Elevation Type: @@ESTRING:s3: Creator@</pattern>
++                </patterns>
++                <examples>
++			<example>
++                        <test_message program="ossec_archive">2015 Feb 04 22:05:18 (COLLECT02) 192.168.160.18->WinEvtLog 2015 Feb 04 17:05:14 WinEvtLog: Security: AUDIT_SUCCESS(4688): Microsoft-Windows-Security-Auditing: (no user): no domain: DD-COLLECT-01.DD.US: A new process has been created. Subject: Security ID: S-1-5-18 Account Name: DD-COLLECT-01$ Account Domain: DD.US Logon ID: 0x3e7 Process Information: New Process ID: 0x68c New Process Name: C:\Windows\System32\taskhost.exe Token Elevation Type: %%1936 Creator Process ID: 0x2d0</test_message>
++                        <!-- hostname-->
++                        <test_value name="s0">DD-COLLECT-01.DD.US</test_value>
++                        <!-- user-->
++                        <test_value name="s1">DD-COLLECT-01$</test_value>
++                        <!-- image-->
++                        <test_value name="s2">C:\Windows\System32\taskhost.exe</test_value>
++                        <!-- token_elevation-->
++                        <test_value name="s3">%%1936</test_value>
++			</example>
++		</examples>
++		</rule>
++	</rules>
++</ruleset>
++
++
++<!-- v. 7/10/2015 --- Brian Kellogg -->
++<ruleset name="WINDOWS" id='4'>
++   <pattern>ossec_archive</pattern>
++        <rules>
++                <rule provider="ELSA" class='4' id='4'>
++                <patterns>
++                <!-- 4624s -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account was successfully logged on. @ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon ID:@@ESTRING::Source Network Address: @@IPv4:i1: Source Port:@</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account was successfully logged on. @ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon ID:@</pattern>
++
++                <!-- 4625s -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account failed to log on. @ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@@ESTRING::Source Network Address: @@IPv4:i1: Source Port:@</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account failed to log on. @ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Failure@</pattern>
++
++                <!-- 4768s -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos authentication ticket (TGT) was requested. @ESTRING::Account Name: @@ESTRING:s1: Supplied Realm Name: @@ESTRING:s2: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos authentication ticket (TGT) was requested. @ESTRING::Account Name: @@ESTRING:s1: Supplied Realm Name: @@ESTRING:s2: @</pattern>
++
++                <!-- 4771s -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Kerberos pre-authentication failed.@ESTRING::Account Name: @@ESTRING:s1: Service Information: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Kerberos pre-authentication failed.@ESTRING::Account Name: @@ESTRING:s1: Service Information: @</pattern>
++
++                <!-- 4770s -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos service ticket was renewed.@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Service Information: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A Kerberos service ticket was renewed.@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Service Information: @</pattern>
++
++                <!-- 4742s -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A computer account was changed.@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Changed Attributes: @</pattern>
++
++                <!-- 4738s -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A user account was changed.@ESTRING::Account Name:@@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Changed Attributes: @</pattern>
++
++                <!-- 5145s some contained IPv4 and others contained IPv6 source IPs -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @File @IPv4:i1:@@ESTRING:: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s4: 0x@</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @File @ESTRING:: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s4: 0x@</pattern>
++
++                <!-- 4648s -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A logon was attempted using explicit credentials.@ESTRING:: Account Whose Credentials Were Used: Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING:: Network Address: @@IPv4:i1: @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A logon was attempted using explicit credentials.@ESTRING:: Account Whose Credentials Were Used: Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @</pattern>
++
++                <!-- 18453s and 18454s -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s2:\\@@ESTRING:s1:'. @@ESTRING::CLIENT: @@IPv4:i1:]@</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s2:\\@@ESTRING:s1:'. @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s1:'. @@ESTRING::CLIENT: @@IPv4:i1:]@</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s1:'. @</pattern>
++
++				    <!-- 6278s -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Network Policy Server @ESTRING::\\@@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING::Client IP Address: @@IPv4:i1: @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @Network Policy Server @ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: @@ESTRING::Client IP Address: @@IPv4:i1: @</pattern>
++				
++                <!-- generic patterns -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::User Name: @@ESTRING:s1: |@@ESTRING::Domain: |@@ESTRING:s2: |@@ESTRING::Source Network Address: @@IPv4:i1: @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::User Name: |@@ESTRING:s1: |@@ESTRING::Domain: |@@ESTRING:s2: |@@ESTRING::Client Address: |@@IPv4:i1: |@</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon @@ESTRING::ffff:@@IPv4:i1: @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name: @@ESTRING:s1: Account Domain: @@ESTRING:s2: Logon@</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name: @@ESTRING:s1: LOGON Account Domain: @@ESTRING:s2: Logon@</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Primary User Name: @@ESTRING:s1: |@@ESTRING::Primary Domain: @@ESTRING:s2: |@</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Source Network Address: @@IPv4:i1: @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Client Address: |@@IPv4:i1: |@</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Client Address: @@IPv4:i1: @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::User Name: @@ESTRING:s1: |@@ESTRING::Domain: |@@ESTRING:s2: |@@ESTRING::Source Network Address: - @</pattern>
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::User Name: @@ESTRING:s1: |@@ESTRING::Domain: |@@ESTRING:s2: |Logon ID:@</pattern>
++
++                <!-- pattern of last resort -->
++                <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @</pattern>
++                </patterns>
++                <examples>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 08 20:13:35 (SERVER01) 10.27.201.19->WinEvtLog 2015 Jul 08 15:13:31 WinEvtLog: Security: AUDIT_SUCCESS(540): Security: bsmith: CONTOSO: SERVER01: Successful Network Logon: |User Name: bsmith |Domain: |CONTOSO |Logon ID: |(0x0,0x78684DF) |Logon Type: 3 |Logon Process: Kerberos |Authentication Package: Kerberos |Workstation Name: |Logon GUID: {b79cc57c-2bff-c0c8-3cb8-3844a701b3c1} |Caller User Name: - |Caller Domain: - |Caller Logon ID: - |Caller Process ID: - |Transited Services: - |Source Network Address: 192.1.2.3 |Source Port: 0</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">540</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">CONTOSO</test_value>
++                        <!-- Source Network Address -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 07 03:38:33 (SERVER01) 192.168.100.14->WinEvtLog 2015 Jul 07 05:38:32 WinEvtLog: Security: AUDIT_SUCCESS(6278): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: Network Policy Server granted full access to a user because the host met the defined health policy. User: Security ID: S-1-5-21-1202660629-2052122202-682003330-41919 Account Name: CONTOSO\\bsmith Account Domain: CONTOSO Fully Qualified Account Name: CONTOSO\\bsmith  Client Machine: Security ID: S-1-0-0 Account Name: - Fully Qualified Account Name: - OS-Version: - Called Station Identifier: e05f.b222.aca0 Calling Station Identifier: 5cc5.d4b1.d111 NAS: NAS IPv4 Address: 192.1.1.1 NAS IPv6 Address: - NAS Identifier: WAP NAS Port-Type: Wireless - IEEE 802.11 NAS Port: 78415 RADIUS Client: Client Friendly Name: WAP Client IP Address: 192.1.1.1 Authentication Details: Proxy Policy Name: Use Windows authentication for all users Network Policy Name: Wifi Validation Authentication Provider: Windows Authentication Server: SERVER01.contoso.com Authentication Type: PEAP EAP Type: Microsoft: Secured password (EAP-MSCHAP v2) Account Session Identifier: - Quarantine Information: Result: Full Access Extended-Result: - Session Identifier: - Help URL: - System Health Validator Result(s): -</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">6278</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">CONTOSO</test_value>
++                        <!-- Source Network Address -->
++                        <test_value name="i1">192.1.1.1</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 05 01:13:12 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 04 21:13:08 WinEvtLog: Security: AUDIT_FAILURE(4625): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: An account failed to log on. Subject: Security ID: S-1-0-0 Account Name: - Account Domain: - Logon ID: 0x0 Logon Type: 3 Account For Which Logon Failed: Security ID: S-1-0-0 Account Name: bsmith Account Domain: WRKSTATION01 Failure Information: Failure Reason: %%2313 Status: 0xc000006d Sub Status: 0xc0000064 Process Information: Caller Process ID: 0x0 Caller Process Name: - Network Information: Workstation Name: WRKSTATION01 Source Network Address: 192.1.2.3 Source Port: 51900 Detailed Authentication Information: Logon Process: NtLmSsp Authentication Package: NTLM Transited Services: - Package Name (NTLM only): - Key Length: 0 This event is generated when a logon request fails. It is generated on the computer where access was attempted.</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">4625</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">WRKSTATION01</test_value>
++                        <!-- Source Network Address -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 03:39:09 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 03 23:39:09 WinEvtLog: Application: AUDIT_SUCCESS(18454): MSSQL$DB: (no user): no domain: SERVER01.contoso.com: Login succeeded for user 'bsmith'. Connection made using SQL Server authentication. [CLIENT: 192.1.2.3]</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">18454</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- Source IP -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 03:40:02 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 03 23:40:00 WinEvtLog: Application: AUDIT_SUCCESS(18453): MSSQL$DB: bsmith: CONTOSO: SERVER01.contoso.com: Login succeeded for user 'CONTOSO\\bsmith'. Connection made using Windows authentication. [CLIENT: 192.1.2.3]</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">18453</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">CONTOSO</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- Source IP -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 03:38:27 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 03 22:38:24 WinEvtLog: Security: AUDIT_SUCCESS(4648): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A logon was attempted using explicit credentials. Subject: Security ID: S-1-5-18 Account Name: SERVER01$ Account Domain: CONTOSO Logon ID: 0x3e7 Logon GUID: {00000000-0000-0000-0000-000000000000} Account Whose Credentials Were Used: Account Name: bsmith Account Domain: CONTOSO Logon GUID: {6AE9596A-077D-663D-A943-510BE2222840} Target Server: Target Server Name: localhost Additional Information: localhost Process Information: Process ID: 0xc8c Process Name: C:\\Windows\\System32\\inetsrv\\w3wp.exe Network Information: Network Address: 192.1.2.3 Port: 55893 This event is generated when a process attempts to log on an account by explicitly specifying that accountÃ¢Â?Â?s credentials. This most commonly occurs in batch-type configurations such as scheduled tasks, or when using the RUNAS command.</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">4648</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">CONTOSO</test_value>
++                        <!-- Source IP -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 03:38:21 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 03 21:38:19 WinEvtLog: Security: AUDIT_SUCCESS(4656): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A handle to an object was requested. Subject: Security ID: S-1-5-18 Account Name: SERVER01$ Account Domain: CONTOSO Logon ID: 0x3e7 Object: Object Server: Security Object Type: File Object Name: \\DEVICE\\NETBT_TCPIP_{3E6B461A-FE27-4A0F-BE7B-98F37333F150} Handle ID: 0x11c Process Information: Process ID: 0 Process Name: 0x918 Access Request Information: Transaction ID: {00000000-0000-0000-0000-000000000000} Accesses: %%1541 ||||%%4416 |||| Access Mask: - Privileges Used for Access Check: 0x100001 Restricted SID Count: -</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">4656</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">SERVER01$</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">CONTOSO</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 06 09:11:55 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 06 11:11:51 WinEvtLog: Security: AUDIT_SUCCESS(5145): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: S-1-5-21-1202660629-2052111302-682003330-36208 BSmith CONTOSO 0xd07fc77 File ::1 53216 \\\\*\\share1$ \\??\\E:\\shared stuff\\this\\stuff.doc 0x120089 %%1538</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">5145</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">BSmith</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">CONTOSO</test_value>
++                        <!-- Share name -->
++                        <test_value name="s3">\\\\*\\share1$</test_value>
++                        <!-- Share path -->
++                        <test_value name="s4">\\??\\E:\\shared stuff\\this\\stuff.doc</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 06 09:11:55 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 06 11:11:51 WinEvtLog: Security: AUDIT_SUCCESS(5145): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: S-1-5-21-1202660629-2052111302-682003330-36208 BSmith CONTOSO 0xd07fc77 File 192.1.2.3 53216 \\\\*\\share1$ \\??\\E:\\shared stuff\\this\\stuff.doc 0x120089 %%1538</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">5145</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">BSmith</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">CONTOSO</test_value>
++                        <!-- Source Network Address -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        <!-- Share name -->
++                        <test_value name="s3">\\\\*\\share1$</test_value>
++                        <!-- Share path -->
++                        <test_value name="s4">\\??\\E:\\shared stuff\\this\\stuff.doc</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 03:00:02 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 03 22:00:00 WinEvtLog: Security: AUDIT_SUCCESS(4770): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A Kerberos service ticket was renewed. Account Information: Account Name: bsmith@contoso.com Account Domain: contoso.com Service Information: Service Name: krbtgt Service ID: S-1-5-21-1434109735-357464061-2299825339-502 Network Information: Client Address: ::ffff:192.1.2.3 Client Port: 57958 Additional Information: Ticket Options: 0x10002 Ticket Encryption Type: 0x12 Ticket options and encryption types are defined in RFC 4120.</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">4770</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith@contoso.com</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">contoso.com</test_value>
++                        <!-- Source Network Address -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 01 22:25:26 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 01 18:25:23 WinEvtLog: Security: AUDIT_SUCCESS(4738): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A user account was changed. Subject: Security ID: S-1-5-21-1434109735-357466661-2299825339-102146 Account Name: admin Account Domain: CONTOSO Logon ID: 0x6cb7b28a Target Account: Security ID: S-1-5-21-1434109735-357464061-2299825339-9814 Account Name: bsmith Account Domain: CONTOSO Changed Attributes: SAM Account Name: - Display Name: - User Principal Name: - Home Directory: - Home Drive: - Script Path: - Profile Path: - User Workstations: - Password Last Set: - Account Expires: 7/3/2015 12:00:00 AM Primary Group ID: - AllowedToDelegateTo: - Old UAC Value: - New UAC Value: - User Account Control: - User Parameters: - SID History: - Logon Hours: - Additional Information: Privileges: -</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">4738</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">CONTOSO</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 04 01:31:51 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 03 20:31:47 WinEvtLog: Security: AUDIT_SUCCESS(4742): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A computer account was changed. Subject: Security ID: S-1-5-7 Account Name: ANONYMOUS LOGON Account Domain: NT AUTHORITY Logon ID: 0x3e6 Computer Account That Was Changed: Security ID: S-1-5-21-1433309735-357464061-2299825339-46305 Account Name: COMPUTER01 Account Domain: CONTOSO Changed Attributes: SAM Account Name: - Display Name: - User Principal Name: - Home Directory: - Home Drive: - Script Path: - Profile Path: - User Workstations: - Password Last Set: 7/3/2015 8:31:46 PM Account Expires: - Primary Group ID: - AllowedToDelegateTo: - Old UAC Value: - New UAC Value: - User Account Control: - User Parameters: - SID History: - Logon Hours: - DNS Host Name: - Service Principal Names: - Additional Information: Privileges: -</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">4742</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">COMPUTER01</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">CONTOSO</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 03 18:21:18 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 03 13:21:15 WinEvtLog: Security: AUDIT_SUCCESS(4769): Microsoft-Windows-Security-Auditing: bsmith@contoso.com: contoso.com: SERVER01.contoso.com: A Kerberos service ticket was requested. Account Information: Account Name: bsmith@contoso.com Account Domain: contoso.com Logon GUID: {7B57268F-2068-1A5A-17E6-E328C00072A0} Service Information: Service Name: test Service ID: S-1-5-21-1434109735-0007464061-2299825339-89167 Network Information: Client Address: ::ffff:192.1.2.3 Client Port: 57432 Additional Information: Ticket Options: 0x40810008 Ticket Encryption Type: 0x12 Failure Code: 0x0 Transited Services: - This event is generated every time access is requested to a resource such as a computer or a Windows service. The service name indicates the resource to which access was requested.</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">4769</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith@contoso.com</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">contoso.com</test_value>
++                        <!-- Source Network Address -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jun 30 06:24:49 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jun 30 01:24:46 WinEvtLog: Security: AUDIT_FAILURE(529): Security: SYSTEM: NT AUTHORITY: SERVER01: Logon Failure: |Reason: |Unknown user name or bad password |User Name: bsmith |Domain: |CONTOSO |Logon Type: 3 |Logon Process: NtLmSsp |Authentication Package: NTLM |Workstation Name: |Caller User Name: - |Caller Domain: - |Caller Logon ID: - |Caller Process ID: - |Transited Services: - |Source Network Address: 192.1.2.3 |Source Port: 54875</test_message>
++                        <!-- Event ID-->
++                        <test_value name="i0">529</test_value>
++                        <!-- Source Name-->
++                        <test_value name="s0">SERVER01</test_value>
++                        <!-- user-->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- User Domain-->
++                        <test_value name="s2">CONTOSO</test_value>
++                        <!-- Source Network Address-->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jun 30 13:18:29 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jun 30 09:18:27 WinEvtLog: Security: AUDIT_SUCCESS(528): Security: bsmith: CONTOSO: SERVER01: Successful Logon: |User Name: bsmith |Domain: |CONTOSO |Logon ID: |(0x0,0x1739ABC) |Logon Type: 10 |Logon Process: User32 |Authentication Package: Negotiate |Workstation Name: SERVER01 |Logon GUID: {b455ceb3-31e4-5045-0a00-9a35b810f005} |Caller User Name: SERVER01$ |Caller Domain: CONTOSO |Caller Logon ID: (0x0,0x3E7) |Caller Process ID: 4180 |Transited Services: - |Source Network Address: 192.1.2.3 |Source Port: 45653</test_message>
++                        <!-- Event ID-->
++                        <test_value name="i0">528</test_value>
++                        <!-- Source Name-->
++                        <test_value name="s0">SERVER01</test_value>
++                        <!-- user-->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- User Domain-->
++                        <test_value name="s2">CONTOSO</test_value>
++                        <!-- Source Network Address-->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jun 29 06:51:37 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jun 29 01:51:31 WinEvtLog: Security: AUDIT_SUCCESS(4624): Microsoft-Windows-Security-Auditing: bsmith: CONTOSO: SERVER01.contoso.com: An account was successfully logged on. Subject: Security ID: S-1-5-18 Account Name: SERVER01$ Account Domain: CONTOSO Logon ID: 0x3e7 Logon Type: 8 New Logon: Security ID: S-1-5-21-1434109555-357464061-2299825339-61677 Account Name: bsmith Account Domain: CONTOSO Logon ID: 0x6e5ee6ba Logon GUID: {8C4F2A40-6052-7777-7085-CF786A945458} Process Information: Process ID: 0xc8c Process Name: C:\\Windows\\System32\\inetsrv\\w3wp.exe Network Information: Workstation Name: SERVER01 Source Network Address: 192.1.2.3 Source Port: 6086 Detailed Authentication Information: Logon Process: Advapi Authentication Package: Negotiate Transited Services: - Package Name (NTLM only): - Key Length: 0 This event is generated when a logon session is created. It is generated on the computer that was accessed.</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">4624</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">CONTOSO</test_value>
++                        <!-- Source Network Address -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 01 22:00:24 (SERVER01) 10.15.16.117>WinEvtLog 2015 Jul 01 17:00:22 WinEvtLog: Security: AUDIT_SUCCESS(4768): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A Kerberos authentication ticket (TGT) was requested. Account Information: Account Name: bsmith Supplied Realm Name: contoso User ID: S-1-5-21-1202666629-2052111302-682003330-30969 Service Information: Service Name: krbtgt Service ID: S-1-5-21-1202667829-2052111302-682003330-502 Network Information: Client Address: ::ffff:192.1.2.3 Client Port: 54967 Additional Information: Ticket Options: 0x40819910 Result Code: 0x0 Ticket Encryption Type: 0x12 Pre-Authentication Type: 2 Certificate Information: Certificate Issuer Name: Certificate Serial Number: Certificate Thumbprint: Certificate information is only provided if a certificate was used for pre-authentication. Pre-authentication types, ticket options, encryption types and result codes are defined in RFC 4120.</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">4768</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">contoso</test_value>
++                        <!-- Source Network Address -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 01 22:00:29 (SERVER01) 192.168.1.99->WinEvtLog 2015 Jul 01 18:59:40 WinEvtLog: Security: AUDIT_SUCCESS(673): Security: SYSTEM: NT AUTHORITY: SERVER01: Service Ticket Request: |User Name: |bsmith@contoso.com |User Domain: |contoso.com |Service Name: |TESTING$ |Service ID: |%{S-1-5-21-2093895433-1210347603-2226579991-8004} |Ticket Options: |0x40810000 |Ticket Encryption Type: 0x17 |Client Address: |192.1.2.3 |Failure Code: |- |Logon GUID: |{62537888-8eb7-1114-16cc-d60ce00b490e} |Transited Services: -</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">673</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith@contoso.com</test_value>
++                        <!-- User Domain -->
++                        <test_value name="s2">contoso.com</test_value>
++                        <!-- Source Network Address -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                        <example>
++                        <test_message program="ossec_archive">2015 Jul 01 22:35:50 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 01 18:35:48 WinEvtLog: Security: AUDIT_FAILURE(4771): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: Kerberos pre-authentication failed. Account Information: Security ID: S-1-5-21-1434109735-3999524061-2299825339-79220 Account Name: bsmith Service Information: Service Name: krbtgt/CONTOSO Network Information: Client Address: ::ffff:192.1.2.3 Client Port: 63964 Additional Information: Ticket Options: 0x40810010 Failure Code: 0x18 Pre-Authentication Type: 2 Certificate Information: Certificate Issuer Name: Certificate Serial Number: Certificate Thumbprint: Certificate information is only provided if a certificate was used for pre-authentication. Pre-authentication types, ticket options and failure codes are defined in RFC 4120. If the ticket was malformed or damaged during transit and could not be decrypted, then many fields in this event might not be present.</test_message>
++                        <!-- Event ID -->
++                        <test_value name="i0">4771</test_value>
++                        <!-- Source Name -->
++                        <test_value name="s0">SERVER01.contoso.com</test_value>
++                        <!-- User -->
++                        <test_value name="s1">bsmith</test_value>
++                        <!-- Source Network Address -->
++                        <test_value name="i1">192.1.2.3</test_value>
++                        </example>
++                </examples>
++                </rule>
++        </rules>
++</ruleset>

@@ -2,6 +2,9 @@ contrib opt/elsa/contrib/securityonion
 bin/securityonion-elsa-config.sh usr/bin
 bin/securityonion_elsa_register.rb usr/bin
 contrib/securityonion-patterndb.xml /etc/elsa/patterns.d/elsa
+contrib/parsers/asa_conn etc/elsa/patterns.d/securityonion
+contrib/parsers/asa_deny etc/elsa/patterns.d/securityonion
+contrib/parsers/asa_vpn etc/elsa/patterns.d/securityonion
 contrib/parsers/bind etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_conn etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_dhcp etc/elsa/patterns.d/securityonion
@@ -22,5 +25,4 @@ contrib/parsers/bro_tunnel etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_weird etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_x509 etc/elsa/patterns.d/securityonion
 contrib/parsers/pfsense etc/elsa/patterns.d/securityonion
-contrib/parsers/sysmon etc/elsa/patterns.d/securityonion
-contrib/parsers/win_process_tracking etc/elsa/patterns.d/securityonion
+contrib/parsers/windows etc/elsa/patterns.d/securityonion
