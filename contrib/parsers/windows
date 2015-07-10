@@ -55,7 +55,7 @@
 </ruleset>
 
 
-        <!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com -->
+<!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com -->
 <ruleset name="WIN-PROCESS-TRACKING" id='780'>
 <pattern>ossec_archive</pattern>
 <rules>
@@ -81,7 +81,7 @@
 </ruleset>
 
 
-        <!-- v. 7/10/2015 --- Brian Kellogg -->
+<!-- v. 7/10/2015 --- Brian Kellogg -->
 <ruleset name="WINDOWS" id='4'>
 <pattern>ossec_archive</pattern>
 <rules>
