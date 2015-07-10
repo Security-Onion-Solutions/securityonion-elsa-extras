@@ -1,5 +1,4 @@
 <!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com-->
-
 <ruleset name="SYSMON" id='777'>
    <pattern>ossec_archive</pattern>
 	<rules>
@@ -57,7 +56,6 @@
 
 
 <!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com -->
-
 <ruleset name="WIN-PROCESS-TRACKING" id='780'>
    <pattern>ossec_archive</pattern>
 	<rules>
@@ -84,7 +82,6 @@
 
 
 <!-- v. 7/10/2015 --- Brian Kellogg -->
-
 <ruleset name="WINDOWS" id='4'>
    <pattern>ossec_archive</pattern>
         <rules>
