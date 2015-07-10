@@ -711,6 +711,13 @@ case "$1" in
 	if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
 		echo "* ELSA is enabled on this box."
                	echo "* Updating syslog-ng patterns."
+		for FILE in /etc/elsa/patterns.d/securityonion/sysmon /etc/elsa/patterns.d/securityonion/win_process_tracking; do
+			if [ -f $FILE ]; then
+        	       		echo "* $FILE has been merged into /etc/elsa/patterns.d/securityonion/windows."
+               			echo "* Removing $FILE."
+				rm -f $FILE >/dev/null 2>&1 || echo "Error removing $FILE."
+			fi
+		done
                 PATTERNS_DIR=/etc/elsa/patterns.d/
 		DEST_PATTERN=/opt/elsa/node/conf/patterndb.xml
                 cp $DEST_PATTERN $DEST_PATTERN.bak || echo "Error backing up $DEST_PATTERN."
