@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion97) precise; urgency=low
+
+  * merge Brian's windows parser update 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 10 Jul 2015 16:20:34 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion96) precise; urgency=low
 
   * Issue 774: securityonion-elsa-extras: update bro_ssh parser for Bro 2.4 
