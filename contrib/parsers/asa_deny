@@ -1,0 +1,112 @@
+<ruleset name="CISCO_DENY" id='2'>
+   <pattern>ossec_archive</pattern>
+        <rules>
+                <rule provider="ELSA" class='2' id='2'>
+                <patterns>
+                <!-- Cisco ASA denies can very depending on how they are built
+                     these patterns will not catch all of the possbilities but can be expanded upon as needed -->
+                <pattern>@ESTRING::ASA-@@ESTRING:: Deny @@ESTRING:i0: src @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @dst @ESTRING:s1::@@ESTRING::__@@IPv4:i3:_@@ESTRING::/@@ESTRING:i4: by @access-group @QSTRING:s2:"@</pattern>
+                <pattern>@ESTRING::ASA-@@ESTRING:: Deny @@ESTRING:i0: src @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @dst @ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @by access-group @QSTRING:s2:"@</pattern>
+                <pattern>@ESTRING::ASA-@@ESTRING:: access-list @@ESTRING:s2: denied @@ESTRING:i0: @@ESTRING:s0:/@@ESTRING::__@@IPv4:i1:_@@ESTRING::(@@ESTRING:i2:)@ -&gt; @ESTRING:s1:/@@IPv4:i3:@@QSTRING:i4:()@ hit</pattern>
+                <pattern>@ESTRING::ASA-@@ESTRING:: access-list @@ESTRING:s2: denied @@ESTRING:i0: @@ESTRING:s0:/@@IPv4:i1:@@QSTRING:i2:()@ -&gt; @ESTRING:s1:/@@IPv4:i3:@@QSTRING:i4:()@ hit</pattern>
+                </patterns>
+                <examples>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 04 15:21:14 ossec->10.27.200.11 Jul 04 2015 15:21:14: %ASA-1-106100: access-list INSIDE denied udp INSIDE/IP__192.1.2.3__TEST-DNS-SERVER-1(62341) -> OUTSIDE/1.1.1.1(53) hit-cnt 1 first hit [0x17e24468, 0xeddf9cf4]</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">udp</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">192.1.2.3</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">62341</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">1.1.1.1</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">53</test_value>
+                        <!-- O Int -->
+                        <test_value name="s0">INSIDE</test_value>
+                        <!-- I Int -->
+                        <test_value name="s1">OUTSIDE</test_value>
+                        <!-- Access Group -->
+                        <test_value name="s2">INSIDE</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 06 01:26:35 ossec-->10.1.2.3 Jul 06 2015 01:26:35: %ASA-1-106100: access-list INSIDE denied tcp INSIDE/192.1.2.3(62341) -> OUTSIDE/1.1.1.1(80) hit-cnt 2 300-second interval [0x17e24468, 0xdb1224c4]</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">tcp</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">192.1.2.3</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">62341</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">1.1.1.1</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">80</test_value>
+                        <!-- O Int -->
+                        <test_value name="s0">INSIDE</test_value>
+                        <!-- I Int -->
+                        <test_value name="s1">OUTSIDE</test_value>
+                        <!-- Access Group -->
+                        <test_value name="s2">INSIDE</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 02 23:03:25 ossec->10.1.2.3 Jul 02 2015 23:03:25: %ASA-4-106023: Deny udp src INSIDE:10.15.16.17/1353 dst OUTSIDE:1.1.1.1/2000 by access-group "INSIDE" [0x0, 0x0]</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">udp</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">10.15.16.17</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">1353</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">1.1.1.1</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">2000</test_value>
+                        <!-- O Int -->
+                        <test_value name="s0">INSIDE</test_value>
+                        <!-- I Int -->
+                        <test_value name="s1">OUTSIDE</test_value>
+                        <!-- Access Group -->
+                        <test_value name="s2">INSIDE</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 05 07:38:30 ossec->10.1.2.3 Jul 05 2015 07:38:30: %ASA-4-106023: Deny tcp src OUTSIDE:1.1.1.1/30961 dst DMZ:192.1.2.3/443 by access-group "OUTSIDE" [0xdc7d8c8a, 0x84a85def]</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">tcp</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">1.1.1.1</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">30961</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">192.1.2.3</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">443</test_value>
+                        <!-- O Int -->
+                        <test_value name="s0">OUTSIDE</test_value>
+                        <!-- I Int -->
+                        <test_value name="s1">DMZ</test_value>
+                        <!-- Access Group -->
+                        <test_value name="s2">OUTSIDE</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 05 11:37:59 ossec->2015 Jul 05 07:38:30 ossec->10.1.2.3 Jul 05 2015 07:38:30: %ASA-4-106023: Deny tcp src DMZ:192.1.2.3/56409 dst INSIDE:IP__10.15.16.17__TEST-DNS-SERVER-3/49155 by access-group "DMZ" [0x0, 0x0]</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">tcp</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">192.1.2.3</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">56409</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">10.15.16.17</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">49155</test_value>
+                        <!-- O Int -->
+                        <test_value name="s0">DMZ</test_value>
+                        <!-- I Int -->
+                        <test_value name="s1">INSIDE</test_value>
+                        <!-- Access Group -->
+                        <test_value name="s2">DMZ</test_value>
+                        </example>
+                    </examples>
+                </rule>
+        </rules>
+</ruleset>

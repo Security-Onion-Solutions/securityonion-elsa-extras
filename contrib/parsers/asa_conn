@@ -1,0 +1,101 @@
+<ruleset name="CISCO_TEARDOWN" id='3'>
+   <pattern>ossec_archive</pattern>
+        <rules>
+                <rule provider="ELSA" class='3' id='3'>
+                <patterns>
+                <!-- Cisco ASA conn teardowns can very depending on how they are built
+                     these patterns will not catch all of the possbilities but can be expanded upon as needed -->
+                <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/(@@ESTRING:: to @@ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5: @</pattern>
+                <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @to @ESTRING:s1::@@ESTRING::__@@IPv4:i3:_@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5:@</pattern>
+                <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @to @ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5: @</pattern>
+                <pattern>@ESTRING::ASA-@@ESTRING:: Teardown @@ESTRING:i0: @@ESTRING:: for @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @to @ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @duration @ESTRING:s2: @bytes @ESTRING:i5:@</pattern>
+                </patterns>
+                <examples>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 05 11:38:00 ossec->10.1.2.3 Jul 05 2015 13:37:59: %ASA-6-302016: Teardown UDP connection 982861325 for outside-test:192.1.2.3/53 to inside:10.5.6.7/62350 duration 0:02:01 bytes 36</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">UDP</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">192.1.2.3</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">53</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">10.5.6.7</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">62350</test_value>
+                        <!-- Conn Bytes -->
+                        <test_value name="i5">36</test_value>
+                        <!-- O Int -->
+                        <test_value name="s0">outside-test</test_value>
+                        <!-- I Int -->
+                        <test_value name="s1">inside</test_value>
+                        <!-- Conn Durration -->
+                        <test_value name="s2">0:02:01</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 05 11:38:00 ossec->10.1.2.3 Jul 05 2015 11:37:59: %ASA-6-302014: Teardown TCP connection 750288225 for OUTSIDE:192.1.2.3/64393(LOCAL\\bsmith@contoso.com) to INSIDE:10.1.2.15/445 duration 0:02:32 bytes 16058 TCP Reset-O (bsmith@contoso.com)</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">TCP</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">192.1.2.3</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">64393</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">10.1.2.15</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">445</test_value>
+                        <!-- Conn Bytes -->
+                        <test_value name="i5">16058</test_value>
+                        <!-- O Int -->
+                        <test_value name="s0">OUTSIDE</test_value>
+                        <!-- I Int -->
+                        <test_value name="s1">INSIDE</test_value>
+                        <!-- Conn Durration -->
+                        <test_value name="s2">0:02:32</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 05 11:37:59 ossec>10.1.2.3 Jul 05 2015 11:37:59: %ASA-4-302014: Teardown TCP connection 2066296 for INSIDE:192.1.2.3/445 to OUTSIDE:1.1.1.1/56381 duration 0:00:40 bytes 323 SYN Timeout</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">TCP</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">192.1.2.3</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">445</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">1.1.1.1</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">56381</test_value>
+                        <!-- Conn Bytes -->
+                        <test_value name="i5">323</test_value>
+                        <!-- O Int -->
+                        <test_value name="s0">INSIDE</test_value>
+                        <!-- I Int -->
+                        <test_value name="s1">OUTSIDE</test_value>
+                        <!-- Conn Durration -->
+                        <test_value name="s2">0:00:40</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Jul 05 11:37:59 ossec->10.1.2.3 Jul 05 2015 11:37:59: %ASA-6-302016: Teardown UDP connection 4232125765 for OUTSIDE:1.1.1.1/53 to INSIDE:IP__192.1.2.3__TEST-DNS-SERVER-1/60855 duration 0:00:40 bytes 323</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">UDP</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">1.1.1.1</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">53</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">192.1.2.3</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">60855</test_value>
+                        <!-- Conn Bytes -->
+                        <test_value name="i5">323</test_value>
+                        <!-- O Int -->
+                        <test_value name="s0">OUTSIDE</test_value>
+                        <!-- I Int -->
+                        <test_value name="s1">INSIDE</test_value>
+                        <!-- Conn Durration -->
+                        <test_value name="s2">0:00:40</test_value>
+                        </example>
+                    </examples>
+                </rule>
+        </rules>
+</ruleset>
