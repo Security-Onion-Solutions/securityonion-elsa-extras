@@ -58,3 +58,4 @@ securityonion-elsa-extras:-update-bro_ssl-parser-for-Bro-2.4-#768
 Issue-773:-securityonion-elsa-extras:-add-Windows-and-Cisco-parsers-from-Brian-Kellogg
 Issue-774:-securityonion-elsa-extras:-update-bro_ssh-parser-for-Bro-2.4
 merge-Brian's-windows-parser-update
+merge-Brian's-4740-fix

@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion99) precise; urgency=low
+
+  * merge Brian's 4740 fix 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sun, 12 Jul 2015 13:49:19 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion98) precise; urgency=low
 
   * remove old sysmon and win_process_tracking pattern files 
