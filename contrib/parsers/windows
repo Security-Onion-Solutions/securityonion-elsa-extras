@@ -1,26 +1,26 @@
-<!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com-->
+<!-- v. 7/19/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com-->
 <ruleset name="SYSMON" id='777'>
     <pattern>ossec_archive</pattern>
     <rules>
         <rule provider="DefensiveDepth" class='10778' id='10778'>
             <patterns>
-                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2: CommandLine: @@ESTRING::User: @@ESTRING:s3: LogonGuid:@@ESTRING::Hash: @@ESTRING:s4: @@ESTRING::ParentImage: @@ESTRING:s5: ParentCommandLine:@</pattern>
+                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::Microsoft-Windows-Sysmon/Operational: INFORMATION(1):@@ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2:  CommandLine: @@ESTRING::CurrentDirectory: @@ESTRING::User: @@ESTRING:s3:  LogonGuid:@@ESTRING::Hashes: @@ESTRING:s4: @@ESTRING::ParentImage: @@ESTRING:s5:  ParentCommandLine:@</pattern>
             </patterns>
             <examples>
                 <example>
-                    <test_message program="ossec_archive">2014 Dec 02 20:28:29 (10.0.15.14) 10.0.15.14->WinEvtLog 2014 Dec 02 15:26:07 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(1): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-U93G48C7BOP: Process Create: UtcTime: 12/2/2014 8:26 PM ProcessGuid: {00000000-205F-547E-0000-00100D090800} ProcessId: 1412 Image: C:\Windows\system32\taskhost.exe CommandLine: taskhost.exe U User: WIN-U93G48C7BOP\Administrator LogonGuid: {00000000-D448-547C-0000-0020C5460200} LogonId: 0x246C5 TerminalSessionId: 2 IntegrityLevel: High HashType: SHA1 Hash: 8570E08F5103FD0F496B1DE9ADEF6E49E237433F ParentProcessGuid: {00000000-D425-547C-0000-0010A1A40000} ParentProcessId: 736 ParentImage: C:\Windows\system32\svchost.exe ParentCommandLine: C:\Windows\system32\svchost.exe -k netsvcs</test_message>
-                    <!-- host-->
-                    <test_value name="s0">WIN-U93G48C7BOP</test_value>
-                    <!-- processguid-->
-                    <test_value name="s1">00000000-205F-547E-0000-00100D090800</test_value>
-                    <!-- image-->
-                    <test_value name="s2">C:\Windows\system32\taskhost.exe</test_value>
-                    <!-- user-->
-                    <test_value name="s3">WIN-U93G48C7BOP\Administrator</test_value>
-                    <!-- hash-->
-                    <test_value name="s4">8570E08F5103FD0F496B1DE9ADEF6E49E237433F</test_value>
-                    <!-- parentimage-->
-                    <test_value name="s5">C:\Windows\system32\svchost.exe</test_value>
+				    <test_message program="ossec_archive">2015 Jul 13 13:27:17 (windows7_x64) 192.168.142.6->WinEvtLog 2015 Jul 13 07:27:16 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(1): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-KTL39CHEPFC: Process Create:  SequenceNumber: 472  UtcTime: 7/13/2015 01:27:16.823 PM  ProcessGuid: {F17228B0-BCB4-55A3-0000-001024551800}  ProcessId: 2208  Image: C:\Windows\System32\notepad.exe  CommandLine: notepad  CurrentDirectory: C:\Users\tester\  User: WIN-KTL39CHEPFC\tester  LogonGuid: {F17228B0-B2C7-55A3-0000-0020E54F0700}  LogonId: 0x74fe5  TerminalSessionId: 1  IntegrityLevel: Medium  Hashes: SHA1=7EB0139D2175739B3CCB0D1110067820BE6ABD29  ParentProcessGuid: {F17228B0-BCB2-55A3-0000-001089501800}  ParentProcessId: 3004  ParentImage: C:\Windows\System32\cmd.exe  ParentCommandLine: "C:\Windows\system32\cmd.exe"</test_message>
+						<!-- host-->
+						<test_value name="s0">WIN-KTL39CHEPFC</test_value>
+						<!-- processguid-->
+						<test_value name="s1">F17228B0-BCB4-55A3-0000-001024551800</test_value>
+						<!-- image-->
+						<test_value name="s2">C:\Windows\System32\notepad.exe</test_value>
+						<!-- user-->
+						<test_value name="s3">WIN-KTL39CHEPFC\tester</test_value>
+						<!-- hash-->
+						<test_value name="s4">SHA1=7EB0139D2175739B3CCB0D1110067820BE6ABD29</test_value>
+						<!-- parentimage-->
+						<test_value name="s5">C:\Windows\System32\cmd.exe</test_value>
                 </example>
             </examples>
         </rule>
@@ -55,7 +55,7 @@
 </ruleset>
 
 
-        <!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com -->
+        <!-- v. 2/8/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com -->
 <ruleset name="WIN-PROCESS-TRACKING" id='780'>
 <pattern>ossec_archive</pattern>
 <rules>
