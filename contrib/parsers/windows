@@ -55,7 +55,7 @@
 </ruleset>
 
 
-        <!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com -->
+<!-- v. 2/8/15 --- Copyright (c) 2015 Josh Brower, Josh@DefensiveDepth.com -->
 <ruleset name="WIN-PROCESS-TRACKING" id='780'>
 <pattern>ossec_archive</pattern>
 <rules>
@@ -81,12 +81,16 @@
 </ruleset>
 
 
-        <!-- v. 7/10/2015 --- Brian Kellogg -->
+<!-- v. 7/20/2015 --- Brian Kellogg -->
 <ruleset name="WINDOWS" id='4'>
 <pattern>ossec_archive</pattern>
 <rules>
     <rule provider="ELSA" class='4' id='4'>
         <patterns>
+            <!-- 4740s -->
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::A user account was locked out.@@ESTRING::Account Domain:  @@ESTRING:s2:  @@ESTRING::Account That Was Locked Out: @@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::Caller Computer Name: @@ESTRING:s0:@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A user account was locked out.@@ESTRING::Account Domain:  @@ESTRING:s2:  @@ESTRING::Account That Was Locked Out: @@ESTRING::Account Name:  @@ESTRING:s1:  @</pattern>
+
             <!-- 4624s -->
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account was successfully logged on. @ESTRING::Account Name:@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:  @@ESTRING:s2:  Logon ID:@@ESTRING::Source Network Address: @@IPv4:i1: Source Port:@</pattern>
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account was successfully logged on. @ESTRING::Account Name:@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:  @@ESTRING:s2:  Logon ID:@</pattern>
@@ -157,7 +161,18 @@
         </patterns>
         <examples>
             <example>
-                <test_message program="ossec_archive">2015 Jul 09 16:31:49 (SERVER01) 10.27.201.62->WinEvtLog 2015 Jul 09 11:31:48 WinEvtLog: Security: AUDIT_SUCCESS(576): Security: bsmith: CONTOSO: SERVER01: Special privileges assigned to new logon:    |User Name: bsmith    |Domain: |CONTOSO    |Logon ID: |(0x0,0x53140A55)    |Privileges: SeSecurityPrivilege  |||SeBackupPrivilege  |||SeRestorePrivilege  |||SeTakeOwnershipPrivilege  |||SeDebugPrivilege  |||SeSystemEnvironmentPrivilege  |||SeLoadDriverPrivilege  |||SeImpersonatePrivilege                                 </test_message>
+                <test_message program="ossec_archive">2015 Jul 10 06:29:11 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 10 08:29:07 WinEvtLog: Security: AUDIT_SUCCESS(4740): Microsoft-Windows-Security-Auditing: (no user): no domain: server01.eu.d-rco.com: 0x8000000000000000    message: A user account was locked out.  Subject:  Security ID:  S-1-5-18  Account Name:  SERVER01$  Account Domain:  CONTOSO  Logon ID:  0x3e7  Account That Was Locked Out:  Security ID:  S-1-5-21-1202660629-2052111302-682003330-7883  Account Name:  bsmith  Additional Information:  Caller Computer Name: WORKSTATION01</test_message>
+                <!-- Event ID -->
+                <test_value name="i0">4740</test_value>
+                <!-- User Domain -->
+                <test_value name="s2">CONTOSO</test_value>
+                <!-- User -->
+                <test_value name="s1">bsmith</test_value>
+                <!-- Source Name -->
+                <test_value name="s0">WORKSTATION01</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Jul 09 16:31:49 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 09 11:31:48 WinEvtLog: Security: AUDIT_SUCCESS(576): Security: bsmith: CONTOSO: SERVER01: Special privileges assigned to new logon:    |User Name: bsmith    |Domain: |CONTOSO    |Logon ID: |(0x0,0x53140A55)    |Privileges: SeSecurityPrivilege  |||SeBackupPrivilege  |||SeRestorePrivilege  |||SeTakeOwnershipPrivilege  |||SeDebugPrivilege  |||SeSystemEnvironmentPrivilege  |||SeLoadDriverPrivilege  |||SeImpersonatePrivilege                                 </test_message>
                 <!-- Event ID -->
                 <test_value name="i0">576</test_value>
                 <!-- Source Name -->
@@ -207,7 +222,7 @@
                 <test_value name="i1">192.1.2.3</test_value>
             </example>
             <example>
-                <test_message program="ossec_archive">2015 Jul 09 16:31:34 (SERVER01) 10.27.201.5->WinEvtLog 2015 Jul 09 12:31:34 WinEvtLog: Application: AUDIT_SUCCESS(18454): MSSQL$TEST: (no user): no domain: SERVER01.contoso.com: Login succeeded for user 'bsmith'. Connection made using SQL Server authentication. [CLIENT: 192.1.2.3]</test_message>
+                <test_message program="ossec_archive">2015 Jul 09 16:31:34 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 09 12:31:34 WinEvtLog: Application: AUDIT_SUCCESS(18454): MSSQL$TEST: (no user): no domain: SERVER01.contoso.com: Login succeeded for user 'bsmith'. Connection made using SQL Server authentication. [CLIENT: 192.1.2.3]</test_message>
                 <!-- Event ID -->
                 <test_value name="i0">18454</test_value>
                 <!-- Source Name -->
@@ -218,7 +233,7 @@
                 <test_value name="i1">192.1.2.3</test_value>
             </example>
             <example>
-                <test_message program="ossec_archive">2015 Jul 09 16:32:01 (DROLNW215VM) 10.24.140.215->WinEvtLog 2015 Jul 09 12:32:00 WinEvtLog: Application: AUDIT_SUCCESS(18453): MSSQL$TEST: cpcprogramadmin: CONTOSO: SERVER01.contoso.com: Login succeeded for user 'CONTOSO\\bsmith'. Connection made using Windows authentication. [CLIENT: 192.1.2.3]</test_message>
+                <test_message program="ossec_archive">2015 Jul 09 16:32:01 (DROLNW215VM) 10.1.2.3->WinEvtLog 2015 Jul 09 12:32:00 WinEvtLog: Application: AUDIT_SUCCESS(18453): MSSQL$TEST: cpcprogramadmin: CONTOSO: SERVER01.contoso.com: Login succeeded for user 'CONTOSO\\bsmith'. Connection made using Windows authentication. [CLIENT: 192.1.2.3]</test_message>
                 <!-- Event ID -->
                 <test_value name="i0">18453</test_value>
                 <!-- Source Name -->
@@ -322,7 +337,7 @@
                 <test_value name="s2">CONTOSO</test_value>
             </example>
             <example>
-                <test_message program="ossec_archive">2015 Jul 09 16:31:34 (SERVER01) 10.29.128.69->WinEvtLog 2015 Jul 09 18:31:32 WinEvtLog: Security: AUDIT_SUCCESS(4769): Microsoft-Windows-Security-Auditing: bsmith@contoso.com: EU.D-RCO.COM: SERVER01.contoso.com: A Kerberos service ticket was requested. Account Information:  Account Name:  bsmith@contoso.com  Account Domain:  contoso.com  Logon GUID:  {05774B76-805E-F391-B402-4C6F56704155}  Service Information:  Service Name:  CONTOSO.COM  Service ID:  S-1-5-21-1202660629-2052111302-683453330-0  Network Information:  Client Address:  ::ffff:192.1.2.3  Client Port:  2111  Additional Information:  Ticket Options:  0x40810000  Ticket Encryption Type: 0x17  Failure Code:  0x0  Transited Services: -  This event is generated every time access is requested to a resource such as a computer or a Windows service.  The service name indicates the resource to which access was requested.</test_message>
+                <test_message program="ossec_archive">2015 Jul 09 16:31:34 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 09 18:31:32 WinEvtLog: Security: AUDIT_SUCCESS(4769): Microsoft-Windows-Security-Auditing: bsmith@contoso.com: EU.D-RCO.COM: SERVER01.contoso.com: A Kerberos service ticket was requested. Account Information:  Account Name:  bsmith@contoso.com  Account Domain:  contoso.com  Logon GUID:  {05774B76-805E-F391-B402-4C6F56704155}  Service Information:  Service Name:  CONTOSO.COM  Service ID:  S-1-5-21-1202660629-2052111302-683453330-0  Network Information:  Client Address:  ::ffff:192.1.2.3  Client Port:  2111  Additional Information:  Ticket Options:  0x40810000  Ticket Encryption Type: 0x17  Failure Code:  0x0  Transited Services: -  This event is generated every time access is requested to a resource such as a computer or a Windows service.  The service name indicates the resource to which access was requested.</test_message>
                 <!-- Event ID -->
                 <test_value name="i0">4769</test_value>
                 <!-- Source Name -->
@@ -400,7 +415,7 @@
                 <test_value name="i1">192.1.2.3</test_value>
             </example>
             <example>
-                <test_message program="ossec_archive">2015 Jul 09 16:31:34 (SERVER01) 192.168.100.104->WinEvtLog 2015 Jul 09 18:31:30 WinEvtLog: Security: AUDIT_FAILURE(4771): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: Kerberos pre-authentication failed. Account Information:  Security ID:  S-1-5-21-1063978684-905172004-2179356134-4512  Account Name:  bsmith  Service Information:  Service Name:  krbtgt/CONTOSO.COM  Network Information:  Client Address:  ::ffff:192.1.2.3  Client Port:  57911  Additional Information:  Ticket Options:  0x40810010  Failure Code:  0x12  Pre-Authentication Type: 0  Certificate Information:  Certificate Issuer Name:    Certificate Serial Number:    Certificate Thumbprint:    Certificate information is only provided if a certificate was used for pre-authentication.  Pre-authentication types, ticket options and failure codes are defined in RFC 4120.  If the ticket was malformed or damaged during transit and could not be decrypted, then many fields in this event might not be present.</test_message>
+                <test_message program="ossec_archive">2015 Jul 09 16:31:34 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 09 18:31:30 WinEvtLog: Security: AUDIT_FAILURE(4771): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: Kerberos pre-authentication failed. Account Information:  Security ID:  S-1-5-21-1063978684-905172004-2179356134-4512  Account Name:  bsmith  Service Information:  Service Name:  krbtgt/CONTOSO.COM  Network Information:  Client Address:  ::ffff:192.1.2.3  Client Port:  57911  Additional Information:  Ticket Options:  0x40810010  Failure Code:  0x12  Pre-Authentication Type: 0  Certificate Information:  Certificate Issuer Name:    Certificate Serial Number:    Certificate Thumbprint:    Certificate information is only provided if a certificate was used for pre-authentication.  Pre-authentication types, ticket options and failure codes are defined in RFC 4120.  If the ticket was malformed or damaged during transit and could not be decrypted, then many fields in this event might not be present.</test_message>
                 <!-- Event ID -->
                 <test_value name="i0">4771</test_value>
                 <!-- Source Name -->
