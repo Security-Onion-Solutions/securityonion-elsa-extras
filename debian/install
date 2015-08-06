@@ -14,6 +14,7 @@ contrib/parsers/bro_ftp etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_http etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_intel etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_irc etc/elsa/patterns.d/securityonion
+contrib/parsers/bro_mysql etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_notice etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_radius etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_snmp etc/elsa/patterns.d/securityonion

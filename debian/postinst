@@ -707,6 +707,31 @@ case "$1" in
 		fi
 	fi
 
+	if [ "$2" = "20131117-1ubuntu0securityonion99" ] || [ "$2" = "20131117-1ubuntu0securityonion88" ] || [ "$2" = "20131117-1ubuntu0securityonion58" ] || [ "$2" = "20131117-1ubuntu0securityonion56" ] || [ "$2" = "20131117-1ubuntu0securityonion53" ] || [ "$2" = "20131117-1ubuntu0securityonion50" ] || [ "$2" = "20131117-1ubuntu0securityonion45" ] || [ "$2" = "20131117-1ubuntu0securityonion43" ] || [ "$2" = "20131117-1ubuntu0securityonion41" ] || [ "$2" = "20131117-1ubuntu0securityonion36" ] || [ "$2" = "20131117-1ubuntu0securityonion28" ] || [ "$2" = "20131117-1ubuntu0securityonion25" ] || [ "$2" = "20131117-1ubuntu0securityonion19" ]; then
+
+		if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
+			echo "* ELSA is enabled on this box."
+			# Only update database if Setup has already been run
+			if [ -e /var/log/nsm/sosetup.log ]; then
+				echo "* Found sosetup.log."
+
+				# Store all SQL schema updates as files in $SQL_DIR
+				SQL_DIR="/opt/elsa/contrib/securityonion/contrib/sql"
+
+        	                echo "* Adding fields for new BRO_MYSQL parser."
+				SQL="$SQL_DIR/bro_mysql.sql"
+				mysql -uroot < $SQL || echo "Error importing $SQL."
+
+	                	SYSLOG_CONF="/etc/syslog-ng/syslog-ng.conf"
+        	            	if ! grep 'source s_bro_mysql { file("/nsm/bro/logs/current/mysql.log" flags(no-parse) program_override("bro_mysql")); };' $SYSLOG_CONF >> /dev/null; then
+					echo "* Updating $SYSLOG_CONF to monitor mysql.log."
+					sed -i '/^source s_bro_ssh/a source s_bro_mysql { file("/nsm/bro/logs/current/mysql.log" flags(no-parse) program_override("bro_mysql")); };' $SYSLOG_CONF || echo "Error adding s_bro_mysql to $SYSLOG_CONF."
+					sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_mysql);' $SYSLOG_CONF || echo "Error adding s_bro_mysql to $SYSLOG_CONF."
+				fi
+			fi
+		fi
+	fi
+
 	# Always check to see if ELSA is enabled and, if so, update patterns
 	if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
 		echo "* ELSA is enabled on this box."

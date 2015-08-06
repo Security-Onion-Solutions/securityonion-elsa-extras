@@ -1,0 +1,33 @@
+	<ruleset>
+                <pattern>bro_mysql</pattern>
+                <rules>
+                        <rule class="26013" id="26013">
+                                <patterns>
+					<pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:i4:|@@ESTRING:s3:@</pattern>
+                                </patterns>
+                                <examples>
+                                        <example>
+						<test_message program='bro_mysql'>MESSAGE=1438800219.691536|CgGl4C24eFgIb8JYEf|192.168.0.254|56162|192.168.0.254|3306|field_list|agent|T|3|-</test_message>
+                                                <!-- id.orig_h - already in database as srcip -->
+                                                <test_value name='i0'>192.168.0.254</test_value>
+                                                <!-- id.orig_p - already in database as srcport -->
+                                                <test_value name='i1'>56162</test_value>
+                                                <!-- id.resp_h - already in database as dstip -->
+                                                <test_value name='i2'>192.168.0.254</test_value>
+                                                <!-- id.resp_p - already in database as dstport-->
+                                                <test_value name='i3'>3306</test_value>
+                                                <!-- cmd - add to database-->
+                                                <test_value name='s0'>field_list</test_value>
+                                                <!-- arg - already in database as arg-->
+                                                <test_value name='s1'>agent</test_value>
+                                                <!-- success - add to database -->
+                                                <test_value name='s2'>T</test_value>
+                                                <!-- rows - add to database -->
+                                                <test_value name='i4'>3</test_value>
+                                                <!-- response - already in database as response -->
+                                                <test_value name='s3'>-</test_value>
+                                        </example>
+                                </examples>
+                        </rule>
+                </rules>
+        </ruleset>

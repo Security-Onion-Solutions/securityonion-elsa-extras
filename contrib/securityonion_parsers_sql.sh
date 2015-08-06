@@ -263,3 +263,7 @@ mysql -uroot < $SQL || echo "Error importing $SQL."
 # Additions for WINDOWS_PROCESS class & associated fields
 SQL="$SQL_DIR/win_process_tracking.sql"
 mysql -uroot < $SQL || echo "Error importing $SQL."
+
+# Additions for BRO_MYSQL class & associated fields
+SQL="$SQL_DIR/bro_mysql.sql"
+mysql -uroot < $SQL || echo "Error importing $SQL."
