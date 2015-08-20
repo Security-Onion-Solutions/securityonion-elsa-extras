@@ -60,3 +60,4 @@ Issue-774:-securityonion-elsa-extras:-update-bro_ssh-parser-for-Bro-2.4
 merge-Brian's-windows-parser-update
 merge-Brian's-4740-fix
 securityonion-elsa-extras:-add-parser-for-Bro-2.4-mysql.log-#755
+securityonion-elsa-extras:-add-parser-for-Bro-2.4-kerberos.log-#756

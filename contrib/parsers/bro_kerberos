@@ -1,0 +1,33 @@
+<ruleset name="bro_kerberos" id="26014">
+  <pattern>bro_kerberos</pattern>
+  <rules>
+    <rule provider="Security_Onion" class="26014" id="26014">
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING:s4:|@@ESTRING::@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program='bro_kerberos'>1440016860.160321|CHNIve4skjMIJUM7Fg|192.168.10.128|1533|192.168.10.101|88|AS|mallory/EXAMPLE|krbtgt/EXAMPLE|F|KDC_ERR_PREAUTH_FAILED|-|2136422885.000000|-|T|T|-|-|-|-</test_message>
+          <!-- srcip (already in fields table) -->
+          <test_value name="i0">192.168.10.128</test_value>
+          <!-- srcport (already in fields table) -->
+          <test_value name="i1">1533</test_value>
+          <!-- dstip (already in fields table) -->
+          <test_value name="i2">192.168.10.101</test_value>
+          <!-- dstport (already in fields table) -->
+          <test_value name="i3">88</test_value>
+          <!-- request_type -->
+          <test_value name="s0">AS</test_value>
+          <!-- client (already in fields table) -->
+          <test_value name="s1">mallory/EXAMPLE</test_value>
+          <!-- service (already in fields table) -->
+          <test_value name="s2">krbtgt/EXAMPLE</test_value>
+          <!-- success -->
+          <test_value name="s3">F</test_value>
+          <!-- error_msg -->
+          <test_value name="s4">KDC_ERR_PREAUTH_FAILED</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>
