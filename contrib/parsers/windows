@@ -2,6 +2,49 @@
 <ruleset name="SYSMON" id='777'>
     <pattern>ossec_archive</pattern>
     <rules>
+       <rule provider="DefensiveDepth-SYSMON3 class='10777' id='10777'>
+                        <patterns>
+                                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@ SYSTEM: NT AUTHORITY: @ESTRING:s0::@ @ESTRING:: SequenceNumber:@ @NUMBER::@ @ESTRING:: SourceProcessGuid:@ {@ESTRING:s1:}@ @ESTRING:: SourceImage: @@ESTRING:s2:  TargetProcessGuid: {@@ESTRING:s3:}@@ESTRING:: TargetImage: @@ESTRING:s4:  NewThreadId:@</pattern>
+                                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@ SYSTEM: NT AUTHORITY: @ESTRING:s0:: @@ESTRING:: SourceProcessGuid:@ {@ESTRING:s1:}@ @ESTRING:: SourceImage: @@ESTRING:s2:  TargetProcessGuid: {@@ESTRING:s3:}@@ESTRING:: TargetImage: @@ESTRING:s4:  NewThreadId:@@ESTRING:: StartAddress:@@ESTRING:: StartModule: @@ESTRING:s5:  StartFunction:@</pattern>
+
+                        </patterns>
+
+                        <examples>
+                                <example>
+                                        <test_message program="ossec_archive">2015 Jun 02 02:18:10 (windows7_x64) 192.168.142.6->WinEvtLog 2015 Jun 01 15:53:02 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(8): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-KTL39CHEPFC: CreateRemoteThread detected:  SequenceNumber: 599  UtcTime: 6/1/2015 09:53:02.371 PM  SourceProcessGuid: {F17228B0-CB16-556C-0000-0010A6A90000}  SourceProcessId: 468  SourceImage: C:\Windows\System32\csrss.exe  TargetProcessGuid: {F17228B0-CC30-556C-0000-0010B6510500}  TargetProcessId: 1668  TargetImage: C:\Windows\System32\cmd.exe  NewThreadId: 756</test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">WIN-KTL39CHEPFC</test_value>
+                                                <!-- sourceprocessguid-->
+                                                <test_value name="s1">F17228B0-CB16-556C-0000-0010A6A90000</test_value>
+                                                <!-- sourceimage-->
+                                                <test_value name="s2">C:\Windows\System32\csrss.exe</test_value>
+                                                <!-- targetProcessGuid-->
+                                                <test_value name="s3">F17228B0-CC30-556C-0000-0010B6510500</test_value>
+                                                <!-- targetimage-->
+                                                <test_value name="s4">C:\Windows\System32\cmd.exe</test_value>
+
+                                </example>
+                                <example>
+                                        <test_message program="ossec_archive">2015 Aug 08 16:41:28 (james_dell) 192.168.1.101->WinEvtLog 2015 Aug 08 10:41:25 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(8): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: james-laptop: CreateRemoteThread detected:  UtcTime: 2015-08-08 16:41:25.215  SourceProcessGuid: {16F5F390-BD09-55BF-0000-001019A80300}  SourceProcessId: 2688  SourceImage: C:\Windows\System32\wbem\WmiPrvSE.exe  TargetProcessGuid: {16F5F390-3135-55C6-0000-0010C123FC1A}  TargetProcessId: 225012  TargetImage: C:\Windows\System32\wbem\WmiApSrv.exe  NewThreadId: 226380  StartAddress: 0x00007FFE7EA30710  StartModule: C:\Windows\SYSTEM32\ntdll.dll  StartFunction: </test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">james-laptop</test_value>
+                                                <!-- sourceprocessguid-->
+                                                <test_value name="s1">16F5F390-BD09-55BF-0000-001019A80300</test_value>
+                                                <!-- sourceimage-->
+                                                <test_value name="s2">C:\Windows\System32\wbem\WmiPrvSE.exe</test_value>
+                                                <!-- targetProcessGuid-->
+                                                <test_value name="s3">16F5F390-3135-55C6-0000-0010C123FC1A</test_value>
+                                                <!-- targetimage-->
+                                                <test_value name="s4">C:\Windows\System32\wbem\WmiApSrv.exe</test_value>
+                                                <!-- startmodule -->
+                                                <test_value name="s5">C:\Windows\SYSTEM32\ntdll.dll</test_value>
+
+                                </example>
+
+
+                        </examples>
+                </rule>
+
         <rule provider="DefensiveDepth" class='10778' id='10778'>
             <patterns>
                 <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2: CommandLine: @@ESTRING::User: @@ESTRING:s3: LogonGuid:@@ESTRING::Hash: @@ESTRING:s4: @@ESTRING::ParentImage: @@ESTRING:s5: ParentCommandLine:@</pattern>
