@@ -726,6 +726,10 @@ case "$1" in
 				SQL="$SQL_DIR/bro_kerberos.sql"
 				mysql -uroot < $SQL || echo "Error importing $SQL."
 
+        	                echo "* Adding fields for new BRO_RDP parser."
+				SQL="$SQL_DIR/bro_rdp.sql"
+				mysql -uroot < $SQL || echo "Error importing $SQL."
+
 	                	SYSLOG_CONF="/etc/syslog-ng/syslog-ng.conf"
 
         	            	if ! grep 'source s_bro_mysql { file("/nsm/bro/logs/current/mysql.log" flags(no-parse) program_override("bro_mysql")); };' $SYSLOG_CONF >> /dev/null; then
@@ -738,6 +742,12 @@ case "$1" in
 					echo "* Updating $SYSLOG_CONF to monitor kerberos.log"
 					sed -i '/^source s_bro_ssh/a source s_bro_kerberos { file("/nsm/bro/logs/current/kerberos.log" flags(no-parse) program_override("bro_kerberos")); };' $SYSLOG_CONF || echo "Error adding s_bro_kerberos to $SYSLOG_CONF."
 					sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_kerberos);' $SYSLOG_CONF || echo "Error adding s_bro_kerberos to $SYSLOG_CONF."
+				fi
+
+        	            	if ! grep 'source s_bro_rdp { file("/nsm/bro/logs/current/rdp.log" flags(no-parse) program_override("bro_rdp")); };' $SYSLOG_CONF >> /dev/null; then
+					echo "* Updating $SYSLOG_CONF to monitor rdp.log"
+					sed -i '/^source s_bro_ssh/a source s_bro_rdp { file("/nsm/bro/logs/current/rdp.log" flags(no-parse) program_override("bro_rdp")); };' $SYSLOG_CONF || echo "Error adding s_bro_rdp to $SYSLOG_CONF."
+					sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_rdp);' $SYSLOG_CONF || echo "Error adding s_bro_rdp to $SYSLOG_CONF."
 				fi
 			fi
 		fi

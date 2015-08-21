@@ -1,0 +1,48 @@
+<ruleset name="bro_rdp" id="26015">
+  <pattern>bro_rdp</pattern>
+  <rules>
+    <rule provider="Security_Onion" class="26015" id="26015">
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING:s4:|@@ESTRING::|@@ESTRING:i4:|@@ESTRING:i5:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s5:|@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program='bro_rdp'>1440024994.898444|CO6uo9227Q4NdsxR72|10.226.41.226|10446|10.226.24.52|3389|A70067|Success|RDP|English - United States|RDP 5.1|ISD2-KM84178|55274-OEM-0011903-00107|1152|864|15bit|RSA|1|T|High|128bit</test_message>
+	  <!-- ts -->
+	  <!-- uid -->
+          <!-- id.orig_h srcip (already in fields table) -->
+          <test_value name="i0">10.226.41.226</test_value>
+          <!-- id.orig_p srcport (already in fields table) -->
+          <test_value name="i1">10446</test_value>
+          <!-- id.resp_h dstip (already in fields table) -->
+          <test_value name="i2">10.226.24.52</test_value>
+          <!-- id.resp.p dstport (already in fields table) -->
+          <test_value name="i3">3389</test_value>
+	  <!-- cookie -->
+	  <!-- result -->
+          <test_value name="s0">Success</test_value>
+	  <!-- security_protocol -->
+          <test_value name="s1">RDP</test_value>
+	  <!-- keyboard_layout -->
+          <test_value name="s2">English - United States</test_value>
+	  <!-- client_build -->
+          <test_value name="s3">RDP 5.1</test_value>
+	  <!-- client_name -->
+          <test_value name="s4">ISD2-KM84178</test_value>
+	  <!-- client_dig_product_id -->
+	  <!-- desktop_width -->
+          <test_value name="i4">1152</test_value>
+	  <!-- desktop_height -->
+          <test_value name="i5">864</test_value>
+	  <!-- requested_color_depth -->
+	  <!-- cert_type -->
+	  <!-- cert_count -->
+	  <!-- cert_permanent -->
+	  <!-- encryption_level -->
+          <test_value name="s5">High</test_value>
+	  <!-- encryption_method -->
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>
