@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion106) precise; urgency=low
+
+  * Issue 782: securityonion-elsa-extras: update sysmon parser 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 21 Aug 2015 16:04:53 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion105) precise; urgency=low
 
   * securityonion-elsa-extras: add parser for Bro 2.4 sip.log #759 
