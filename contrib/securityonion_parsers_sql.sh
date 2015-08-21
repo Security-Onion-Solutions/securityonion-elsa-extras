@@ -279,3 +279,7 @@ mysql -uroot < $SQL || echo "Error importing $SQL."
 # Additions for BRO_PE class & associated fields
 SQL="$SQL_DIR/bro_pe.sql"
 mysql -uroot < $SQL || echo "Error importing $SQL."
+
+# Additions for BRO_SIP class & associated fields
+SQL="$SQL_DIR/bro_sip.sql"
+mysql -uroot < $SQL || echo "Error importing $SQL."

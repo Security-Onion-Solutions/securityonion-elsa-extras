@@ -20,6 +20,7 @@ contrib/parsers/bro_notice etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_pe etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_radius etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_rdp etc/elsa/patterns.d/securityonion
+contrib/parsers/bro_sip etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_snmp etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_software etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_ssh etc/elsa/patterns.d/securityonion

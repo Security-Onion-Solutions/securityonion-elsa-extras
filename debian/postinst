@@ -734,6 +734,10 @@ case "$1" in
 				SQL="$SQL_DIR/bro_pe.sql"
 				mysql -uroot < $SQL || echo "Error importing $SQL."
 
+        	                echo "* Adding fields for new BRO_SIP parser."
+				SQL="$SQL_DIR/bro_sip.sql"
+				mysql -uroot < $SQL || echo "Error importing $SQL."
+
 	                	SYSLOG_CONF="/etc/syslog-ng/syslog-ng.conf"
 
         	            	if ! grep 'source s_bro_mysql { file("/nsm/bro/logs/current/mysql.log" flags(no-parse) program_override("bro_mysql")); };' $SYSLOG_CONF >> /dev/null; then
@@ -758,6 +762,12 @@ case "$1" in
 					echo "* Updating $SYSLOG_CONF to monitor pe.log"
 					sed -i '/^source s_bro_ssh/a source s_bro_pe { file("/nsm/bro/logs/current/pe.log" flags(no-parse) program_override("bro_pe")); };' $SYSLOG_CONF || echo "Error adding s_bro_pe to $SYSLOG_CONF."
 					sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_pe);' $SYSLOG_CONF || echo "Error adding s_bro_pe to $SYSLOG_CONF."
+				fi
+
+        	            	if ! grep 'source s_bro_sip { file("/nsm/bro/logs/current/sip.log" flags(no-parse) program_override("bro_sip")); };' $SYSLOG_CONF >> /dev/null; then
+					echo "* Updating $SYSLOG_CONF to monitor sip.log"
+					sed -i '/^source s_bro_ssh/a source s_bro_sip { file("/nsm/bro/logs/current/sip.log" flags(no-parse) program_override("bro_sip")); };' $SYSLOG_CONF || echo "Error adding s_bro_sip to $SYSLOG_CONF."
+					sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_sip);' $SYSLOG_CONF || echo "Error adding s_bro_sip to $SYSLOG_CONF."
 				fi
 			fi
 		fi

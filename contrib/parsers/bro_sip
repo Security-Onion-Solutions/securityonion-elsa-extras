@@ -1,0 +1,52 @@
+<ruleset name="bro_sip" id="26017">
+  <pattern>bro_sip</pattern>
+  <rules>
+    <rule provider="Security_Onion" class="26017" id="26017">
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s2:|@@ESTRING:i5:|@@ESTRING:s3:|@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program='bro_sip'>1440177006.231050|CdxbIv4iLTqX3iS1O4|192.168.1.2|5060|212.242.33.35|5060|0|REGISTER|sip:sip.cybercity.dk|-|&lt;sip:voi18063@sip.cybercity.dk&gt;|&lt;sip:voi18063@sip.cybercity.dk&gt;|&lt;sip:voi18063@sip.cybercity.dk&gt;|&lt;sip:voi18063@sip.cybercity.dk&gt;;tag=00-04092-1701af62-120c67172|-|578222729-4665d775@578222732-4665d772|68 REGISTER|-|SIP/2.0/UDP 192.168.1.2|SIP/2.0/UDP 192.168.1.2;received=80.230.219.70;rport=5060|Nero SIPPS IP Phone Version 2.0.51.16|401|Unauthorized|-|0|0|-</test_message>
+	  <!-- ts -->
+	  <!-- uid -->
+          <!-- id.orig_h srcip (already in fields table) -->
+          <test_value name="i0">192.168.1.2</test_value>
+          <!-- id.orig_p srcport (already in fields table) -->
+          <test_value name="i1">5060</test_value>
+          <!-- id.resp_h dstip (already in fields table) -->
+          <test_value name="i2">212.242.33.35</test_value>
+          <!-- id.resp.p dstport (already in fields table) -->
+          <test_value name="i3">5060</test_value>
+	  <!-- trans_depth -->
+          <test_value name="i4">0</test_value>
+	  <!-- method -->
+          <test_value name="s0">REGISTER</test_value>
+	  <!-- uri -->
+          <test_value name="s1">sip:sip.cybercity.dk</test_value>
+	  <!-- date -->
+	  <!-- request_from -->
+	  <!-- request_to -->
+	  <!-- response_from -->
+	  <!-- response_to -->
+	  <!-- reply_to -->
+	  <!-- call_id -->
+	  <!-- seq -->
+	  <!-- subject -->
+	  <!-- request_path -->
+	  <!-- response_path -->
+	  <!-- user_agent -->
+          <test_value name="s2">Nero SIPPS IP Phone Version 2.0.51.16</test_value>
+	  <!-- status_code -->
+          <test_value name="i5">401</test_value>
+	  <!-- status_msg -->
+          <test_value name="s3">Unauthorized</test_value>
+	  <!-- warning -->
+	  <!-- request_body_len -->
+	  <!-- response_body_len -->
+	  <!-- content_type -->
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>

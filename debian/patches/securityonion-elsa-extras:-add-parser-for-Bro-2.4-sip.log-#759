@@ -1,0 +1,137 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion105) precise; urgency=low
+ .
+   * securityonion-elsa-extras: add parser for Bro 2.4 sip.log #759
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/contrib/securityonion_parsers_sql.sh
++++ securityonion-elsa-extras-20131117/contrib/securityonion_parsers_sql.sh
+@@ -279,3 +279,7 @@ mysql -uroot < $SQL || echo "Error impor
+ # Additions for BRO_PE class & associated fields
+ SQL="$SQL_DIR/bro_pe.sql"
+ mysql -uroot < $SQL || echo "Error importing $SQL."
++
++# Additions for BRO_SIP class & associated fields
++SQL="$SQL_DIR/bro_sip.sql"
++mysql -uroot < $SQL || echo "Error importing $SQL."
+--- securityonion-elsa-extras-20131117.orig/contrib/securityonion-syslog-ng.conf
++++ securityonion-elsa-extras-20131117/contrib/securityonion-syslog-ng.conf
+@@ -56,6 +56,7 @@ source s_bro_mysql { file("/nsm/bro/logs
+ source s_bro_kerberos { file("/nsm/bro/logs/current/kerberos.log" flags(no-parse) program_override("bro_kerberos")); };
+ source s_bro_rdp { file("/nsm/bro/logs/current/rdp.log" flags(no-parse) program_override("bro_rdp")); };
+ source s_bro_pe { file("/nsm/bro/logs/current/pe.log" flags(no-parse) program_override("bro_pe")); };
++source s_bro_sip { file("/nsm/bro/logs/current/sip.log" flags(no-parse) program_override("bro_sip")); };
+ 
+ destination d_elsa { program("perl /opt/elsa/node/elsa.pl -c /etc/elsa_node.conf" template(t_db_parsed)); };
+ 
+@@ -84,6 +85,7 @@ log {
+   	source(s_bro_kerberos); 
+   	source(s_bro_rdp); 
+   	source(s_bro_pe); 
++  	source(s_bro_sip); 
+ 	source(s_ossec);
+ 	source(s_network);
+ 	source(s_syslog);
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/parsers/bro_sip
+@@ -0,0 +1,52 @@
++<ruleset name="bro_sip" id="26017">
++  <pattern>bro_sip</pattern>
++  <rules>
++    <rule provider="Security_Onion" class="26017" id="26017">
++      <patterns>
++        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s2:|@@ESTRING:i5:|@@ESTRING:s3:|@</pattern>
++      </patterns>
++      <examples>
++        <example>
++          <test_message program='bro_sip'>1440177006.231050|CdxbIv4iLTqX3iS1O4|192.168.1.2|5060|212.242.33.35|5060|0|REGISTER|sip:sip.cybercity.dk|-|&lt;sip:voi18063@sip.cybercity.dk&gt;|&lt;sip:voi18063@sip.cybercity.dk&gt;|&lt;sip:voi18063@sip.cybercity.dk&gt;|&lt;sip:voi18063@sip.cybercity.dk&gt;;tag=00-04092-1701af62-120c67172|-|578222729-4665d775@578222732-4665d772|68 REGISTER|-|SIP/2.0/UDP 192.168.1.2|SIP/2.0/UDP 192.168.1.2;received=80.230.219.70;rport=5060|Nero SIPPS IP Phone Version 2.0.51.16|401|Unauthorized|-|0|0|-</test_message>
++	  <!-- ts -->
++	  <!-- uid -->
++          <!-- id.orig_h srcip (already in fields table) -->
++          <test_value name="i0">192.168.1.2</test_value>
++          <!-- id.orig_p srcport (already in fields table) -->
++          <test_value name="i1">5060</test_value>
++          <!-- id.resp_h dstip (already in fields table) -->
++          <test_value name="i2">212.242.33.35</test_value>
++          <!-- id.resp.p dstport (already in fields table) -->
++          <test_value name="i3">5060</test_value>
++	  <!-- trans_depth -->
++          <test_value name="i4">0</test_value>
++	  <!-- method -->
++          <test_value name="s0">REGISTER</test_value>
++	  <!-- uri -->
++          <test_value name="s1">sip:sip.cybercity.dk</test_value>
++	  <!-- date -->
++	  <!-- request_from -->
++	  <!-- request_to -->
++	  <!-- response_from -->
++	  <!-- response_to -->
++	  <!-- reply_to -->
++	  <!-- call_id -->
++	  <!-- seq -->
++	  <!-- subject -->
++	  <!-- request_path -->
++	  <!-- response_path -->
++	  <!-- user_agent -->
++          <test_value name="s2">Nero SIPPS IP Phone Version 2.0.51.16</test_value>
++	  <!-- status_code -->
++          <test_value name="i5">401</test_value>
++	  <!-- status_msg -->
++          <test_value name="s3">Unauthorized</test_value>
++	  <!-- warning -->
++	  <!-- request_body_len -->
++	  <!-- response_body_len -->
++	  <!-- content_type -->
++        </example>
++      </examples>
++    </rule>
++  </rules>
++</ruleset>
+--- /dev/null
++++ securityonion-elsa-extras-20131117/contrib/sql/bro_sip.sql
+@@ -0,0 +1,26 @@
++use syslog;
++
++/*  Create BRO_SIP class */
++INSERT IGNORE INTO classes (id, class) VALUES (26017, "BRO_SIP");
++
++/* add new integers that don't already exist in fields table */
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("trans_depth","int", "QSTRING");  
++
++/* add new strings that don't already exist in fields table */
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("request_from","string", "QSTRING");  
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("request_to","string", "QSTRING");
++INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("status_msg","string", "QSTRING");
++
++/* integers i0 through i5 are field order 5 through 10 */
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_SIP"), (SELECT id FROM fields WHERE field="srcip"), 5);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_SIP"), (SELECT id FROM fields WHERE field="srcport"), 6);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_SIP"), (SELECT id FROM fields WHERE field="dstip"), 7);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_SIP"), (SELECT id FROM fields WHERE field="dstport"), 8);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_SIP"), (SELECT id FROM fields WHERE field="trans_depth"), 9);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_SIP"), (SELECT id FROM fields WHERE field="status_code"), 10);
++
++/* strings s0 through s5 are field order 11 through 16 */
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_SIP"), (SELECT id FROM fields WHERE field="method"), 11);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_SIP"), (SELECT id FROM fields WHERE field="uri"), 12);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_SIP"), (SELECT id FROM fields WHERE field="user_agent"), 13);
++INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="BRO_SIP"), (SELECT id FROM fields WHERE field="status_msg"), 14);
