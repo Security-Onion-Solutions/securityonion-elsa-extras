@@ -749,25 +749,25 @@ case "$1" in
 				fi
 
         	            	if ! grep 'source s_bro_kerberos { file("/nsm/bro/logs/current/kerberos.log" flags(no-parse) program_override("bro_kerberos")); };' $SYSLOG_CONF >> /dev/null; then
-					echo "* Updating $SYSLOG_CONF to monitor kerberos.log"
+					echo "* Updating $SYSLOG_CONF to monitor kerberos.log."
 					sed -i '/^source s_bro_ssh/a source s_bro_kerberos { file("/nsm/bro/logs/current/kerberos.log" flags(no-parse) program_override("bro_kerberos")); };' $SYSLOG_CONF || echo "Error adding s_bro_kerberos to $SYSLOG_CONF."
 					sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_kerberos);' $SYSLOG_CONF || echo "Error adding s_bro_kerberos to $SYSLOG_CONF."
 				fi
 
         	            	if ! grep 'source s_bro_rdp { file("/nsm/bro/logs/current/rdp.log" flags(no-parse) program_override("bro_rdp")); };' $SYSLOG_CONF >> /dev/null; then
-					echo "* Updating $SYSLOG_CONF to monitor rdp.log"
+					echo "* Updating $SYSLOG_CONF to monitor rdp.log."
 					sed -i '/^source s_bro_ssh/a source s_bro_rdp { file("/nsm/bro/logs/current/rdp.log" flags(no-parse) program_override("bro_rdp")); };' $SYSLOG_CONF || echo "Error adding s_bro_rdp to $SYSLOG_CONF."
 					sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_rdp);' $SYSLOG_CONF || echo "Error adding s_bro_rdp to $SYSLOG_CONF."
 				fi
 
         	            	if ! grep 'source s_bro_pe { file("/nsm/bro/logs/current/pe.log" flags(no-parse) program_override("bro_pe")); };' $SYSLOG_CONF >> /dev/null; then
-					echo "* Updating $SYSLOG_CONF to monitor pe.log"
+					echo "* Updating $SYSLOG_CONF to monitor pe.log."
 					sed -i '/^source s_bro_ssh/a source s_bro_pe { file("/nsm/bro/logs/current/pe.log" flags(no-parse) program_override("bro_pe")); };' $SYSLOG_CONF || echo "Error adding s_bro_pe to $SYSLOG_CONF."
 					sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_pe);' $SYSLOG_CONF || echo "Error adding s_bro_pe to $SYSLOG_CONF."
 				fi
 
         	            	if ! grep 'source s_bro_sip { file("/nsm/bro/logs/current/sip.log" flags(no-parse) program_override("bro_sip")); };' $SYSLOG_CONF >> /dev/null; then
-					echo "* Updating $SYSLOG_CONF to monitor sip.log"
+					echo "* Updating $SYSLOG_CONF to monitor sip.log."
 					sed -i '/^source s_bro_ssh/a source s_bro_sip { file("/nsm/bro/logs/current/sip.log" flags(no-parse) program_override("bro_sip")); };' $SYSLOG_CONF || echo "Error adding s_bro_sip to $SYSLOG_CONF."
 					sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_sip);' $SYSLOG_CONF || echo "Error adding s_bro_sip to $SYSLOG_CONF."
 				fi

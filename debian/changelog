@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion108) precise; urgency=low
+
+  * formatting change for postinst 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 21 Aug 2015 16:28:22 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion107) precise; urgency=low
 
   * Issue 776: securityonion-elsa-extras: set version 3.3 in syslog-ng.conf 
