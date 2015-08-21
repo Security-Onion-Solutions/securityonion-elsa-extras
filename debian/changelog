@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion107) precise; urgency=low
+
+  * Issue 776: securityonion-elsa-extras: set version 3.3 in syslog-ng.conf 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 21 Aug 2015 16:15:33 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion106) precise; urgency=low
 
   * Issue 782: securityonion-elsa-extras: update sysmon parser 
