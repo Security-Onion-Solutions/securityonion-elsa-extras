@@ -1,0 +1,38 @@
+<ruleset name="bro_pe" id="26016">
+  <pattern>bro_pe</pattern>
+  <rules>
+    <rule provider="Security_Onion" class="26016" id="26016">
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s5:@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program='bro_pe'>1440175068.686115|F1bfwb4ISGyepouhIh|I386|1268327830.000000|Windows 95 or NT 4.0|WINDOWS_GUI|T|F|F|F|F|F|T|T|F|F|UPX0,UPX1,.rsrc</test_message>
+	  <!-- ts -->
+	  <!-- id -->
+          <!-- machine -->
+          <test_value name="s0">I386</test_value>
+          <!-- compile_ts -->
+          <!-- os -->
+          <test_value name="s1">Windows 95 or NT 4.0</test_value>
+          <!-- subsystem -->
+          <test_value name="s2">WINDOWS_GUI</test_value>
+	  <!-- is_exe -->
+          <test_value name="s3">T</test_value>
+	  <!-- is_64bit -->
+          <test_value name="s4">F</test_value>
+	  <!-- uses_aslr -->
+	  <!-- uses_dep -->
+	  <!-- uses_code_integrity -->
+	  <!-- uses_seh -->
+	  <!-- has_import_table -->
+	  <!-- has_export_table -->
+	  <!-- has_cert_table -->
+	  <!-- has_debug_data -->
+	  <!-- section_names -->
+          <test_value name="s5">UPX0,UPX1,.rsrc</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>

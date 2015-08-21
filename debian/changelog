@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion104) precise; urgency=low
+
+  * securityonion-elsa-extras: add parser for Bro 2.4 pe.log #758 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 21 Aug 2015 13:04:03 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion103) precise; urgency=low
 
   * securityonion-elsa-extras: add parser for Bro 2.4 rdp.log #757 
