@@ -29,5 +29,6 @@ contrib/parsers/bro_syslog etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_tunnel etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_weird etc/elsa/patterns.d/securityonion
 contrib/parsers/bro_x509 etc/elsa/patterns.d/securityonion
+contrib/parsers/iis etc/elsa/patterns.d/securityonion
 contrib/parsers/pfsense etc/elsa/patterns.d/securityonion
 contrib/parsers/windows etc/elsa/patterns.d/securityonion
