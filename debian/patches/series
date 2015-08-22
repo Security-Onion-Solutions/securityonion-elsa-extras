@@ -66,3 +66,4 @@ securityonion-elsa-extras:-add-parser-for-Bro-2.4-pe.log-#758
 securityonion-elsa-extras:-add-parser-for-Bro-2.4-sip.log-#759
 Issue-782:-securityonion-elsa-extras:-update-sysmon-parser
 Issue-780:-securityonion-elsa-extras:-add-parser-for-IIS-logs
+set-syslog-ng-version-3.3-for-new-installations

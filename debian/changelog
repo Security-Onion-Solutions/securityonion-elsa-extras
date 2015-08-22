@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion110) precise; urgency=low
+
+  * set syslog-ng version 3.3 for new installations 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sat, 22 Aug 2015 07:42:38 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion109) precise; urgency=low
 
   * Issue 780: securityonion-elsa-extras: add parser for IIS logs 
