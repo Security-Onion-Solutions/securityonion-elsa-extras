@@ -36,6 +36,7 @@ INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES (
 INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="sourceport"), 5);
 INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="destport"), 6);
 
+
 /*  Creates SYSMON_REMOTETHREAD Class & associated fields */
 INSERT IGNORE INTO classes (id, class) VALUES (10777, "SYSMON_REMOTETHREAD");
 
