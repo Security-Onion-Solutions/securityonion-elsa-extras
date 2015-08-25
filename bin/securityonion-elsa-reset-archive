@@ -1,0 +1,42 @@
+#!/bin/sh
+
+[ `id -u` -ne 0 ] && echo "This script must be run using sudo!" && exit 1
+
+echo
+echo "This script will reset the ELSA Archive."
+echo
+echo "It should only be used if you see the following error in your ELSA logs:"
+echo " Can't find file: 'syslogs_archive_1'"
+echo
+echo "Continue will delete any existing data in the ELSA archive."
+echo
+echo "Type yes to continue or anything else to exit."
+read INPUT
+[ "$INPUT" != "yes" ] && exit 0
+
+echo
+echo "Stopping services..."
+service nsm stop
+service syslog-ng stop
+
+echo
+echo "Deleting old database entries..."
+mysql -uroot syslog_data -e "DROP TABLE syslog_data.syslogs_archive_1" 
+mysql -uroot syslog_data -e "DELETE FROM syslog.tables WHERE table_name='syslog_data.syslogs_archive_1'"
+
+echo
+echo "Cleaning up old database files..."
+rm /nsm/elsa/data/elsa/mysql/syslogs_archive_1*
+rm /var/lib/mysql/syslog_data/syslogs_archive_1*
+
+echo
+echo "Restarting services..."
+service mysql restart
+service syslog-ng restart
+service nsm start
+
+echo
+echo "Done."
+echo "Please wait a minute or two and then log into ELSA"
+echo "to see if it is now showing a correct number of logs"
+echo "in the upper right corner."

@@ -1,0 +1,70 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion111) precise; urgency=low
+ .
+   * Issue 796: securityonion-elsa-extras: Add script to fix ELSA syslogs_archive_1 issue
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- /dev/null
++++ securityonion-elsa-extras-20131117/bin/securityonion-elsa-reset-archive
+@@ -0,0 +1,42 @@
++#!/bin/sh
++
++[ `id -u` -ne 0 ] && echo "This script must be run using sudo!" && exit 1
++
++echo
++echo "This script will reset the ELSA Archive."
++echo
++echo "It should only be used if you see the following error in your ELSA logs:"
++echo " Can't find file: 'syslogs_archive_1'"
++echo
++echo "Continue will delete any existing data in the ELSA archive."
++echo
++echo "Type yes to continue or anything else to exit."
++read INPUT
++[ "$INPUT" != "yes" ] && exit 0
++
++echo
++echo "Stopping services..."
++service nsm stop
++service syslog-ng stop
++
++echo
++echo "Deleting old database entries..."
++mysql -uroot syslog_data -e "DROP TABLE syslog_data.syslogs_archive_1" 
++mysql -uroot syslog_data -e "DELETE FROM syslog.tables WHERE table_name='syslog_data.syslogs_archive_1'"
++
++echo
++echo "Cleaning up old database files..."
++rm /nsm/elsa/data/elsa/mysql/syslogs_archive_1*
++rm /var/lib/mysql/syslog_data/syslogs_archive_1*
++
++echo
++echo "Restarting services..."
++service mysql restart
++service syslog-ng restart
++service nsm start
++
++echo
++echo "Done."
++echo "Please wait a minute or two and then log into ELSA"
++echo "to see if it is now showing a correct number of logs"
++echo "in the upper right corner."
