@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion112) precise; urgency=low
+
+  * fix grammar 
+
+ -- Doug Burks <doug.burks@gmail.com>  Tue, 25 Aug 2015 10:08:15 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion111) precise; urgency=low
 
   * Issue 796: securityonion-elsa-extras: Add script to fix ELSA syslogs_archive_1 issue

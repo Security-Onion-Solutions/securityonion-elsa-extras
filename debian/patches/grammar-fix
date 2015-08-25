@@ -1,0 +1,43 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20131117-1ubuntu0securityonion112) precise; urgency=low
+ .
+   * fix grammar
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20131117.orig/bin/securityonion-elsa-reset-archive
++++ securityonion-elsa-extras-20131117/bin/securityonion-elsa-reset-archive
+@@ -8,7 +8,7 @@ echo
+ echo "It should only be used if you see the following error in your ELSA logs:"
+ echo " Can't find file: 'syslogs_archive_1'"
+ echo
+-echo "Continue will delete any existing data in the ELSA archive."
++echo "Continuing will delete any existing data in the ELSA archive."
+ echo
+ echo "Type yes to continue or anything else to exit."
+ read INPUT
+@@ -38,5 +38,5 @@ service nsm start
+ echo
+ echo "Done."
+ echo "Please wait a minute or two and then log into ELSA"
+-echo "to see if it is now showing a correct number of logs"
++echo "to see if it is now showing a non-zero number of logs"
+ echo "in the upper right corner."

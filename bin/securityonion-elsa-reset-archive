@@ -8,7 +8,7 @@ echo
 echo "It should only be used if you see the following error in your ELSA logs:"
 echo " Can't find file: 'syslogs_archive_1'"
 echo
-echo "Continue will delete any existing data in the ELSA archive."
+echo "Continuing will delete any existing data in the ELSA archive."
 echo
 echo "Type yes to continue or anything else to exit."
 read INPUT
@@ -38,5 +38,5 @@ service nsm start
 echo
 echo "Done."
 echo "Please wait a minute or two and then log into ELSA"
-echo "to see if it is now showing a correct number of logs"
+echo "to see if it is now showing a non-zero number of logs"
 echo "in the upper right corner."

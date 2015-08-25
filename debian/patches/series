@@ -68,3 +68,4 @@ Issue-782:-securityonion-elsa-extras:-update-sysmon-parser
 Issue-780:-securityonion-elsa-extras:-add-parser-for-IIS-logs
 set-syslog-ng-version-3.3-for-new-installations
 Issue-796:-securityonion-elsa-extras:-Add-script-to-fix-ELSA-syslogs_archive_1-issue
+grammar-fix
