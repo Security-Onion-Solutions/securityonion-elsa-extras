@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20131117-1ubuntu0securityonion113) trusty; urgency=medium
+
+  * rebuild for trusty 
+
+ -- Doug Burks <doug.burks@gmail.com>  Mon, 05 Oct 2015 15:45:46 -0400
+
 securityonion-elsa-extras (20131117-1ubuntu0securityonion112) precise; urgency=low
 
   * fix grammar 
