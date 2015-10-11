@@ -232,6 +232,9 @@ function config_webnode() {
 	ELSA_STARTUP="/etc/apache2/elsa_startup.pl"
 	cat "$BASE_DIR/elsa/web/conf/startup.pl" | sed -e "s|\/usr\/local|$BASE_DIR|g" | sed -e "s|\/data|$DATA_DIR|g" > $ELSA_STARTUP ||
 		echo "Error writing $ELSA_STARTUP."
+	if ! grep "/opt/elsa/perl5" $ELSA_STARTUP >/dev/null 2>&1; then
+		sed -i '/use warnings;/a use local::lib "/opt/elsa/perl5";' $ELSA_STARTUP 
+	fi
 	PERL_CONF="/etc/apache2/mods-available/perl.conf"
 	if [ ! -f $PERL_CONF ]; then
 		echo "PerlPostConfigRequire /etc/apache2/elsa_startup.pl" > $PERL_CONF || echo "Error writing $PERL_CONF."
