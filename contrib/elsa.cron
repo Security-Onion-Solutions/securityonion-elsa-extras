@@ -5,4 +5,4 @@
 SHELL=/bin/sh
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
-* * * * * root perl /opt/elsa/web/cron.pl -c /etc/elsa_web.conf > /dev/null 2>&1
+* * * * * root sh /opt/elsa/contrib/securityonion/contrib/securityonion-elsa-syslog-ng.sh > /dev/null 2>&1
