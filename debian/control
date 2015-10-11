@@ -1,10 +1,10 @@
 Source: securityonion-elsa-extras
 Section: net
 Priority: extra
-Maintainer: Scott Allen Runnels <srunnels@gmail.com>
+Maintainer: Doug Burks <doug.burks@gmail.com>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.3
-Homepage: http://securityonion.blogspot.com
+Homepage: http://securityonion.net
 
 Package: securityonion-elsa-extras
 Architecture: all

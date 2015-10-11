@@ -244,7 +244,7 @@ function config_webnode() {
 	a2enmod perl
 
 	# Activate ELSA and restart Apache
-	cp /opt/elsa/contrib/securityonion/contrib/securityonion_apache_site.conf /etc/apache2/sites-available/elsa	
+	cp /opt/elsa/contrib/securityonion/contrib/securityonion_apache_site.conf /etc/apache2/sites-available/elsa.conf
 	echo "* Configuring ELSA with Apache" | $LOGGER
 	a2ensite elsa 
 	#a2dissite default 
