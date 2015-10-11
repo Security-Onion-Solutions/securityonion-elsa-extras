@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion3) trusty; urgency=medium
+
+  * fix interface from syslog-ng to elsa.pl 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sun, 11 Oct 2015 17:47:20 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion2) trusty; urgency=medium
 
   * add "Require all granted" to apache elsa.conf 
