@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion10) trusty; urgency=medium
+
+  * starman needs to start with new perl environment variables 
+
+ -- Doug Burks <doug.burks@gmail.com>  Mon, 12 Oct 2015 15:38:31 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion9) trusty; urgency=medium
 
   * fix master/sensor checks to not rely on snorby database

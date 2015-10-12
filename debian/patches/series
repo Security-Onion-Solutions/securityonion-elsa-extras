@@ -7,3 +7,4 @@ add-perl-environment-to-securityonion-elsa-config.sh
 set-MaxConnectionsPerChild-in-mpm_prefork.conf
 fix-etccron.delsa-cron-job
 fix-mastersensor-checks-to-not-rely-on-snorby-database
+starman-needs-to-start-with-new-perl-environment-variables

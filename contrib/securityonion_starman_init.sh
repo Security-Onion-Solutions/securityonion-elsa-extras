@@ -17,6 +17,7 @@ export starman="/usr/bin/starman"
 export myapp_path="/opt/elsa/web/lib"
 export pidfile="/var/run/starman.pid"
 export myapp="Web" 
+eval $(perl -Mlocal::lib=/opt/elsa/perl5)
  
 start() {
         echo -n $"Starting Starman: "
