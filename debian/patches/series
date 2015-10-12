@@ -3,3 +3,4 @@ add-"Require-all-granted"-to-apache-elsa.conf
 fix-interface-from-syslog-ng-to-elsa.pl
 fix-cron-job
 add-local::lib-to-elsa_startup.pl
+add-perl-environment-to-securityonion-elsa-config.sh

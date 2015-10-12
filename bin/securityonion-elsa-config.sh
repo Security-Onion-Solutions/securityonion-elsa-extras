@@ -7,6 +7,9 @@ LOGGER="tee -a $LOG"
 BASE_DIR="/opt"
 DATA_DIR="/nsm/elsa/data"
 
+# define Perl environment variables so that perl scripts can find our modules in /opt/elsa/perl5
+eval $(perl -Mlocal::lib=/opt/elsa/perl5)
+
 function check_config_perms {
 	GROUP_NAME="securityonion"
 	if [ -d /var/lib/mysql/snorby/ ]; then 
