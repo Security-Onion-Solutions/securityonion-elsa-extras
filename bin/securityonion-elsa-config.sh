@@ -6,13 +6,19 @@ LOG="$LOG_DIR/securityonion-elsa-config.log"
 LOGGER="tee -a $LOG"
 BASE_DIR="/opt"
 DATA_DIR="/nsm/elsa/data"
+SSH_CONF="/root/.ssh/securityonion_ssh.conf"
 
 # define Perl environment variables so that perl scripts can find our modules in /opt/elsa/perl5
 eval $(perl -Mlocal::lib=/opt/elsa/perl5)
 
 function check_config_perms {
 	GROUP_NAME="securityonion"
-	if [ -d /var/lib/mysql/snorby/ ]; then 
+
+	# if this is a master server, then we need to enumerate the ssh users on the box and give them permissions
+	if [ -f $SSH_CONF ]; then 
+		echo "$SSH_CONF exists, assuming this is a sensor-only installation." | $LOGGER	
+	else
+		echo "$SSH_CONF does not exist, assuming this is a master server installation." | $LOGGER	
         	SSH_USERS=`grep -l "root@" /home/*/.ssh/authorized_keys |cut -d\/ -f3`
 	fi
     
@@ -357,8 +363,11 @@ if [ "$NODE_TYPE" = "LOG" ]; then
 	MYSQL_PORT="-P50000"
 	config_lognode
 
-	if [ ! -e /var/lib/mysql/snorby ]; then
+	if [ -f $SSH_CONF ]; then 
+		echo "$SSH_CONF exists, assuming this is a sensor-only installation." | $LOGGER	
 		sed -i "s,\"db\": \"syslog\"\,,\"db\": \"syslog\,port=50000\"\,," /etc/elsa_node.conf
+	else
+		echo "$SSH_CONF does not exist, assuming this is a master server installation." | $LOGGER	
 	fi
 	# Configure the Web API features for log nodes.
 	config_lognode_webapi
