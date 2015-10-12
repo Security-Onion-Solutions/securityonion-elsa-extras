@@ -5,3 +5,4 @@ fix-cron-job
 add-local::lib-to-elsa_startup.pl
 add-perl-environment-to-securityonion-elsa-config.sh
 set-MaxConnectionsPerChild-in-mpm_prefork.conf
+fix-etccron.delsa-cron-job
