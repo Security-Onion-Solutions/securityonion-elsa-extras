@@ -217,16 +217,16 @@ function config_webnode() {
 	mysql -uelsa $MYSQL_PORT -pbiglog elsa_web -e "source $BASE_DIR/elsa/web/conf/meta_db_schema.mysql"
 
 	# Ensure that Apache has the right prefork settings
-        CONF="/etc/apache2/apache2.conf"
-	if [ -f $CONF ]; then
+        MPM_CONF="/etc/apache2/mods-available/mpm_prefork.conf"
+	if [ -f $MPM_CONF ]; then
 
 		DATE=`date '+%Y%m%d'`
-        	CONFBAK="$CONF.$DATE"
-                echo "* Backing up $CONF to $CONFBAK."
-                cp $CONF $CONFBAK || echo "Error backing up $CONF to $CONFBAK."
+        	MPM_CONF_BAK="$MPM_CONF.$DATE"
+                echo "* Backing up $MPM_CONF to $MPM_CONF_BAK."
+                cp $MPM_CONF $MPM_CONF_BAK || echo "Error backing up $MPM_CONF to $MPM_CONF_BAK."
 
-                echo "* Setting Apache mpm_prefork_module MaxRequestsPerChild to 2"
-                perl -le 'use Apache::Admin::Config; my $ap = new Apache::Admin::Config("$ARGV[0]"); my @ar = $ap->select(-name => "IfModule", -value => "mpm_prefork_module"); use Data::Dumper; $ar[0]->directive("MaxRequestsPerChild")->set_value(2); $ap->save();' $CONF || echo "Error updating $CONF."
+                echo "* Setting Apache mpm_prefork_module MaxConnectionsPerChild to 2"
+                perl -le 'use Apache::Admin::Config; my $ap = new Apache::Admin::Config("$ARGV[0]"); my @ar = $ap->select(-name => "IfModule", -value => "mpm_prefork_module"); use Data::Dumper; $ar[0]->directive("MaxConnectionsPerChild")->set_value(2); $ap->save();' $MPM_CONF || echo "Error updating $MPM_CONF."
 
 	fi
 
