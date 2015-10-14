@@ -9,10 +9,12 @@
                 <pattern>@ESTRING::ASA-@@ESTRING:: Deny @@ESTRING:i0: src @@ESTRING:s0::@@IPv4:i1:@@QSTRING:i2:/ @dst @ESTRING:s1::@@IPv4:i3:@@ESTRING::/@@ESTRING:i4: @by access-group @QSTRING:s2:"@</pattern>
                 <pattern>@ESTRING::ASA-@@ESTRING:: access-list @@ESTRING:s2: denied @@ESTRING:i0: @@ESTRING:s0:/@@ESTRING::__@@IPv4:i1:_@@ESTRING::(@@ESTRING:i2:)@ -&gt; @ESTRING:s1:/@@IPv4:i3:@@QSTRING:i4:()@ hit</pattern>
                 <pattern>@ESTRING::ASA-@@ESTRING:: access-list @@ESTRING:s2: denied @@ESTRING:i0: @@ESTRING:s0:/@@IPv4:i1:@@QSTRING:i2:()@ -&gt; @ESTRING:s1:/@@IPv4:i3:@@QSTRING:i4:()@ hit</pattern>
+                <pattern>@ESTRING::ASA-@@ESTRING:: Deny inbound @@ESTRING:i0: from @@ESTRING:i1:/@@ESTRING:i2: to @@ESTRING:i3:/@@ESTRING:i4: @</pattern>
+                <pattern>@ESTRING::ASA-@@ESTRING::Inbound @@ESTRING:i0: @@ESTRING:: from @@ESTRING:i1:/@@ESTRING:i2: to @@ESTRING:i3:/@@ESTRING:i4: @</pattern>
                 </patterns>
                 <examples>
                         <example>
-                        <test_message program="ossec_archive">2015 Jul 04 15:21:14 ossec->10.27.200.11 Jul 04 2015 15:21:14: %ASA-1-106100: access-list INSIDE denied udp INSIDE/IP__192.1.2.3__TEST-DNS-SERVER-1(62341) -> OUTSIDE/1.1.1.1(53) hit-cnt 1 first hit [0x17e24468, 0xeddf9cf4]</test_message>
+                        <test_message program="ossec_archive">2015 Jul 04 15:21:14 ossec->10.1.2.3 Jul 04 2015 15:21:14: %ASA-1-106100: access-list INSIDE denied udp INSIDE/IP__192.1.2.3__TEST-DNS-SERVER-1(62341) -> OUTSIDE/1.1.1.1(53) hit-cnt 1 first hit [0x17e24468, 0xeddf9cf4]</test_message>
                         <!-- Proto -->
                         <test_value name="i0">udp</test_value>
                         <!-- Src IP -->
@@ -105,6 +107,32 @@
                         <test_value name="s1">INSIDE</test_value>
                         <!-- Access Group -->
                         <test_value name="s2">DMZ</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Oct 11 16:33:22 ossec-colo->10.1.2.3 Oct 11 2015 16:33:22: %ASA-2-106006: Deny inbound UDP from 1.1.1.1/54741 to 192.168.1.2/161 on interface INSIDE-INT</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">UDP</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">1.1.1.1</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">54741</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">192.168.1.2</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">161</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">2015 Oct 10 05:03:09 ossec-colo->10.1.2.3 Oct 10 2015 05:03:08: %ASA-2-106001: Inbound TCP connection denied from 1.1.1.1/58543 to 192.168.1.2/139 flags SYN on interface INSIDE-INT</test_message>
+                        <!-- Proto -->
+                        <test_value name="i0">TCP</test_value>
+                        <!-- Src IP -->
+                        <test_value name="i1">1.1.1.1</test_value>
+                        <!-- Src Port -->
+                        <test_value name="i2">58543</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i3">192.168.1.2</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i4">139</test_value>
                         </example>
                     </examples>
                 </rule>
