@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion11) trusty; urgency=medium
+
+  * increase syslog-ng.conf version to 3.5 
+
+ -- Doug Burks <doug.burks@gmail.com>  Mon, 19 Oct 2015 10:28:39 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion10) trusty; urgency=medium
 
   * starman needs to start with new perl environment variables 
