@@ -10,3 +10,4 @@ fix-mastersensor-checks-to-not-rely-on-snorby-database
 starman-needs-to-start-with-new-perl-environment-variables
 increase-syslog-ng.conf-version-to-3.5
 improve-log-message-about-incorrect-group-on-etcelsa*.conf
+configure-Apache-to-proxy-elsa-query-to-port-3154

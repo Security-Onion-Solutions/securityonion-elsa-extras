@@ -801,6 +801,9 @@ case "$1" in
 		chmod +x $FILE || echo "Error making $FILE executable."
 	fi
 
+	# Port 3154 no longer needs to be allowed in firewall
+        ufw delete allow 3154/tcp >dev/null 2>&1 || echo "Error blocking port 3154 in firewall."
+
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;

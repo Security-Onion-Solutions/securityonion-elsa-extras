@@ -11,5 +11,6 @@ Architecture: all
 Depends: ${misc:Depends}, 
  securityonion-elsa,
  libjs-yui,
- ruby1.9.1
+ ruby1.9.1,
+ jq
 Description: SecurityOnion specific elsa config files

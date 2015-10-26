@@ -272,8 +272,8 @@ function config_webnode() {
 	echo "* Restarting cron" | $LOGGER
 	service cron restart
 
-	echo "* Opening 3154/tcp.." | $LOGGER
-	ufw allow 3154/tcp
+	#echo "* Opening 3154/tcp.." | $LOGGER
+	#ufw allow 3154/tcp
 
 	echo "* Retrieving GeoIP City databases..."	 | $LOGGER
 	mkdir -p /usr/local/share/GeoIP 
