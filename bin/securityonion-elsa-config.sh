@@ -52,8 +52,9 @@ function check_config_perms {
         	if [ $FGRUP = $GROUP_NAME ]; then
             		echo "/etc/$conf has the correct group." | $LOGGER
         	else
-            		echo "/etc/$conf has the incorrect group." | $LOGGER
+            		echo "/etc/$conf has the incorrect group, fixing:" | $LOGGER
             		chgrp $GROUP_NAME /etc/$conf
+			ls -alh /etc/$conf | $LOGGER
         	fi
         	chmod 664 /etc/$conf
 	done
