@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion14) trusty; urgency=medium
+
+  * elsa_web.conf pcap_url can be a relative hyperlink now that Apache is proxying
+
+ -- Doug Burks <doug.burks@gmail.com>  Tue, 27 Oct 2015 09:00:09 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion13) trusty; urgency=medium
 
   * configure Apache to proxy /elsa-query/ to port 3154 

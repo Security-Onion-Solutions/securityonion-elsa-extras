@@ -213,8 +213,8 @@ function config_webnode() {
 	echo "* Placing pcap_url directive" | $LOGGER
 	if grep "pcap_url\": \"http://streamdb" /etc/elsa_web.conf > /dev/null;  then
 		echo "* Adding pcap_url directive"  | $LOGGER
-		IP=`ifconfig | grep "inet addr" | awk '{print $2}' | cut -d\: -f2 | grep -v "127.0.0.1" | head -1`
-		sed -i "s/^.*\"pcap_url\": \"http\:\/\/streamdb\",.*$/\t\"pcap_url\": \"https:\/\/$IP\/capme\",/" /etc/elsa_web.conf
+		#IP=`ifconfig | grep "inet addr" | awk '{print $2}' | cut -d\: -f2 | grep -v "127.0.0.1" | head -1`
+		sed -i "s/^.*\"pcap_url\": \"http\:\/\/streamdb\",.*$/\t\"pcap_url\": \"\/capme\",/" /etc/elsa_web.conf
 	fi   
 	echo "* Beginning Web Install:" | $LOGGER
 	echo "* Configuring mysql schema" | $LOGGER
