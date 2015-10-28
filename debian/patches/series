@@ -12,3 +12,4 @@ increase-syslog-ng.conf-version-to-3.5
 improve-log-message-about-incorrect-group-on-etcelsa*.conf
 configure-Apache-to-proxy-elsa-query-to-port-3154
 elsa_web.conf-pcap_url-can-be-a-relative-hyperlink-now-that-Apache-is-proxying
+remove-NameVirtualHost-from-securityonion_apache_site.conf

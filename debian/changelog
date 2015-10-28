@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion15) trusty; urgency=medium
+
+  * remove NameVirtualHost from securityonion_apache_site.conf 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 28 Oct 2015 13:18:29 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion14) trusty; urgency=medium
 
   * elsa_web.conf pcap_url can be a relative hyperlink now that Apache is proxying
