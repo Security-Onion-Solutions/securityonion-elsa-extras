@@ -25,4 +25,4 @@ HEADER=$(echo "Authorization: ApiKey $USER:$EPOCH:$HASH" | sed -e s'/\-//')
 QUERY=$1
 
 # Submit the query
-curl -k -XPOST -H "$HEADER" -F "permissions={ \"class_id\": { \"0\": 1 }, \"program_id\": { \"0\": 1 }, \"node_id\": { \"0\": 1 }, \"host_id\": { \"0\": 1 } }" -F "query_string=$QUERY" https://127.0.0.1:3154/API/query 2>/dev/null
+curl -k -XPOST -H "$HEADER" -F "permissions={ \"class_id\": { \"0\": 1 }, \"program_id\": { \"0\": 1 }, \"node_id\": { \"0\": 1 }, \"host_id\": { \"0\": 1 } }" -F "query_string=$QUERY" http://127.0.0.1:3154/API/query 2>/dev/null
