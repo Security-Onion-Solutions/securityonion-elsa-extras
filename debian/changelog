@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion17) trusty; urgency=medium
+
+  * make sure old elsa site is disabled 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 04 Nov 2015 16:23:49 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion16) trusty; urgency=medium
 
   * change cli.sh to use new ELSA API address 

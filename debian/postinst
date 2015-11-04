@@ -804,6 +804,12 @@ case "$1" in
 	# Port 3154 no longer needs to be allowed in firewall
         ufw delete allow 3154/tcp >dev/null 2>&1 || echo "Error blocking port 3154 in firewall."
 
+	# Make sure that old elsa site is disabled
+        FILE="/etc/apache2/sites-enabled/elsa"
+        if [ -f $FILE ] ; then
+		rm -f $FILE || echo "Error removing $FILE."
+        fi
+
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;
