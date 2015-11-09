@@ -791,6 +791,11 @@ case "$1" in
                 cp $DEST_PATTERN $DEST_PATTERN.bak || echo "Error backing up $DEST_PATTERN."
                 pdbtool merge -p $DEST_PATTERN --recursive -D $PATTERNS_DIR || echo "Error running pdbtool to merge patterns."
 
+		FILE="/etc/syslog-ng/syslog-ng.conf"
+		if [ -f $FILE ]; then
+			sed -i 's|^@version: .*$|@version: 3.5|g' $FILE || echo "Error updating $FILE."
+		fi
+
 		echo "* Restarting syslog-ng."
 		service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
 	fi
@@ -827,12 +832,7 @@ case "$1" in
 	if [ -f $FILE ]; then
 		sed -i 's|https://127.0.0.1:3154|http://127.0.0.1:3154|g' $FILE || echo "Error updating $FILE."
 		sed -i 's|"pcap_url": ".*$|"pcap_url": "/capme",|g' $FILE || echo "Error updating $FILE."
-	fi
-
-	# Update syslog-ng.conf to latest version
-	FILE="/etc/syslog-ng/syslog-ng.conf"
-	if [ -f $FILE ]; then
-		sed -i 's|^@version: .*$|@version: 3.5|g' $FILE || echo "Error updating $FILE."
+		service apache2 restart || echo "Failed to restart Apache."
 	fi
 
         ;;
