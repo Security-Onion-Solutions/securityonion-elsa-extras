@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion18) trusty; urgency=medium
+
+  * postinst - update ELSA configuration 
+
+ -- Doug Burks <doug.burks@gmail.com>  Mon, 09 Nov 2015 13:34:52 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion17) trusty; urgency=medium
 
   * make sure old elsa site is disabled 

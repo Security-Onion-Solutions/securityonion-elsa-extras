@@ -804,11 +804,36 @@ case "$1" in
 	# Port 3154 no longer needs to be allowed in firewall
         ufw delete allow 3154/tcp >dev/null 2>&1 || echo "Error blocking port 3154 in firewall."
 
-	# Make sure that old elsa site is disabled
+	# Update Apache ELSA config
         FILE="/etc/apache2/sites-enabled/elsa"
         if [ -f $FILE ] ; then
+		echo "* Found old ELSA config file $FILE."
+		echo "* Migrating to new ELSA configuration."
+		cp /opt/elsa/contrib/securityonion/contrib/securityonion_apache_site.conf /etc/apache2/sites-available/elsa.conf || echo "Unable to create new Apache config."
+		a2ensite elsa || echo "Unable to enable new Apache site for ELSA."
+		DATA_DIR="/nsm/elsa/data"
+	        BASE_DIR="/opt"
+	        ELSA_STARTUP="/etc/apache2/elsa_startup.pl"
+	        cat "$BASE_DIR/elsa/web/conf/startup.pl" | sed -e "s|\/usr\/local|$BASE_DIR|g" | sed -e "s|\/data|$DATA_DIR|g" > $ELSA_STARTUP || echo "Error writing $ELSA_STARTUP."
+	        if ! grep "/opt/elsa/perl5" $ELSA_STARTUP >/dev/null 2>&1; then
+	                sed -i '/use warnings;/a use local::lib "/opt/elsa/perl5";' $ELSA_STARTUP || echo "Unable to update $ELSA_STARTUP."
+       		fi
+		echo "Removing old ELSA config file $FILE."
 		rm -f $FILE || echo "Error removing $FILE."
         fi
+
+	# Update elsa_web.conf
+	FILE="/etc/elsa_web.conf"
+	if [ -f $FILE ]; then
+		sed -i 's|https://127.0.0.1:3154|http://127.0.0.1:3154|g' $FILE || echo "Error updating $FILE."
+		sed -i 's|"pcap_url": ".*$|"pcap_url": "/capme",|g' $FILE || echo "Error updating $FILE."
+	fi
+
+	# Update syslog-ng.conf to latest version
+	FILE="/etc/syslog-ng/syslog-ng.conf"
+	if [ -f $FILE ]; then
+		sed -i 's|^@version: .*$|@version: 3.5|g' $FILE || echo "Error updating $FILE."
+	fi
 
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
