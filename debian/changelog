@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion20) trusty; urgency=medium
+
+  * restart Apache using apache2ctl 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 11 Nov 2015 16:18:22 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion19) trusty; urgency=medium
 
   * restart Apache 

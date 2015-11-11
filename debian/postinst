@@ -832,7 +832,7 @@ case "$1" in
 	if [ -f $FILE ]; then
 		sed -i 's|https://127.0.0.1:3154|http://127.0.0.1:3154|g' $FILE || echo "Error updating $FILE."
 		sed -i 's|"pcap_url": ".*$|"pcap_url": "/capme",|g' $FILE || echo "Error updating $FILE."
-		service apache2 restart || echo "Failed to restart Apache."
+		apache2ctl restart || echo "Failed to restart Apache."
 	fi
 
         ;;
