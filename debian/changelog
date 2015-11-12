@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion22) trusty; urgency=medium
+
+  * update syslog-ng.conf with new ELSA destination 
+
+ -- Doug Burks <doug.burks@gmail.com>  Thu, 12 Nov 2015 16:31:41 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion21) trusty; urgency=medium
 
   * update ELSA cron job 

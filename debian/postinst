@@ -794,6 +794,7 @@ case "$1" in
 		FILE="/etc/syslog-ng/syslog-ng.conf"
 		if [ -f $FILE ]; then
 			sed -i 's|^@version: .*$|@version: 3.5|g' $FILE || echo "Error updating $FILE."
+			sed -i 's|"perl /opt/elsa/node/elsa.pl -c /etc/elsa_node.conf"|"sh /opt/elsa/contrib/securityonion/contrib/securityonion-elsa-syslog-ng.sh"|g' $FILE
 		fi
 
 		echo "* Restarting syslog-ng."
