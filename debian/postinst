@@ -835,6 +835,12 @@ case "$1" in
 		apache2ctl restart || echo "Failed to restart Apache."
 	fi
 
+	# Update ELSA cron job
+	FILE="/etc/cron.d/elsa"
+	if [ -f $FILE ]; then
+		cp /opt/elsa/contrib/securityonion/contrib/elsa.cron $FILE || echo "Error updating $FILE."
+	fi
+
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;
