@@ -1,0 +1,39 @@
+<ruleset name="IISWebLog">
+<pattern>ossec_archive</pattern>
+<rule provider="ELSA" class="7" id="IIS_7">
+  <patterns>
+    <!-- Default IIS logging setting with ALL FIELDS selected to log -->
+    <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->@ESTRING:: @@ESTRING::-@@ESTRING::-@@ESTRING:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:: @@IPv4:i1:@ @ESTRING:s0: @@ESTRING:s2: @@ESTRING:: @@ESTRING:: @@ESTRING:s3: @@IPv4:i0:@ @ESTRING:: @@ESTRING:s4: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s1: @@ESTRING:i2: @@NUMBER::@ @NUMBER::@ @ESTRING:i3: @@ESTRING:: @@ESTRING:i5:@</pattern>
+    <!-- Default IIS log parser (need to develop parsers for all most likely IIS log permutations -->
+    <pattern>@ESTRING::) @@IPv4:i1:->@@ESTRING::inetpub@@ESTRING:: @@ESTRING:: @@ESTRING:: @@ESTRING:: @@ESTRING:s0: @@ESTRING:s2: @@ESTRING:: @@ESTRING:: @@ESTRING:: @@IPv4:i0:@ @ESTRING:s4: @@ESTRING:i2: @</pattern>
+  </patterns>
+  <examples>
+    <example>
+      <test_message program="ossec_archive">2015 Jul 13 23:06:36 (windows7_x64) 192.168.142.6->\inetpub\logs\LogFiles\W3SVC1\u_ex150715.log 2015-07-15 15:29:30 W3SVC1 WIN-KTL39CHEPFC 192.168.142.6 GET /index.html - 80 - 192.168.142.5 HTTP/1.1 Mozilla/5.0+(X11;+Linux+x86_64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Ubuntu+Chromium/37.0.2062.120+Chrome/37.0.2062.120+Safari/537.36 - - 192.168.142.6 304 0 0 188 487 0</test_message>
+      <test_values>
+        <test_value name="i0">192.168.142.5</test_value>
+        <test_value name="i1">192.168.142.6</test_value>
+        <test_value name="i2">304</test_value>
+        <test_value name="i3">188</test_value>
+        <test_value name="i5">0</test_value>
+        <test_value name="s0">GET</test_value>
+        <test_value name="s1">192.168.142.6</test_value>
+        <test_value name="s2">/index.html</test_value>
+        <test_value name="s3">-</test_value>
+        <test_value name="s4">Mozilla/5.0+(X11;+Linux+x86_64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Ubuntu+Chromium/37.0.2062.120+Chrome/37.0.2062.120+Safari/537.36</test_value>
+      </test_values>
+    </example>
+    <example>
+      <test_message program="ossec_archive">2015 Nov 11 09:53:55 (SERVER01) 10.0.0.6->/inetpub/logs/LogFiles/W3SVC1/u_ex151111.log 2015-11-11 09:52:55 10.0.0.6 HEAD /Ldlogon/lddwnld.dll - 80 - 10.0.0.5 Apple-iPhone6C2/1208.321 200 0 0 0</test_message>
+      <test_values>
+        <test_value name="i0">10.0.0.5</test_value>
+        <test_value name="i1">10.0.0.6</test_value>
+        <test_value name="i2">200</test_value>
+        <test_value name="s0">HEAD</test_value>
+        <test_value name="s2">/Ldlogon/lddwnld.dll</test_value>
+        <test_value name="s4">Apple-iPhone6C2/1208.321</test_value>
+      </test_values>
+    </example>
+  </examples>
+</rule>
+</ruleset>
