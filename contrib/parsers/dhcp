@@ -4,10 +4,10 @@
 <rules>
     <rule provider="ELSA" class='40' id='40'>
         <patterns>
-            <pattern>@ESTRING::DhcpSrvLog@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@@ESTRING::,@@ESTRING:s2:.@@ESTRING:s1:,@@ESTRING:s0:,@</pattern>
-            <pattern>@ESTRING::DhcpSrvLog@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@@ESTRING::,@@ESTRING:s2:.@@ESTRING:s1:,@</pattern>
-            <pattern>@ESTRING::DhcpSrvLog@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@@ESTRING::,@@ESTRING:s2:,@</pattern>
-            <pattern>@ESTRING::DhcpSrvLog@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@</pattern>
+            <pattern>@ESTRING::DhcpSrvLog-@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@@ESTRING::,@@ESTRING:s2:.@@ESTRING:s1:,@@ESTRING:s0:,@</pattern>
+            <pattern>@ESTRING::DhcpSrvLog-@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@@ESTRING::,@@ESTRING:s2:.@@ESTRING:s1:,@</pattern>
+            <pattern>@ESTRING::DhcpSrvLog-@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@@ESTRING::,@@ESTRING:s2:,@</pattern>
+            <pattern>@ESTRING::DhcpSrvLog-@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@</pattern>
         </patterns>
         <examples>
             <example>
