@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion23) trusty; urgency=medium
+
+  * add error check 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sat, 14 Nov 2015 09:11:02 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion22) trusty; urgency=medium
 
   * update syslog-ng.conf with new ELSA destination 
