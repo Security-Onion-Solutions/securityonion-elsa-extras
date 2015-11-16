@@ -1,29 +1,44 @@
-
 <!-- v. 11/15/15 --- Maintained by Brian Kellogg -->
 <ruleset name="HIPS" id='12000'>
 <pattern>ossec_archive</pattern>
 <rules>
-  <rule provider="ELSA" class='12000' id='12000'>
-    <patterns>
-      <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::",@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
-    </patterns>
-    <examples>
-      <example>
-        <test_message program="ossec_archive">2015 Nov 12 04:43:29 SymantecServer->10.0.0.1 Nov 11 22:28:25 SymantecServer SERVER01: CLIENT01,Blocked,"[AC2-1.1] List all applications you want to block below, by clicking the Add button.",Create Process,Begin: 2015-11-10 05:43:25,End: 2015-11-10 05:43:25,Rule: Block applications from running | [AC2-1.1] Block these applications,4400,C:/Program Files (x86)/Internet Explorer/iexplore.exe,0,No Module Name,C:/Program Files (x86)/Google/Google Toolbar/GoogleToolbarUser_32.exe,User: user01,Domain: CONTOSO,Action Type: ,File size (bytes): 309704,Device ID: SCSI\\Disk&amp;Ven_ATA&amp;Prod_MTFDDAK256MAM-1K\\4&amp;35303def&amp;0&amp;000000</test_message>
-        <!-- Total Bytes -->
-        <test_value name="i5">309704</test_value>
-        <!-- HostName -->
-        <test_value name="s0">CLIENT01</test_value>
-        <!-- User -->
-        <test_value name="s1">user01</test_value>
-        <!-- Parent Image -->
-        <test_value name="s2">C:/Program Files (x86)/Internet Explorer/iexplore.exe</test_value>
-        <!-- Image -->
-        <test_value name="s3">C:/Program Files (x86)/Google/Google Toolbar/GoogleToolbarUser_32.exe</test_value>
-        <!-- Indicator -->
-        <test_value name="s4">Create Process</test_value>
-      </example>
-    </examples>
-  </rule>
+    <rule provider="ELSA" class='12000' id='12000'>
+        <patterns>
+		<pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::",@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
+		<pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::,@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
+        </patterns>
+        <examples>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 12 04:43:29 SymantecServer->10.0.0.1 Nov 11 22:28:25 SymantecServer SERVER01: CLIENT01,Blocked,"[AC2-1.1] List all applications you want to block below, by clicking the Add button.",Create Process,Begin: 2015-11-10 05:43:25,End: 2015-11-10 05:43:25,Rule: Block applications from running | [AC2-1.1] Block these applications,4400,C:/Program Files (x86)/Internet Explorer/iexplore.exe,0,No Module Name,C:/Program Files (x86)/Google/Google Toolbar/GoogleToolbarUser_32.exe,User: user01,Domain: CONTOSO,Action Type: ,File size (bytes): 309704,Device ID: SCSI\\Disk&amp;Ven_ATA&amp;Prod_MTFDDAK256MAM-1K\\4&amp;35303def&amp;0&amp;000000</test_message>
+                <!-- Total Bytes -->
+                <test_value name="i5">309704</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:/Program Files (x86)/Internet Explorer/iexplore.exe</test_value>
+                <!-- Image -->
+                <test_value name="s3">C:/Program Files (x86)/Google/Google Toolbar/GoogleToolbarUser_32.exe</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Create Process</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 12 04:43:36 SymantecServer->10.0.0.1 Nov 11 22:40:25 SymantecServer SERVER01: CLIENT01,Blocked,[AC17-1.1] Prevent registration of new Toolbars,Registry Write,Begin: 2015-10-29 10:48:29,End: 2015-10-29 10:48:29,Rule: Prevent registration of new Toolbars | [AC17-1.1] Prevent registration of new Toolbars,32704,C:/Program Files (x86)/Google/Google Toolbar/Component/GoogleToolbarManager_32479C6A88E27044.exe,0,No Module Name,/REGISTRY/MACHINE/SOFTWARE/Microsoft/Internet Explorer/Toolbar,User: SYSTEM,Domain: CONTOSO,Action Type: ,File size (bytes): 0,Device ID: </test_message>
+                <!-- Total Bytes -->
+                <test_value name="i5">0</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">SYSTEM</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:/Program Files (x86)/Google/Google Toolbar/Component/GoogleToolbarManager_32479C6A88E27044.exe</test_value>
+                <!-- Image -->
+                <test_value name="s3">/REGISTRY/MACHINE/SOFTWARE/Microsoft/Internet Explorer/Toolbar</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Create Process</test_value>
+            </example>
+        </examples>
+    </rule>
 </rules>
 </ruleset>
