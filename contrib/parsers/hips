@@ -36,7 +36,7 @@
                 <!-- Image -->
                 <test_value name="s3">/REGISTRY/MACHINE/SOFTWARE/Microsoft/Internet Explorer/Toolbar</test_value>
                 <!-- Indicator -->
-                <test_value name="s4">Create Process</test_value>
+                <test_value name="s4">Registry Write</test_value>
             </example>
         </examples>
     </rule>
