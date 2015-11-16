@@ -29,7 +29,7 @@
                 <test_value name="s2">360se.exe</test_value>
                 <!-- Indicator -->
                 <test_value name="s4">Blocked web site</test_value>
-            </example>
+           </example>
            <example>
                 <test_message program="ossec_archive">2015 Nov 11 03:37:34 (SERVER01) 10.0.0.1->\\ProgramData/logs/mbytes_adm151111.log MALWAREBYTES ClientSecurityLog ID=1004085; ClientID=7E8D58A3-7DF6-4502-AF1F-B205A34C0F0F; HostName=CLIENT01; Domain=contoso.com; MacAddress=6C-B8-14-A0-6B-B4; IPAddress=10.0.0.5; Time=Nov 11 2015  9:05AM; ThreatLevel=1; ObjectTypeScanned=2; ObjectScanned=C:\\Users\\user01\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\cigiagpbkapepgklncnajbakkpkopmam\\0.1_0; ThreatName=PUP.Optional.CrossRider; Event=DETECTION; Action=2; Operation=QUARANTINE; IsResolved=1; LogonUser=user01; Data=data; Description=No description; Application=; ApplicationFullPath=; Source=MBAM; Payload=; PayloadChecksum=; PayloadUrl=; PayloadProc=</test_message>
                 <!-- SRC IP -->
