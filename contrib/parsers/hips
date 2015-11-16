@@ -38,6 +38,36 @@
                 <!-- Indicator -->
                 <test_value name="s4">Registry Write</test_value>
             </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 12 04:43:33 SymantecServer->10.27.201.97 Nov 11 22:35:05 SymantecServer drtexw97: CLIENT01,Blocked,[AC10-2.1] Block access to autorun.inf,File Read,Begin: 2015-11-11 11:04:30,End: 2015-11-11 11:04:30,Rule: All Applications | [AC10-2.1] Autorun.inf,8656,C:/Windows/explorer.exe,0,No Module Name,F:/autorun.inf,User: user01,Domain: CONTOSO,Action Type: ,File size (bytes): 0,Device ID: USBSTOR\\Disk&amp;Ven_Lexar&amp;Prod_USB_Flash_Drive&amp;Rev_1100\\AAKWACBQXXQIM4U1&amp;0</test_message>
+                <!-- Total Bytes -->
+                <test_value name="i5">0</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:/Windows/explorer.exe</test_value>
+                <!-- Image -->
+                <test_value name="s3">F:/autorun.inf</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">File Read</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 12 19:43:30 SymantecServer->10.27.201.97 Nov 12 13:29:48 SymantecServer SERVER01: CLIENT01,Blocked,[AC1-2.1] Block process,Registry Write,Begin: 2015-11-04 12:23:46,End: 2015-11-04 12:23:46,Rule: Protect client files and registry keys | [AC1-2.1] Client services,2452,C:/Windows/SysWOW64/wbem/WmiPrvSE.exe,0,No Module Name,/REGISTRY/MACHINE/SYSTEM/CurrentControlSet/services/SRTSP/Performance,User: SYSTEM,Domain: CONTOSO,Action Type: ,File size (bytes): 0,Device ID: </test_message>
+                <!-- Total Bytes -->
+                <test_value name="i5">0</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">SYSTEM</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:/Windows/SysWOW64/wbem/WmiPrvSE.exe</test_value>
+                <!-- Image -->
+                <test_value name="s3">/REGISTRY/MACHINE/SYSTEM/CurrentControlSet/services/SRTSP/Performance</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Registry Write</test_value>
+            </example>
         </examples>
     </rule>
 </rules>
