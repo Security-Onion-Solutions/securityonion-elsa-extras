@@ -4,10 +4,45 @@
 <rules>
     <rule provider="ELSA" class='12000' id='12000'>
         <patterns>
+		<!-- Symantec Log Parsers  -->
 		<pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::",@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
 		<pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::,@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
+
+		<!-- Malwarebytes Log Parsers  -->
+		<pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@IPv4:i2:@@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::IPBLOCK@@ESTRING::Port: @@NUMBER:i1:, @@ESTRING::Process: @@ESTRING:s2:; @@ESTRING::LogonUser=@@ESTRING:s1:; @</pattern>
+		<pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@ESTRING:s2:; @@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::LogonUser=@@ESTRING:s1:; @</pattern>
         </patterns>
         <examples>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 11 05:07:24 (SERVER01) 10.0.0.1->\\ProgramData/logs/mbytes_adm151111.log MALWAREBYTES ClientSecurityLog ID=1009446; ClientID=4ABA24B5-A6BE-4576-B1B4-50E8CC947221; HostName=CLIENT01; Domain=contoso.com; MacAddress=E8-B1-FC-F2-B3-C2; IPAddress=10.0.0.5; Time=Nov 11 2015 11:19AM; ThreatLevel=0; ObjectTypeScanned=0; ObjectScanned=121.123.120.93; ThreatName=Blocked web site; Event=IPBLOCK; Action=1; Operation=Type: outgoing, Port: 52807, Process: 360se.exe; IsResolved=1; LogonUser=user01; Data=data; Description=121.123.120.93 (Type: outgoing, Port: 52807, Process: 360se.exe); Application=; ApplicationFullPath=; Source=MBAM; Payload=; PayloadChecksum=; PayloadUrl=; PayloadProc=</test_message>
+                <!-- SRC IP -->
+                <test_value name="i0">10.0.0.5</test_value>
+                <!-- SRC Port -->
+                <test_value name="i1">52807</test_value>
+                <!-- DST IP -->
+                <test_value name="i2">121.123.120.93</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">360se.exe</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Blocked web site</test_value>
+           </example>
+           <example>
+                <test_message program="ossec_archive">2015 Nov 11 03:37:34 (SERVER01) 10.0.0.1->\\ProgramData/logs/mbytes_adm151111.log MALWAREBYTES ClientSecurityLog ID=1004085; ClientID=7E8D58A3-7DF6-4502-AF1F-B205A34C0F0F; HostName=CLIENT01; Domain=contoso.com; MacAddress=6C-B8-14-A0-6B-B4; IPAddress=10.0.0.5; Time=Nov 11 2015  9:05AM; ThreatLevel=1; ObjectTypeScanned=2; ObjectScanned=C:\\Users\\user01\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\cigiagpbkapepgklncnajbakkpkopmam\\0.1_0; ThreatName=PUP.Optional.CrossRider; Event=DETECTION; Action=2; Operation=QUARANTINE; IsResolved=1; LogonUser=user01; Data=data; Description=No description; Application=; ApplicationFullPath=; Source=MBAM; Payload=; PayloadChecksum=; PayloadUrl=; PayloadProc=</test_message>
+                <!-- SRC IP -->
+                <test_value name="i0">10.0.0.5</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:\\Users\\user01\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\cigiagpbkapepgklncnajbakkpkopmam\\0.1_0</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">PUP.Optional.CrossRider</test_value>
+            </example>
             <example>
                 <test_message program="ossec_archive">2015 Nov 12 04:43:29 SymantecServer->10.0.0.1 Nov 11 22:28:25 SymantecServer SERVER01: CLIENT01,Blocked,"[AC2-1.1] List all applications you want to block below, by clicking the Add button.",Create Process,Begin: 2015-11-10 05:43:25,End: 2015-11-10 05:43:25,Rule: Block applications from running | [AC2-1.1] Block these applications,4400,C:/Program Files (x86)/Internet Explorer/iexplore.exe,0,No Module Name,C:/Program Files (x86)/Google/Google Toolbar/GoogleToolbarUser_32.exe,User: user01,Domain: CONTOSO,Action Type: ,File size (bytes): 309704,Device ID: SCSI\\Disk&amp;Ven_ATA&amp;Prod_MTFDDAK256MAM-1K\\4&amp;35303def&amp;0&amp;000000</test_message>
                 <!-- Total Bytes -->
