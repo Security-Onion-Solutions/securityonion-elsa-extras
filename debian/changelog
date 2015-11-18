@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion25) trusty; urgency=medium
+
+  * restart starman if sensor 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 18 Nov 2015 13:08:56 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion24) trusty; urgency=medium
 
   * update starman init 

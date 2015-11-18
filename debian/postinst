@@ -828,24 +828,35 @@ case "$1" in
 		rm -f $FILE || echo "Error removing $FILE."
         fi
 
+	# Update starman init
+	FILE="/etc/init/starman"
+	if [ -f $FILE ]; then
+		cp /opt/elsa/contrib/securityonion/contrib/securityonion_starman_init.sh $FILE || echo "Error updating $FILE."
+	fi
+
 	# Update elsa_web.conf
 	FILE="/etc/elsa_web.conf"
 	if [ -f $FILE ]; then
 		sed -i 's|https://127.0.0.1:3154|http://127.0.0.1:3154|g' $FILE || echo "Error updating $FILE."
 		sed -i 's|"pcap_url": ".*$|"pcap_url": "/capme",|g' $FILE || echo "Error updating $FILE."
-		apache2ctl restart || echo "Failed to restart Apache."
+		echo "* Restarting ELSA web server."
+                # Is this a master server or a sensor-only box?
+                if [ -d /var/lib/mysql/securityonion_db ]; then
+       			# This is a master server, so restart Apache
+	                apache2ctl restart || echo "Error restarting Apache."
+                else
+                        if [ -f /etc/init.d/starman ]; then
+                           	# This is a sensor-only box, so restart starman
+				/etc/init.d/starman stop || echo "Error stopping starman."
+                                /etc/init.d/starman start || echo "Error starting starman."
+                        fi
+                fi
 	fi
 
 	# Update ELSA cron job
 	FILE="/etc/cron.d/elsa"
 	if [ -f $FILE ]; then
 		cp /opt/elsa/contrib/securityonion/contrib/elsa.cron $FILE || echo "Error updating $FILE."
-	fi
-
-	# Update starman init
-	FILE="/etc/init/starman"
-	if [ -f $FILE ]; then
-		cp /opt/elsa/contrib/securityonion/contrib/securityonion_starman_init.sh $FILE || echo "Error updating $FILE."
 	fi
 
         ;;
