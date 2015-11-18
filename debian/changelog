@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion26) trusty; urgency=medium
+
+  * fix path for starman init.d 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 18 Nov 2015 16:18:56 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion25) trusty; urgency=medium
 
   * restart starman if sensor 

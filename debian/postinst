@@ -829,7 +829,7 @@ case "$1" in
         fi
 
 	# Update starman init
-	FILE="/etc/init/starman"
+	FILE="/etc/init.d/starman"
 	if [ -f $FILE ]; then
 		cp /opt/elsa/contrib/securityonion/contrib/securityonion_starman_init.sh $FILE || echo "Error updating $FILE."
 	fi
