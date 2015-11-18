@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion24) trusty; urgency=medium
+
+  * update starman init 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 18 Nov 2015 12:48:36 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion23) trusty; urgency=medium
 
   * add error check 

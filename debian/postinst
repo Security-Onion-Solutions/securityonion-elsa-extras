@@ -842,6 +842,12 @@ case "$1" in
 		cp /opt/elsa/contrib/securityonion/contrib/elsa.cron $FILE || echo "Error updating $FILE."
 	fi
 
+	# Update starman init
+	FILE="/etc/init/starman"
+	if [ -f $FILE ]; then
+		cp /opt/elsa/contrib/securityonion/contrib/securityonion_starman_init.sh $FILE || echo "Error updating $FILE."
+	fi
+
         ;;
     abort-upgrade|abort-remove|abort-deconfigure)
         ;;
