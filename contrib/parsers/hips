@@ -11,7 +11,7 @@
                 <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::,@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
                 <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::IP Address: @@IPv4:i0:@@ESTRING::Computer name: @@ESTRING:s0:,@@ESTRING::Risk name: @@ESTRING:s4:,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::User: @@ESTRING:s1:,@@ESTRING::Application hash: @@ESTRING:s5:,@</pattern>
                 <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::IP Address: @@IPv4:i0:@@ESTRING::Computer name: @@ESTRING:s0:,@@ESTRING::Risk name: @@ESTRING:s4:,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::User: @@ESTRING:s1:,@</pattern>
-                <pattern>@ESTRING::SymantecServer->@@ESTRINGh::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::IPS,"@@ESTRING:s4: File : '@@ESTRING:s2:'@</pattern>
+                <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::IPS,"@@ESTRING:s4: File : '@@ESTRING:s2:'@</pattern>
 
                 <!-- Malwarebytes Log Parsers -->
                 <!-- Anti-Exploit -->
