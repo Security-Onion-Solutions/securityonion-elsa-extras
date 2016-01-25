@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion27) trusty; urgency=medium
+
+  * rebuild for new securityonion-elsa 
+
+ -- Doug Burks <doug.burks@gmail.com>  Mon, 25 Jan 2016 07:20:03 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion26) trusty; urgency=medium
 
   * fix path for starman init.d 
