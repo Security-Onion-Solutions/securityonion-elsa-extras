@@ -4,6 +4,7 @@
 <rules>
     <rule provider="ELSA" class='40' id='40'>
         <patterns>
+            <pattern>@ESTRING::DhcpSrvLog-@@ESTRING::NACK@@ESTRING::,@@IPv4:i0:@@ESTRING::,,@@ESTRING:s0:,@</pattern>
             <pattern>@ESTRING::DhcpSrvLog-@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@@ESTRING::,@@ESTRING:s2:.@@ESTRING:s1:,@@ESTRING:s0:,@</pattern>
             <pattern>@ESTRING::DhcpSrvLog-@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@@ESTRING::,@@ESTRING:s2:.@@ESTRING:s1:,@</pattern>
             <pattern>@ESTRING::DhcpSrvLog-@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@IPv4:i0:,@@ESTRING::,@@ESTRING:s2:,@</pattern>
@@ -36,6 +37,13 @@
                 <test_value name="i0">10.0.0.5</test_value>
                 <!-- Host Name -->
                 <test_value name="s2">CLIENT01</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2016 Mar 14 12:11:03 (SERVER01) 10.0.0.1->\\Windows/sysnative/Dhcp/DhcpSrvLog-Mon.log 15,03/14/16,08:11:02,NACK,10.0.0.5,,AAAABBBBCCCC,,0,6,,,</test_message>
+                <!-- IP handed out -->
+                <test_value name="i0">10.0.0.5</test_value>
+                <!-- MAC Address -->
+                <test_value name="s0">AAAABBBBCCCC</test_value>
             </example>
             <example>
                 <test_message program="ossec_archive">2015 Nov 10 10:23:15 (SERVER01) 10.0.0.1->\\Windows/sysnative/Dhcp/DhcpSrvLog-Tue.log 16,11/10/15,11:23:12,Deleted,10.0.0.5,,,,0,6,,,</test_message>
