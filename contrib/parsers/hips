@@ -4,22 +4,22 @@
 <rules>
     <rule provider="ELSA" class='12000' id='12000'>
         <patterns>
-                <!-- Symantec Log Parsers -->
-                <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::application: @@ESTRING:s2:,@@ESTRING::Local: @@IPv4:i0:@@ESTRING::Remote: ,Remote: @@IPv4:i2:@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:i4:,@@ESTRING::User: @@ESTRING:s1:,@@ESTRING::Local Port @@NUMBER:i1:,@@ESTRING::Remote Port @@NUMBER:i3:,@@ESTRING::CIDS Signature string: @@ESTRING:s4:,@@ESTRING::Intrusion URL: @@ESTRING:s3:,@</pattern>
-                <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::MD5=@@ESTRING:s5:,@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::User: @@ESTRING:s1:,@@ESTRING::File size (bytes): @@NUMBER:i5:,@</pattern>
-                <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::",@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
-                <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::,@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
-                <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::IP Address: @@IPv4:i0:@@ESTRING::Computer name: @@ESTRING:s0:,@@ESTRING::Risk name: @@ESTRING:s4:,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::User: @@ESTRING:s1:,@@ESTRING::Application hash: @@ESTRING:s5:,@</pattern>
-                <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::IP Address: @@IPv4:i0:@@ESTRING::Computer name: @@ESTRING:s0:,@@ESTRING::Risk name: @@ESTRING:s4:,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::User: @@ESTRING:s1:,@</pattern>
-                <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::IPS,"@@ESTRING:s4: File : '@@ESTRING:s2:'@</pattern>
+                        <!-- Symantec Log Parsers -->
+                        <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::application: @@ESTRING:s2:,@@ESTRING::Local: @@IPv4:i0:@@ESTRING::Remote: ,Remote: @@IPv4:i2:@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:i4:,@@ESTRING::User: @@ESTRING:s1:,@@ESTRING::Local Port @@NUMBER:i1:,@@ESTRING::Remote Port @@NUMBER:i3:,@@ESTRING::CIDS Signature string: @@ESTRING:s4:,@@ESTRING::Intrusion URL: @@ESTRING:s3:,@</pattern>
+                        <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::MD5=@@ESTRING:s5:,@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::User: @@ESTRING:s1:,@@ESTRING::File size (bytes): @@NUMBER:i5:,@</pattern>
+                        <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::",@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
+                        <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::,@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
+                        <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::IP Address: @@IPv4:i0:@@ESTRING::Computer name: @@ESTRING:s0:,@@ESTRING::Risk name: @@ESTRING:s4:,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::User: @@ESTRING:s1:,@@ESTRING::Application hash: @@ESTRING:s5:,@</pattern>
+                        <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::IP Address: @@IPv4:i0:@@ESTRING::Computer name: @@ESTRING:s0:,@@ESTRING::Risk name: @@ESTRING:s4:,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::User: @@ESTRING:s1:,@</pattern>
+                        <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::IPS,"@@ESTRING:s4: File : '@@ESTRING:s2:'@</pattern>
 
-                <!-- Malwarebytes Log Parsers -->
-                <!-- Anti-Exploit -->
-                <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::LogonUser=@@ESTRING:s1:; @@ESTRING::Attacked application: @@ESTRING:s3:; @@ESTRING::Parent process name: @@ESTRING:s2:; @@ESTRING::Source=MBAE@@ESTRING::PayloadChecksum=;@</pattern>
-                <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@ESTRING:s2:; @@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::LogonUser=@@ESTRING:s1:; @@ESTRING::Attacked application: @@ESTRING:s3:; @@ESTRING::Source=MBAE@@ESTRING::PayloadChecksum=@@ESTRING:s5:; @</pattern>
-                <!-- Anti-Malware -->
-                <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@IPv4:i2:@@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::IPBLOCK@@ESTRING::Port: @@NUMBER:i1:, @@ESTRING::Process: @@ESTRING:s2:; @@ESTRING::LogonUser=@@ESTRING:s1:; @</pattern>
-                <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@ESTRING:s2:; @@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::DETECTION@@ESTRING::LogonUser=@@ESTRING:s1:; @</pattern>
+                        <!-- Malwarebytes Log Parsers -->
+                        <!-- Anti-Exploit -->
+                        <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::LogonUser=@@ESTRING:s1:; @@ESTRING::Attacked application: @@ESTRING:s3:; @@ESTRING::Parent process name: @@ESTRING:s2:; @@ESTRING::Source=MBAE@@ESTRING::PayloadChecksum=;@</pattern>
+                        <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@ESTRING:s2:; @@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::LogonUser=@@ESTRING:s1:; @@ESTRING::Attacked application: @@ESTRING:s3:; @@ESTRING::Source=MBAE@@ESTRING::PayloadChecksum=@@ESTRING:s5:; @</pattern>
+                        <!-- Anti-Malware -->
+                        <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@IPv4:i2:@@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::IPBLOCK@@ESTRING::Port: @@NUMBER:i1:, @@ESTRING::Process: @@ESTRING:s2:; @@ESTRING::LogonUser=@@ESTRING:s1:; @</pattern>
+                        <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@ESTRING:s2:; @@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::DETECTION@@ESTRING::LogonUser=@@ESTRING:s1:; @</pattern>
         </patterns>
         <examples>
             <example>
