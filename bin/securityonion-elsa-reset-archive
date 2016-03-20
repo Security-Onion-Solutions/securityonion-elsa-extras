@@ -21,7 +21,7 @@ service syslog-ng stop
 
 echo
 echo "Deleting old database entries..."
-mysql -uroot syslog_data -e "DROP TABLE syslog_data.syslogs_archive_1" 
+mysql -uroot syslog_data -e "DROP TABLE syslog_data.syslogs_archive_1"
 mysql -uroot syslog_data -e "DELETE FROM syslog.tables WHERE table_name='syslog_data.syslogs_archive_1'"
 
 echo
