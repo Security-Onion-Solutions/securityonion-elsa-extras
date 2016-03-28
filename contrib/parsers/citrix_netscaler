@@ -12,7 +12,7 @@
                 <!-- LOGIN -->
                 <pattern>@ESTRING::NS-VPX @@ESTRING::SSLVPN @@ESTRING:s1: @@ESTRING::SessionId: @@ESTRING:i3:- @@ESTRING:s2:User @@ESTRING:s0: @@ESTRING::Client_ip @@IPv4:i0:@@ESTRING::Vserver @@IPv4:i1:@@ESTRING:::@@ESTRING:i2: @@ESTRING::Browser_type @@QSTRING:s5:"@</pattern>
                 <!-- LOGIN_FAILED -->
-                <pattern>@ESTRING::NS-VPX @@ESTRING::AAA @@ESTRING:s1: @@ESTRING:s2: User @@ESTRING:s0: @@ESTRING::Client_ip @@IPv4:i0:@@ESTRING::Browser @@ANYSTRING:s5:@</pattern>
+                <pattern>@ESTRING::NS-VPX @@ESTRING::AAA @@ESTRING:s1: @@ESTRING:: User @@ESTRING:s0: @@ESTRING::Client_ip @@IPv4:i0:@@ESTRING::Browser @@ANYSTRING:s5:@</pattern>
                 <!-- SSL_HANDSHAKE_SUCCESS -->
                 <pattern>@ESTRING::NS-VPX @@ESTRING::SSLLOG @@ESTRING:s1: @@ESTRING::ClientIP @@IPv4:i0@@ESTRING::VserverServiceIP @@IPv4:i1:@@ESTRING::VserverServicePort @@ESTRING:i2: @</pattern>
                 <!-- LOGOUT -->
