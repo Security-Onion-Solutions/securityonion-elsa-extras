@@ -216,8 +216,6 @@ function config_webnode() {
 		#IP=`ifconfig | grep "inet addr" | awk '{print $2}' | cut -d\: -f2 | grep -v "127.0.0.1" | head -1`
 		sed -i "s/^.*\"pcap_url\": \"http\:\/\/streamdb\",.*$/\t\"pcap_url\": \"\/capme\",/" /etc/elsa_web.conf
 	fi   
-	HOSTNAME=`hostname`
-	sed -i "s|\"127.0.0.1\": {|\"$HOSTNAME\": {|g" /etc/elsa_web.conf
 	echo "* Beginning Web Install:" | $LOGGER
 	echo "* Configuring mysql schema" | $LOGGER
 	mysqladmin -uroot $MYSQL_PORT create elsa_web 

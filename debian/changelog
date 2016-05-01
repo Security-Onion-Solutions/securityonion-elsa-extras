@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion30) trusty; urgency=medium
+
+  * revert last change 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sun, 01 May 2016 15:18:46 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion29) trusty; urgency=medium
 
   * Issue 898: ELSA: set master peer label to hostname instead of 127.0.0.1 

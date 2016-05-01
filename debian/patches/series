@@ -16,3 +16,4 @@ remove-NameVirtualHost-from-securityonion_apache_site.conf
 change-cli.sh-to-use-new-ELSA-API-address
 Issue-881:-ELSA:-remove-non-ascii-character-from-securityonion-elsa-reset-archive
 Issue-898:-ELSA:-set-master-peer-label-to-hostname-instead-of-127.0.0.1
+revert-last-change
