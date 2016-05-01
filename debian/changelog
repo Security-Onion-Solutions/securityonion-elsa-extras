@@ -1,3 +1,15 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion29) trusty; urgency=medium
+
+  * Issue 898: ELSA: set master peer label to hostname instead of 127.0.0.1 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sun, 01 May 2016 14:38:36 -0400
+
+securityonion-elsa-extras (20151011-1ubuntu1securityonion28) trusty; urgency=medium
+
+  * Issue 881: ELSA: remove non-ascii character from securityonion-elsa-reset-archive 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 13 Apr 2016 13:45:28 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion27) trusty; urgency=medium
 
   * rebuild for new securityonion-elsa 

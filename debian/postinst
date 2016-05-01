@@ -839,6 +839,8 @@ case "$1" in
 	if [ -f $FILE ]; then
 		sed -i 's|https://127.0.0.1:3154|http://127.0.0.1:3154|g' $FILE || echo "Error updating $FILE."
 		sed -i 's|"pcap_url": ".*$|"pcap_url": "/capme",|g' $FILE || echo "Error updating $FILE."
+		HOSTNAME=`hostname`
+		sed -i "s|\"127.0.0.1\": {|\"$HOSTNAME\": {|g" $FILE
 		echo "* Restarting ELSA web server."
                 # Is this a master server or a sensor-only box?
                 if [ -d /var/lib/mysql/securityonion_db ]; then
