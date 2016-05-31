@@ -7,7 +7,7 @@ echo "This script will reset the ELSA database."
 echo
 echo "It should only be used as a last resort."
 echo
-echo "Continuing will delete any existing data in the ELSA archive."
+echo "Continuing will delete any existing data in the ELSA database."
 echo
 echo "Type yes to continue or anything else to exit."
 read INPUT

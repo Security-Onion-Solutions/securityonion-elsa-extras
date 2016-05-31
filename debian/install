@@ -1,5 +1,6 @@
 contrib opt/elsa/contrib/securityonion
 bin/securityonion-elsa-config.sh usr/bin
+bin/securityonion-elsa-reset usr/bin
 bin/securityonion-elsa-reset-archive usr/bin
 bin/securityonion_elsa_register.rb usr/bin
 contrib/securityonion-patterndb.xml /etc/elsa/patterns.d/elsa

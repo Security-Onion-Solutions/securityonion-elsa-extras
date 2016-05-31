@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion32) trusty; urgency=medium
+
+  * fix securityonion-elsa-reset 
+
+ -- Doug Burks <doug.burks@gmail.com>  Tue, 31 May 2016 14:41:19 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion31) trusty; urgency=medium
 
   * add securityonion-elsa-reset script #908 
