@@ -801,11 +801,12 @@ case "$1" in
 		service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
 	fi
 
-	# Make sure that reset script is executable
-	FILE="/usr/bin/securityonion-elsa-reset-archive"
-	if [ -f $FILE ]; then
-		chmod +x $FILE || echo "Error making $FILE executable."
-	fi
+	# Make sure that reset scripts are executable
+	for FILE in "/usr/bin/securityonion-elsa-reset-archive" "/usr/bin/securityonion-elsa-reset"; do
+		if [ -f $FILE ]; then
+			chmod +x $FILE || echo "Error making $FILE executable."
+		fi
+	done
 
 	# Port 3154 no longer needs to be allowed in firewall
         ufw delete allow 3154/tcp >dev/null 2>&1 || echo "Error blocking port 3154 in firewall."
