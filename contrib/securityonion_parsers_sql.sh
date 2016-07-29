@@ -291,3 +291,15 @@ mysql -uroot < $SQL || echo "Error importing $SQL."
 # Additions for BRO_DNP3 class & associated fields
 SQL="$SQL_DIR/bro_dnp3.sql"
 mysql -uroot < $SQL || echo "Error importing $SQL."
+
+# Additions for Citrix Netscaler class & associated fields
+SQL="$SQL_DIR/citrix_netscaler.sql"
+mysql -uroot < $SQL || echo "Error importing $SQL."
+
+# Additions for HIPS class & associated fields
+SQL="$SQL_DIR/hips.sql"
+mysql -uroot < $SQL || echo "Error importing $SQL."
+
+# Additions for autoruns class & associated fields
+SQL="$SQL_DIR/autorun.sql"
+mysql -uroot < $SQL || echo "Error importing $SQL."

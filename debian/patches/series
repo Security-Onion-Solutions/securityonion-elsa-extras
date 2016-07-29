@@ -19,3 +19,4 @@ Issue-898:-ELSA:-set-master-peer-label-to-hostname-instead-of-127.0.0.1
 revert-last-change
 add-securityonion-elsa-reset-script-#908
 fix-securityonion-elsa-reset
+securityonion-elsa-extras:-merge-additional-patterns-#827
