@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion34) trusty; urgency=medium
+
+  * postinst - mkdir /nsm/elsa/ if it doesn't already exist 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 29 Jul 2016 16:31:51 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion33) trusty; urgency=medium
 
   * securityonion-elsa-extras: merge additional patterns #827

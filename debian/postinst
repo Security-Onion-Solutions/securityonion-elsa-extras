@@ -836,6 +836,8 @@ case "$1" in
 
 			fi
 		fi
+		# If Setup hasn't been run yet, then we need to create /nsm/elsa/ before trying to create /nsm/elsa/$UPDATE
+		mkdir -p /nsm/elsa/
 		touch $FILE
 	fi
 
