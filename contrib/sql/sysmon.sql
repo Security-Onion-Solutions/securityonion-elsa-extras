@@ -35,3 +35,21 @@ INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES (
 INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="destip"), 16);
 INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="sourceport"), 5);
 INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_NETWORK"), (SELECT id FROM fields WHERE field="destport"), 6);
+
+
+/*  Creates SYSMON_REMOTETHREAD Class & associated fields */
+INSERT IGNORE INTO classes (id, class) VALUES (10777, "SYSMON_REMOTETHREAD");
+
+INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("hostname","string", "QSTRING");  
+INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("sourceprocessguid","string", "QSTRING");
+INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("sourceimage","string", "QSTRING");
+INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("targetprocessguid","string", "QSTRING");
+INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("targetimage","string", "QSTRING");
+INSERT IGNORE INTO fields (field, field_type, pattern_type) VALUES ("startmodule","string", "QSTRING");
+
+INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_REMOTETHREAD"), (SELECT id FROM fields WHERE field="hostname"), 11);
+INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_REMOTETHREAD"), (SELECT id FROM fields WHERE field="sourceprocessguid"), 12);
+INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_REMOTETHREAD"), (SELECT id FROM fields WHERE field="sourceimage"), 13);
+INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_REMOTETHREAD"), (SELECT id FROM fields WHERE field="targetprocessguid"), 14);
+INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_REMOTETHREAD"), (SELECT id FROM fields WHERE field="targetimage"), 15);
+INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="SYSMON_REMOTETHREAD"), (SELECT id FROM fields WHERE field="startmodule"), 16);
