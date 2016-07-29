@@ -1,0 +1,235 @@
+<!-- v. 11/15/15 --- Maintained by Brian Kellogg -->
+<ruleset name="HIPS" id='12000'>
+<pattern>ossec_archive</pattern>
+<rules>
+    <rule provider="ELSA" class='12000' id='12000'>
+        <patterns>
+            <!-- Symantec Log Parsers -->
+            <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::application: @@ESTRING:s2:,@@ESTRING::Local: @@IPv4:i0:@@ESTRING::Remote: ,Remote: @@IPv4:i2:@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:i4:,@@ESTRING::User: @@ESTRING:s1:,@@ESTRING::Local Port @@NUMBER:i1:,@@ESTRING::Remote Port @@NUMBER:i3:,@@ESTRING::CIDS Signature string: @@ESTRING:s4:,@@ESTRING::Intrusion URL: @@ESTRING:s3:,@</pattern>
+            <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::MD5=@@ESTRING:s5:,@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::User: @@ESTRING:s1:,@@ESTRING::File size (bytes): @@NUMBER:i5:,@</pattern>
+            <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::",@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
+            <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::,@@ESTRING::,@@ESTRING:s4:,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::,@@ESTRING::,@@ESTRING:s3:,@@ESTRING::: @@ESTRING:s1:,@@ESTRING::,@@ESTRING::,@@ESTRING::): @@NUMBER:i5:,@</pattern>
+            <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::IP Address: @@IPv4:i0:@@ESTRING::Computer name: @@ESTRING:s0:,@@ESTRING::Risk name: @@ESTRING:s4:,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::User: @@ESTRING:s1:,@@ESTRING::Application hash: @@ESTRING:s5:,@</pattern>
+            <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::IP Address: @@IPv4:i0:@@ESTRING::Computer name: @@ESTRING:s0:,@@ESTRING::Risk name: @@ESTRING:s4:,@@ESTRING::,@@ESTRING:s2:,@@ESTRING::User: @@ESTRING:s1:,@</pattern>
+            <pattern>@ESTRING::SymantecServer->@@ESTRING::SymantecServer @@ESTRING::: @@ESTRING:s0:,@@ESTRING::IPS,"@@ESTRING:s4: File : '@@ESTRING:s2:'@</pattern>
+
+            <!-- Malwarebytes Log Parsers -->
+            <!-- Anti-Exploit -->
+            <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::LogonUser=@@ESTRING:s1:; @@ESTRING::Attacked application: @@ESTRING:s3:; @@ESTRING::Parent process name: @@ESTRING:s2:; @@ESTRING::Source=MBAE@@ESTRING::PayloadChecksum=;@</pattern>
+            <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@ESTRING:s2:; @@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::LogonUser=@@ESTRING:s1:; @@ESTRING::Attacked application: @@ESTRING:s3:; @@ESTRING::Source=MBAE@@ESTRING::PayloadChecksum=@@ESTRING:s5:; @</pattern>
+            <!-- Anti-Malware -->
+            <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@IPv4:i2:@@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::IPBLOCK@@ESTRING::Port: @@NUMBER:i1:, @@ESTRING::Process: @@ESTRING:s2:; @@ESTRING::LogonUser=@@ESTRING:s1:; @</pattern>
+            <pattern>@ESTRING::MALWAREBYTES@@ESTRING::HostName=@@ESTRING:s0:; @@ESTRING::IPAddress=@@IPv4:i0:@@ESTRING::ObjectScanned=@@ESTRING:s2:; @@ESTRING::ThreatName=@@ESTRING:s4:; @@ESTRING::DETECTION@@ESTRING::LogonUser=@@ESTRING:s1:; @</pattern>
+        </patterns>
+        <examples>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 12 20:58:57 SymantecServer->10.0.0.1 Nov 12 14:49:49 SymantecServer SERVER01: CLIENT01,Category: 2,IPS,"[Intrusion prevention submission] Information submitted to Symantec about file. File : '\\??\\C:\\windows\\system32\\mshtml.dll',"</test_message>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">\\??\\C:\\windows\\system32\\mshtml.dll</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">[Intrusion prevention submission] Information submitted to Symantec about file.</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 11 17:58:18 SymantecServer->10.0.0.1 Nov 11 11:49:56 SymantecServer SERVER01: Compressed File,IP Address: 10.0.0.5,Computer name: CLIENT01,Source: Scheduled Scan,Risk name: Trojan.Gen.2,Occurrences: 1,D:\\E-mails 03- 07-15 to 06-11-15\\stuff here\\stuff there.msg,'Still contains 1 infected items',Actual action: Quarantined,Requested action: Quarantined,Secondary action: Left alone,Event time: 2015-11-11 17:47:42,Inserted: 2015-11-11 17:49:56,End: 2015-11-11 17:47:42,Last update time: 2015-11-11 17:49:56,Domain: Default,Group: My Company\\Client Machines,Server: SERVER01,User: user01,Source computer: ,Source IP: ,Disposition: Good,Download site: null,Web domain: null,Downloaded by: null,Prevalence: Reputation was not used in this detection.,Confidence: Reputation was not used in this detection.,URL Tracking Status: Off,,First Seen: Reputation was not used in this detection.,Sensitivity: Low,MDS,Application hash: ,Hash type: SHA1,Company name: ,Application name: ,Application version: ,Application type: -1,F</test_message>
+                 <!-- SRC IP -->
+                <test_value name="i0">10.0.0.5</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">D:\\E-mails 03- 07-15 to 06-11-15\\stuff here\\stuff there.msg</test_value>
+                <!-- Image -->
+                <test_value name="s3"></test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Trojan.Gen.2</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 12 21:29:12 SymantecServer->10.0.0.1 Nov 12 15:17:16 SymantecServer SERVER01: CLIENT01,[SID: 28878] System Infected: Downloader.Upatre Activity 19 attack blocked. Traffic has been blocked for this application: C:\\WINDOWS\\SYSWOW64\\SVCHOST.EXE,Local: 10.0.0.5,Local: 000000000000,Remote: ,Remote: 87.233.175.114,Remote: 000000000000,Inbound,TCP,Intrusion ID: 0,Begin: 2015-11-11 08:15:29,End: 2015-11-11 08:15:38,Occurrences: 2,Application: C:/WINDOWS/SYSWOW64/SVCHOST.EXE,Location: Remote Policy,User: user01,Domain: CONTOSO,Local Port 52853,Remote Port 443,CIDS Signature ID: 28878,CIDS Signature string: System Infected: Downloader.Upatre Activity 19,CIDS Signature SubID: 65766,Intrusion URL: ,Intrusion Payload URL:</test_message>
+                 <!-- SRC IP -->
+                <test_value name="i0">10.0.0.5</test_value>
+                <!-- SRC Port -->
+                <test_value name="i1">52853</test_value>
+                <!-- DST IP -->
+                <test_value name="i2">87.233.175.114</test_value>
+                <!-- DST Port -->
+                <test_value name="i3">443</test_value>
+                <!-- Proto -->
+                <test_value name="i4">TCP</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:\\WINDOWS\\SYSWOW64\\SVCHOST.EXE</test_value>>
+                <!-- Indicator -->
+                <test_value name="s4">System Infected: Downloader.Upatre Activity 19</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 13 08:00:04 SymantecServer->10.0.0.1 Nov 13 01:44:30 SymantecServer SERVER01: CLIENT01,[SID: 27892] Web Attack: Malicious File Download 24 attack blocked. Traffic has been blocked for this application: C:\\PROGRAM FILES (X86)\\GOOGLE\\CHROME\\APPLICATION\\CHROME.EXE,Local: 10.0.0.5,Local: 000000000000,Remote: ,Remote: 83.147.162.230,Remote: 000000000000,Inbound,TCP,Intrusion ID: 0,Begin: 2015-11-12 16:30:37,End: 2015-11-12 16:30:37,Occurrences: 1,Application: C:/PROGRAM FILES (X86)/GOOGLE/CHROME/APPLICATION/CHROME.EXE,Location: Remote Policy,User: user01,Domain: CONTOSO,Local Port 52159,Remote Port 80,CIDS Signature ID: 27892,CIDS Signature string: Web Attack: Malicious File Download 24,CIDS Signature SubID: 69836,Intrusion URL: adrotate.se/?placement=401027&amp;cookie=1&amp;random=90546&amp;domain=bfd69dd9.se,Intrusion Payload URL:</test_message>
+                <!-- SRC IP -->
+                <test_value name="i0">10.0.0.5</test_value>
+                <!-- SRC Port -->
+                <test_value name="i1">52159</test_value>
+                <!-- DST IP -->
+                <test_value name="i2">83.147.162.230</test_value>
+                <!-- DST Port -->
+                <test_value name="i3">80</test_value>
+                <!-- Proto -->
+                <test_value name="i4">TCP</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:\\PROGRAM FILES (X86)\\GOOGLE\\CHROME\\APPLICATION\\CHROME.EXE</test_value>
+                <!-- Image -->
+                <test_value name="s3">adrotate.se/?placement=401027&amp;cookie=1&amp;random=90546&amp;domain=bfd69dd9.se</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Web Attack: Malicious File Download 24</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 11 05:27:09 SymantecServer->10.0.0.1 Nov 10 23:25:29 SymantecServer SERVER01: CLIENT01,Blocked, - Caller MD5=b96c17b5dc1424d56eea3a99e97428cd,File Delete,Begin: 2015-11-09 20:44:20,End: 2015-11-09 20:44:22,Rule: Windows processes protection | [AC19-1.1] Block writing code,1528,C:/Windows/System32/spoolsv.exe,0,No Module Name,C:/Windows/System32/spool/drivers/x64/3/Old/1/mxdwdrv.dll,User: SYSTEM,Domain: CONTOSO,Action Type: ,File size (bytes): 715776,Device ID: IDE\\DiskHITACHI_HTS723232A7A364_________________EC2ZB70B\\4&amp;183b99bf&amp;0&amp;0.0.0</test_message>
+                <!-- Total Bytes -->
+                <test_value name="i5">715776</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">SYSTEM</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:/Windows/System32/spoolsv.exe</test_value>
+               <!-- Image -->
+                <test_value name="s3">C:/Windows/System32/spool/drivers/x64/3/Old/1/mxdwdrv.dll</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">File Delete</test_value>
+                <!-- Hash -->
+                <test_value name="s5">b96c17b5dc1424d56eea3a99e97428cd</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 15 10:17:10 (SERVER01) 10.0.0.1->\\ProgramData/logs/mbytes_adm151115.log MALWAREBYTES ClientSecurityLog ID=1246852; ClientID=328ACDF8-4BA5-4562-8C06-89A954DA75AF; HostName=CLIENT01; Domain=contoso.com; MacAddress=B4-B5-2F-AA-55-B4; IPAddress=10.0.0.5; Time=Jul 28 2015 7:42AM; ThreatLevel=1; ObjectTypeScanned=0; ObjectScanned=; ThreatName=Exploit memory HeapSpray attempt blocked; Event=DETECTION; Action=1; Operation=BLOCK; IsResolved=1; LogonUser=user01; Data=data; Description=Attacked application: C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe; Parent process name: explorer.exe; Layer: Application Hardening; API ID: 900; Address: 0x20200000; Module: ; AddressType: ; StackTop: 0x06AA0000; StackBottom: 0x06A9C000; StackPointer: ; Extra: ; Application=Mozilla Firefox; ApplicationFullPath=C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe; Source=MBAE; Payload=; PayloadChecksum=; PayloadUrl=; PayloadProc=</test_message>
+                <!-- SRC IP -->
+                <test_value name="i0">10.0.0.5</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">explorer.exe</test_value>
+               <!-- Image -->
+                <test_value name="s3">C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Exploit memory HeapSpray attempt blocked</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 15 11:30:18 (SERVER01) 10.0.0.1->\\ProgramData/logs/mbytes_adm151115.log MALWAREBYTES ClientSecurityLog ID=1252508; ClientID=045E1A2A-EA54-4F32-8539-76E3897E6CAE; HostName=CLIENT01; Domain=contoso.com; MacAddress=BE-92-FF-DB-DA-63; IPAddress=10.0.0.5; Time=Nov 12 2015 5:23AM; ThreatLevel=1; ObjectTypeScanned=3; ObjectScanned=C:\\PROGRAM FILES (X86)\\FOXIT SOFTWARE\\FOXIT PHANTOMPDF\\plugins\\phc.dll; ThreatName=Exploit payload file blocked; Event=DETECTION; Action=1; Operation=BLOCK; IsResolved=1; LogonUser=user01; Data=data; Description=Attacked application: C:\\PROGRAM FILES (X86)\\FOXIT SOFTWARE\\FOXIT PHANTOMPDF\\FOXITPHANTOMPDF.EXE; Parent process name: explorer.exe; Layer: Application Behavior Protection; API ID: 301; Address: ; Module: ; AddressType: ; StackTop: ; StackBottom: ; StackPointer: ; Extra: ; Application=FOXITPHANTOMPDF.EXE; ApplicationFullPath=C:\\PROGRAM FILES (X86)\\FOXIT SOFTWARE\\FOXIT PHANTOMPDF\\FOXITPHANTOMPDF.EXE; Source=MBAE; Payload=C:\\PROGRAM FILES (X86)\\FOXIT SOFTWARE\\FOXIT PHANTOMPDF\\plugins\\phc.dll; PayloadChecksum=BE8981EEB84FD419661C6A441568750C; PayloadUrl=; PayloadProc=</test_message>
+                <!-- SRC IP -->
+                <test_value name="i0">10.0.0.5</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:\\PROGRAM FILES (X86)\\FOXIT SOFTWARE\\FOXIT PHANTOMPDF\\plugins\\phc.dll</test_value>
+               <!-- Image -->
+                <test_value name="s3">C:\\PROGRAM FILES (X86)\\FOXIT SOFTWARE\\FOXIT PHANTOMPDF\\FOXITPHANTOMPDF.EXE</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Exploit payload file blocked</test_value>
+                <!-- Hash -->
+                <test_value name="s5">BE8981EEB84FD419661C6A441568750C</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 11 05:07:24 (SERVER01) 10.0.0.1->\\ProgramData/logs/mbytes_adm151111.log MALWAREBYTES ClientSecurityLog ID=1009446; ClientID=4ABA24B5-A6BE-4576-B1B4-50E8CC947221; HostName=CLIENT01; Domain=contoso.com; MacAddress=E8-B1-FC-F2-B3-C2; IPAddress=10.0.0.5; Time=Nov 11 2015 11:19AM; ThreatLevel=0; ObjectTypeScanned=0; ObjectScanned=121.123.120.93; ThreatName=Blocked web site; Event=IPBLOCK; Action=1; Operation=Type: outgoing, Port: 52807, Process: 360se.exe; IsResolved=1; LogonUser=user01; Data=data; Description=121.123.120.93 (Type: outgoing, Port: 52807, Process: 360se.exe); Application=; ApplicationFullPath=; Source=MBAM; Payload=; PayloadChecksum=; PayloadUrl=; PayloadProc=</test_message>
+                <!-- SRC IP -->
+                <test_value name="i0">10.0.0.5</test_value>
+                <!-- SRC Port -->
+                <test_value name="i1">52807</test_value>
+                <!-- DST IP -->
+                <test_value name="i2">121.123.120.93</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">360se.exe</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Blocked web site</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 11 03:37:34 (SERVER01) 10.0.0.1->\\ProgramData/logs/mbytes_adm151111.log MALWAREBYTES ClientSecurityLog ID=1004085; ClientID=7E8D58A3-7DF6-4502-AF1F-B205A34C0F0F; HostName=CLIENT01; Domain=contoso.com; MacAddress=6C-B8-14-A0-6B-B4; IPAddress=10.0.0.5; Time=Nov 11 2015  9:05AM; ThreatLevel=1; ObjectTypeScanned=2; ObjectScanned=C:\\Users\\user01\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\cigiagpbkapepgklncnajbakkpkopmam\\0.1_0; ThreatName=PUP.Optional.CrossRider; Event=DETECTION; Action=2; Operation=QUARANTINE; IsResolved=1; LogonUser=user01; Data=data; Description=No description; Application=; ApplicationFullPath=; Source=MBAM; Payload=; PayloadChecksum=; PayloadUrl=; PayloadProc=</test_message>
+                <!-- SRC IP -->
+                <test_value name="i0">10.0.0.5</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:\\Users\\user01\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Extensions\\cigiagpbkapepgklncnajbakkpkopmam\\0.1_0</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">PUP.Optional.CrossRider</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 12 04:43:29 SymantecServer->10.0.0.1 Nov 11 22:28:25 SymantecServer SERVER01: CLIENT01,Blocked,"[AC2-1.1] List all applications you want to block below, by clicking the Add button.",Create Process,Begin: 2015-11-10 05:43:25,End: 2015-11-10 05:43:25,Rule: Block applications from running | [AC2-1.1] Block these applications,4400,C:/Program Files (x86)/Internet Explorer/iexplore.exe,0,No Module Name,C:/Program Files (x86)/Google/Google Toolbar/GoogleToolbarUser_32.exe,User: user01,Domain: CONTOSO,Action Type: ,File size (bytes): 309704,Device ID: SCSI\\Disk&amp;Ven_ATA&amp;Prod_MTFDDAK256MAM-1K\\4&amp;35303def&amp;0&amp;000000</test_message>
+                <!-- Total Bytes -->
+                <test_value name="i5">309704</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:/Program Files (x86)/Internet Explorer/iexplore.exe</test_value>
+                <!-- Image -->
+                <test_value name="s3">C:/Program Files (x86)/Google/Google Toolbar/GoogleToolbarUser_32.exe</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Create Process</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 12 04:43:36 SymantecServer->10.0.0.1 Nov 11 22:40:25 SymantecServer SERVER01: CLIENT01,Blocked,[AC17-1.1] Prevent registration of new Toolbars,Registry Write,Begin: 2015-10-29 10:48:29,End: 2015-10-29 10:48:29,Rule: Prevent registration of new Toolbars | [AC17-1.1] Prevent registration of new Toolbars,32704,C:/Program Files (x86)/Google/Google Toolbar/Component/GoogleToolbarManager_32479C6A88E27044.exe,0,No Module Name,/REGISTRY/MACHINE/SOFTWARE/Microsoft/Internet Explorer/Toolbar,User: SYSTEM,Domain: CONTOSO,Action Type: ,File size (bytes): 0,Device ID: </test_message>
+                <!-- Total Bytes -->
+                <test_value name="i5">0</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">SYSTEM</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:/Program Files (x86)/Google/Google Toolbar/Component/GoogleToolbarManager_32479C6A88E27044.exe</test_value>
+                <!-- Image -->
+                <test_value name="s3">/REGISTRY/MACHINE/SOFTWARE/Microsoft/Internet Explorer/Toolbar</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Registry Write</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 12 04:43:33 SymantecServer->10.27.201.97 Nov 11 22:35:05 SymantecServer drtexw97: CLIENT01,Blocked,[AC10-2.1] Block access to autorun.inf,File Read,Begin: 2015-11-11 11:04:30,End: 2015-11-11 11:04:30,Rule: All Applications | [AC10-2.1] Autorun.inf,8656,C:/Windows/explorer.exe,0,No Module Name,F:/autorun.inf,User: user01,Domain: CONTOSO,Action Type: ,File size (bytes): 0,Device ID: USBSTOR\\Disk&amp;Ven_Lexar&amp;Prod_USB_Flash_Drive&amp;Rev_1100\\AAKWACBQXXQIM4U1&amp;0</test_message>
+                <!-- Total Bytes -->
+                <test_value name="i5">0</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:/Windows/explorer.exe</test_value>
+                <!-- Image -->
+                <test_value name="s3">F:/autorun.inf</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">File Read</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 12 19:43:30 SymantecServer->10.27.201.97 Nov 12 13:29:48 SymantecServer SERVER01: CLIENT01,Blocked,[AC1-2.1] Block process,Registry Write,Begin: 2015-11-04 12:23:46,End: 2015-11-04 12:23:46,Rule: Protect client files and registry keys | [AC1-2.1] Client services,2452,C:/Windows/SysWOW64/wbem/WmiPrvSE.exe,0,No Module Name,/REGISTRY/MACHINE/SYSTEM/CurrentControlSet/services/SRTSP/Performance,User: SYSTEM,Domain: CONTOSO,Action Type: ,File size (bytes): 0,Device ID: </test_message>
+                <!-- Total Bytes -->
+                <test_value name="i5">0</test_value>
+                <!-- HostName -->
+                <test_value name="s0">CLIENT01</test_value>
+                <!-- User -->
+                <test_value name="s1">SYSTEM</test_value>
+                <!-- Parent Image -->
+                <test_value name="s2">C:/Windows/SysWOW64/wbem/WmiPrvSE.exe</test_value>
+                <!-- Image -->
+                <test_value name="s3">/REGISTRY/MACHINE/SYSTEM/CurrentControlSet/services/SRTSP/Performance</test_value>
+                <!-- Indicator -->
+                <test_value name="s4">Registry Write</test_value>
+            </example>
+        </examples>
+    </rule>
+</rules>
+</ruleset>

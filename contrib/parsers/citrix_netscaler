@@ -1,0 +1,167 @@
+<ruleset name="CITRIX_NETSCALER" id='12001'>
+   <pattern>ossec_archive</pattern>
+        <rules>
+                <rule provider="ELSA" class='12001' id='12001'>
+                <patterns>
+                <!-- TCPCONNSTAT -->
+                <pattern>@ESTRING::NS-VPX @@ESTRING::SSLVPN @@ESTRING:s1: @@ESTRING::SessionId: @@ESTRING:i3:-@@ESTRING:: User @@ESTRING:s0: @@ESTRING:: Client_ip @@IPv4:i0:@@ESTRING:: Destination @@IPv4:i1:@@ESTRING:::@@ESTRING:i2: @@ESTRING::bytes_send @@ESTRING:i4: @@ESTRING::bytes_recv @@ESTRING:i5: @</pattern>
+                <!-- ICAEND_CONNSTAT -->
+                <pattern>@ESTRING::NS-VPX @@ESTRING::SSLVPN @@ESTRING:s1: @@ESTRING::Source @@IPv4:i0:@@ESTRING::Destination @@IPv4:i1:@@ESTRING:::@@ESTRING:i2: @@ESTRING::username:domainname @@ESTRING:s0::@@ESTRING::bytes_send @@ESTRING:i5: @@ESTRING::bytes_recv @@ESTRING:i4: @</pattern>
+                <!-- HTTPREQUEST -->
+                <pattern>@ESTRING::NS-VPX @@ESTRING::SSLVPN @@ESTRING:s1: @@ESTRING::SessionId: @@ESTRING:i3:- @@ESTRING:s2: User @@ESTRING:s0: @@ESTRING::Vserver @@IPv4:i1:@@ESTRING:::@@ESTRING:i2: @@ESTRING::GMT @@ESTRING:s3: @@ESTRING:s4: @</pattern>
+                <!-- LOGIN -->
+                <pattern>@ESTRING::NS-VPX @@ESTRING::SSLVPN @@ESTRING:s1: @@ESTRING::SessionId: @@ESTRING:i3:- @@ESTRING:s2:User @@ESTRING:s0: @@ESTRING::Client_ip @@IPv4:i0:@@ESTRING::Vserver @@IPv4:i1:@@ESTRING:::@@ESTRING:i2: @@ESTRING::Browser_type @@QSTRING:s5:"@</pattern>
+                <!-- LOGIN_FAILED -->
+                <pattern>@ESTRING::NS-VPX @@ESTRING::AAA @@ESTRING:s1: @@ESTRING:: User @@ESTRING:s0: @@ESTRING::Client_ip @@IPv4:i0:@@ESTRING::Browser @@ANYSTRING:s5:@</pattern>
+                <!-- SSL_HANDSHAKE_SUCCESS -->
+                <pattern>@ESTRING::NS-VPX @@ESTRING::SSLLOG @@ESTRING:s1: @@ESTRING::ClientIP @@IPv4:i0@@ESTRING::VserverServiceIP @@IPv4:i1:@@ESTRING::VserverServicePort @@ESTRING:i2: @</pattern>
+                <!-- LOGOUT -->
+                <pattern>@ESTRING::NS-VPX @@ESTRING::SSLVPN @@ESTRING:s1: @@ESTRING::SessionId: @@ESTRING:i3:-@@ESTRING:: User @@ESTRING:s0: @@ESTRING:: Client_ip @@IPv4:i0:@@ESTRING::Vserver @@IPv4:i1:@@ESTRING:::@@ESTRING:i2: @@ESTRING::bytes_send @@ESTRING:i5: @@ESTRING::bytes_recv @@ESTRING:i4: @</pattern>
+                <!-- CMD_EXECUTED -->
+                <pattern>@ESTRING::NS-VPX @@ESTRING::UI @@ESTRING:s1: @@ESTRING::User @@ESTRING:s0: @@ESTRING::Remote_ip @@IPv4:i0:@</pattern>
+                <!-- ICASTART -->
+                <pattern>@ESTRING::NS-VPX @@ESTRING::SSLVPN @@ESTRING:s1: @@ESTRING::Source @@IPv4:i0:@@ESTRING::Destination @@IPv4:i1@@ESTRING:::@@ESTRING:i2: @@ESTRING::domainname @@ESTRING:s0::@</pattern>
+                </patterns>
+                <examples>
+                        <example>
+                        <test_message program="ossec_archive">03/16/2016:09:15:12 GMT NS-VPX 0-PPE-0 : SSLVPN ICASTART 145792 0 : Source 1.1.1.1:4323 - Destination 10.1.1.1:1494 - username:domainname user01:domain01 - applicationName Citrix QuickConnect - startTime "03/16/2016:09:15:11 GMT" - connectionId 1a92ae</test_message>
+                        <!-- Type -->
+                        <test_value name="s1">ICASTART</test_value>
+                        <!-- User -->
+                        <test_value name="s0">user01</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        <!-- Dest IP -->
+                        <test_value name="i1">10.1.1.1</test_value>
+                        <!-- Dest Port -->
+                        <test_value name="i2">1494</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">03/22/2016:16:05:58 GMT NS-VPX 0-PPE-0 : default GUI CMD_EXECUTED 22771 0 : User user01 - Remote_ip 1.1.1.1 - Command "show aaa group -weight 0" - Status "Success"</test_message>
+                        <!-- Type -->
+                        <test_value name="s1">CMD_EXECUTED</test_value>
+                        <!-- User -->
+                        <test_value name="s0">user01</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">03/22/2016:01:46:02 GMT NS-VPX 0-PPE-0 : default SSLVPN LOGOUT 12037 0 : Context user01@1.1.1.1 - SessionId: 151- User user01 - Client_ip 1.1.1.1 - Nat_ip "Mapped Ip" - Vserver 192.168.1.1:443 - Start_time "03/22/2016:01:05:50 GMT" - End_time "03/22/2016:01:46:02 GMT" - Duration 00:40:12 - Http_resources_accessed 0 - NonHttp_services_accessed 0 - Total_TCP_connections 107 - Total_UDP_flows 0 - Total_policies_allowed 107 - Total_policies_denied 0 - Total_bytes_send 94324 - Total_bytes_recv 47820732 - Total_compressedbytes_send 0 - Total_compressedbytes_recv 1618378 - Compression_ratio_send 0.00% - Compression_ratio_recv 96.61% - LogoutMethod "TimedOut" - Group(s) "N/A"</test_message>
+                        <!-- Type -->
+                        <test_value name="s1">LOGOUT</test_value>
+                        <!-- User -->
+                        <test_value name="s0">user01</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        <!-- Dest IP -->
+                        <test_value name="i1">192.168.1.1</test_value>
+                        <!-- Dest Port -->
+                        <test_value name="i2">443</test_value>
+                        <!-- Session ID -->
+                        <test_value name="i3">151</test_value>
+                        <!-- Bytes In -->
+                        <test_value name="i4">47820732</test_value>
+                        <!-- Bytes Out -->
+                        <test_value name="i5">94324</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">03/24/2016:08:54:11 GMT NS-VPX 0-PPE-0 : default SSLLOG SSL_HANDSHAKE_SUCCESS 50326 0 : SPCBId 7460 - ClientIP 1.1.1.1 - ClientPort 51412 - VserverServiceIP 192.168.1.1 - VserverServicePort 443 - ClientVersion TLSv1.0 - CipherSuite "DES-CBC3-SHA TLSv1 Non-Export 168-bit" - Session Reuse</test_message>
+                        <!-- Type -->
+                        <test_value name="s1">SSL_HANDSHAKE_SUCCESS</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        <!-- Dest IP -->
+                        <test_value name="i1">192.168.1.1</test_value>
+                        <!-- Dest Port -->
+                        <test_value name="i2">443</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">03/22/2016:06:49:23 GMT NS-VPX 0-PPE-0 : default AAA LOGIN_FAILED 15678 0 : User user01 - Client_ip 1.1.1.1 - Failure_reason "External authentication server denied access" - Browser Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36</test_message>
+                        <!-- User -->
+                        <test_value name="s0">user01</test_value>
+                        <!-- Type -->
+                        <test_value name="s1">LOGIN_FAILED</test_value>
+                        <!-- User Agent -->
+                        <test_value name="s5">Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">03/21/2016:09:06:46 GMT NS-VPX 0-PPE-0 : default SSLVPN LOGIN 5119 0 : Context user01@1.1.1.1 - SessionId: 69- User user01 - Client_ip 1.1.1.1 - Nat_ip "Mapped Ip" - Vserver 192.168.1.1:443 - Browser_type "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36" - SSLVPN_client_type ICA - Group(s) "N/A"</test_message>
+                        <!-- User -->
+                        <test_value name="s0">user01</test_value>
+                        <!-- Type -->
+                        <test_value name="s1">LOGIN</test_value>
+                        <!-- User Agent -->
+                        <test_value name="s5">Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i1">192.168.1.1</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i2">443</test_value>
+                        <!-- Session ID -->
+                        <test_value name="i3">69</test_value>
+                        </example>
+                        <example>
+                        <!-- How do you parse the ip after '@'? e.g. user01@1.1.1.1 -->
+                        <test_message program="ossec_archive">03/21/2016:13:03:59 GMT NS-VPX 0-PPE-0 : default SSLVPN HTTPREQUEST 6728 0 : Context user01@1.1.1.1 - SessionId: 91- top.site.com User user01 : Group(s) N/A : Vserver 192.168.1.1:443 - 03/21/2016:13:03:59 GMT GET /blah/appCon - -</test_message>
+                        <!-- User -->
+                        <test_value name="s0">user01</test_value>
+                        <!-- Type -->
+                        <test_value name="s1">HTTPREQUEST</test_value>
+                        <!-- Site -->
+                        <test_value name="s2">top.site.com</test_value>
+                        <!-- Method -->
+                        <test_value name="s3">GET</test_value>
+                        <!-- URI -->
+                        <test_value name="s4">/blah/appCon</test_value>
+                        <!-- Src IP -->
+                     <!-- <test_value name="i0">1.1.1.1</test_value> -->
+                        <!-- Dst IP -->
+                        <test_value name="i1">192.168.1.1</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i2">443</test_value>
+                        <!-- Session ID -->
+                        <test_value name="i3">91</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">03/21/2016:09:06:46 GMT NS-VPX 0-PPE-0 : default SSLVPN TCPCONNSTAT 5123 0 : Context user01@1.1.1.1 - SessionId: 69- User user01 - Client_ip 1.1.1.1 - Nat_ip 10.0.0.1 - Vserver 192.168.0.1:443 - Source 1.1.1.1:39344 - Destination 10.0.0.2:80 - Start_time "03/21/2016:09:06:46 GMT" - End_time "03/21/2016:09:06:46 GMT" - Duration 00:00:00 - Total_bytes_send 588 - Total_bytes_recv 394 - Total_compressedbytes_send 0 - Total_compressedbytes_recv 0 - Compression_ratio_send 0.00% - Compression_ratio_recv 0.00% - Access Allowed - Group(s) "N/A"</test_message>
+                        <!-- Type -->
+                        <test_value name="s1">TCPCONNSTAT</test_value>
+                        <!-- User -->
+                        <test_value name="s0">user01</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i1">10.0.0.2</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i2">80</test_value>
+                        <!-- Session ID -->
+                        <test_value name="i3">69</test_value>
+                        <!-- Bytes In -->
+                        <test_value name="i4">588</test_value>
+                        <!-- Bytes Out -->
+                        <test_value name="i5">394</test_value>
+                        </example>
+                        <example>
+                        <test_message program="ossec_archive">03/21/2016:08:26:46 GMT NS-VPX 0-PPE-0 : default SSLVPN ICAEND_CONNSTAT 4986 0 : Source 1.1.1.1:58792 - Destination 10.1.2.3:1494 - username:domainname user01:domain01 - startTime "03/21/2016:06:42:33 GMT" - endTime "03/21/2016:08:26:46 GMT" - Duration 01:44:13 - Total_bytes_send 616233 - Total_bytes_recv 12302665 - Total_compressedbytes_send 0 - Total_compressedbytes_recv 0 - Compression_ratio_send 0.00% - Compression_ratio_recv 0.00% - connectionId 2403e</test_message>
+                        <!-- User -->
+                        <test_value name="s0">user01</test_value>
+                        <!-- Type -->
+                        <test_value name="s1">ICAEND_CONNSTAT</test_value>
+                        <!-- Source IP -->
+                        <test_value name="i0">1.1.1.1</test_value>
+                        <!-- Dst IP -->
+                        <test_value name="i1">10.1.2.3</test_value>
+                        <!-- Dst Port -->
+                        <test_value name="i2">1494</test_value>
+                        <!-- Bytes In -->
+                        <test_value name="i4">12302665</test_value>
+                        <!-- Bytes Out -->
+                        <test_value name="i5">616233</test_value>
+                        </example>
+                    </examples>
+                </rule>
+        </rules>
+</ruleset>

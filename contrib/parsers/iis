@@ -4,6 +4,8 @@
 		                   <patterns> 
                         <!-- Default IIS logging setting with ALL FIELDS selected to log -->
                         <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->@ESTRING:: @@ESTRING::-@@ESTRING::-@@ESTRING:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:: @@IPv4:i1:@ @ESTRING:s0: @@ESTRING:s2: @@ESTRING:: @@ESTRING:: @@ESTRING:s3: @@IPv4:i0:@ @ESTRING:: @@ESTRING:s4: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s1: @@ESTRING:i2: @@NUMBER::@ @NUMBER::@ @ESTRING:i3: @@ESTRING:: @@ESTRING:i5:@</pattern>
+	                <!-- IIS catch all parser -->
+	                <pattern>@ESTRING::) @@IPv4:i1:->@@ESTRING::inetpub@@ESTRING:: @@ESTRING:: @@ESTRING:: @@ESTRING:: @@ESTRING:s0: @@ESTRING:s2: @@ESTRING:: @@ESTRING:: @@ESTRING:: @@IPv4:i0:@ @ESTRING:s4: @@ESTRING:i2: @</pattern>
 		                    </patterns>	
                         <examples>
                                  <example>
@@ -23,6 +25,17 @@
    
                                      </test_values>
                                 </example>
+                                           <example>
+                        <test_message program="ossec_archive">2015 Nov 11 09:53:55 (SERVER01) 10.0.0.6->/inetpub/logs/LogFiles/W3SVC1/u_ex151111.log 2015-11-11 09:52:55 10.0.0.6 HEAD /Ldlogon/lddwnld.dll - 80 - 10.0.0.5 Apple-iPhone6C2/1208.321 200 0 0 0</test_message>
+                        <test_values>
+                                <test_value name="i0">10.0.0.5</test_value>
+                                <test_value name="i1">10.0.0.6</test_value>
+                                <test_value name="i2">200</test_value>
+                                <test_value name="s0">HEAD</test_value>
+                                <test_value name="s2">/Ldlogon/lddwnld.dll</test_value>
+                                <test_value name="s4">Apple-iPhone6C2/1208.321</test_value>
+                        </test_values>
+                </example>
                     		</examples>
                   </rule>
 	</ruleset>
