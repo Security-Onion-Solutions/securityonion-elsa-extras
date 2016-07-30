@@ -20,3 +20,4 @@ revert-last-change
 add-securityonion-elsa-reset-script-#908
 fix-securityonion-elsa-reset
 securityonion-elsa-extras:-merge-additional-patterns-#827
+change-autorun-to-autoruns

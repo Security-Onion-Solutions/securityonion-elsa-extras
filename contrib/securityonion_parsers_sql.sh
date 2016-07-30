@@ -301,5 +301,5 @@ SQL="$SQL_DIR/hips.sql"
 mysql -uroot < $SQL || echo "Error importing $SQL."
 
 # Additions for autoruns class & associated fields
-SQL="$SQL_DIR/autorun.sql"
+SQL="$SQL_DIR/autoruns.sql"
 mysql -uroot < $SQL || echo "Error importing $SQL."
