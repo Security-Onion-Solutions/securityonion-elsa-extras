@@ -1,0 +1,18 @@
+<ruleset name='bro_knowndevices' id='900000'>
+ <pattern>bro_knowndevices</pattern>
+ <rules>
+   <rule provider='Jeff' class='900000' id=''>
+     <patterns>
+       <pattern>@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:@</pattern>
+     </patterns>
+     <examples>
+       <example>
+         <test_message
+program='bro_knowndevices'>1383924349.866451|00:11:22:33:44:55|Windows-PC</test_message>
+         <test_value name='s0'>00:11:22:33:44:55</test_value>
+         <test_value name='s1'>Windows-PC</test_value>
+       </example>
+     </examples>
+   </rule>
+ </rules>
+</ruleset>
