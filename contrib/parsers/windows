@@ -97,33 +97,10 @@
                 </example>
             </examples>
         </rule>
-    </rules>
-</ruleset>
-
-<!-- v. 2/8/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com -->
-<ruleset name="WIN-PROCESS-TRACKING" id='780'>
-<pattern>ossec_archive</pattern>
-<rules>
-    <rule provider="DefensiveDepth" class='10780' id='10780'>
-        <patterns>
-            <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Name: @@ESTRING:s2: Token Elevation Type: @@ESTRING:s3: Creator@</pattern>
-        </patterns>
-        <examples>
-            <example>
-                <test_message program="ossec_archive">2015 Feb 04 22:05:18 (COLLECT02) 192.168.160.18->WinEvtLog 2015 Feb 04 17:05:14 WinEvtLog: Security: AUDIT_SUCCESS(4688): Microsoft-Windows-Security-Auditing: (no user): no domain: DD-COLLECT-01.DD.US: A new process has been created. Subject: Security ID: S-1-5-18 Account Name: DD-COLLECT-01$ Account Domain: DD.US Logon ID: 0x3e7 Process Information: New Process ID: 0x68c New Process Name: C:\Windows\System32\taskhost.exe Token Elevation Type: %%1936 Creator Process ID: 0x2d0</test_message>
-                <!-- hostname-->
-                <test_value name="s0">DD-COLLECT-01.DD.US</test_value>
-                <!-- user-->
-                <test_value name="s1">DD-COLLECT-01$</test_value>
-                <!-- image-->
-                <test_value name="s2">C:\Windows\System32\taskhost.exe</test_value>
-                <!-- token_elevation-->
-                <test_value name="s3">%%1936</test_value>
-            </example>
-        </examples>
-    </rule>
-    <!--https://github.com/jtaylo78/Sysmon_ELSA_Parsers -->
-                <rule provider="DefensiveDepth" class='10782' id='10782'>
+   
+   
+       <!--https://github.com/jtaylo78/Sysmon_ELSA_Parsers -->
+       <rule provider="DefensiveDepth" class='10782' id='10782'>
                         <patterns>
                                 <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::Microsoft-Windows-Sysmon/Operational: INFORMATION(7): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: @@ESTRING:s0:: @@ESTRING::ProcessGuid: {@@ESTRING:s1:} @@ESTRING:: Image: @@ESTRING:s2:  ImageLoaded: @@ESTRING:s3:  Hashes: @@ESTRING:s4: @@ESTRING:: Signed: @@ESTRING:s5: @</pattern>
                         </patterns>
@@ -250,6 +227,32 @@
                                 </example>
                         </examples>
                 </rule>
+   
+    </rules>
+</ruleset>
+
+<!-- v. 2/8/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com -->
+<ruleset name="WIN-PROCESS-TRACKING" id='780'>
+<pattern>ossec_archive</pattern>
+<rules>
+    <rule provider="DefensiveDepth" class='10780' id='10780'>
+        <patterns>
+            <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Name: @@ESTRING:s2: Token Elevation Type: @@ESTRING:s3: Creator@</pattern>
+        </patterns>
+        <examples>
+            <example>
+                <test_message program="ossec_archive">2015 Feb 04 22:05:18 (COLLECT02) 192.168.160.18->WinEvtLog 2015 Feb 04 17:05:14 WinEvtLog: Security: AUDIT_SUCCESS(4688): Microsoft-Windows-Security-Auditing: (no user): no domain: DD-COLLECT-01.DD.US: A new process has been created. Subject: Security ID: S-1-5-18 Account Name: DD-COLLECT-01$ Account Domain: DD.US Logon ID: 0x3e7 Process Information: New Process ID: 0x68c New Process Name: C:\Windows\System32\taskhost.exe Token Elevation Type: %%1936 Creator Process ID: 0x2d0</test_message>
+                <!-- hostname-->
+                <test_value name="s0">DD-COLLECT-01.DD.US</test_value>
+                <!-- user-->
+                <test_value name="s1">DD-COLLECT-01$</test_value>
+                <!-- image-->
+                <test_value name="s2">C:\Windows\System32\taskhost.exe</test_value>
+                <!-- token_elevation-->
+                <test_value name="s3">%%1936</test_value>
+            </example>
+        </examples>
+    </rule>
     
      </rules>
 </ruleset>
