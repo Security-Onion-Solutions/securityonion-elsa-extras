@@ -841,6 +841,32 @@ case "$1" in
 		touch $FILE
 	fi
 
+	# If Setup hasn't been run yet, then we need to create /nsm/elsa/ before trying to create /nsm/elsa/$UPDATE
+	mkdir -p /nsm/elsa/
+
+	# 2016-08-09 additional sysmon sql
+	UPDATE="2016-08-09"
+	FILE="/nsm/elsa/$UPDATE"
+	if [ ! -f $FILE ]; then
+		if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
+			echo "* ELSA is enabled on this box."
+			# Only update database if Setup has already been run
+			if [ -e /var/log/nsm/sosetup.log ]; then
+				echo "* Found sosetup.log."
+				echo "* Did NOT find $FILE, so applying $UPDATE database schema update."
+
+				# Store all SQL schema updates as files in $SQL_DIR
+				SQL_DIR="/opt/elsa/contrib/securityonion/contrib/sql"
+
+        	                echo "* Updating database schema for Sysmon."
+				SQL="$SQL_DIR/sysmon.sql"
+				mysql --defaults-file=/etc/mysql/debian.cnf < $SQL || echo "Error importing $SQL."
+			fi
+		fi
+		# Now that we've applied the update, record that we've applied it
+		touch $FILE
+	fi
+
 	# Always check to see if ELSA is enabled and, if so, update patterns
 	if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
 		echo "* ELSA is enabled on this box."

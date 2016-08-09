@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion36) trusty; urgency=medium
+
+  * Issue 979: securityonion-elsa-extras: additional patterns for Sysmon 4 and 4.11 
+
+ -- Doug Burks <doug.burks@gmail.com>  Tue, 09 Aug 2016 13:33:06 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion35) trusty; urgency=medium
 
   * change autorun to autoruns 
