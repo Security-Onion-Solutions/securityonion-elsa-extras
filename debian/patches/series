@@ -22,3 +22,4 @@ fix-securityonion-elsa-reset
 securityonion-elsa-extras:-merge-additional-patterns-#827
 change-autorun-to-autoruns
 Issue-979:-securityonion-elsa-extras:-additional-patterns-for-Sysmon-4-and-4.11
+securityonion-elsa-extras:-add-"AR-LOG"-header-to-autoruns-pattern-#983

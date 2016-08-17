@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion37) trusty; urgency=medium
+
+  * securityonion-elsa-extras: add "AR-LOG" header to autoruns pattern #983 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 17 Aug 2016 06:19:56 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion36) trusty; urgency=medium
 
   * Issue 979: securityonion-elsa-extras: additional patterns for Sysmon 4 and 4.11 
