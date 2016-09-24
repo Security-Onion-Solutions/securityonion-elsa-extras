@@ -258,7 +258,7 @@
 </ruleset>
 
 
-<!-- v. 7/20/2015 --- Brian Kellogg -->
+<!-- v. 9/23/2016 --- Brian Kellogg -->
 <ruleset name="WINDOWS" id='4'>
 <pattern>ossec_archive</pattern>
 <rules>
