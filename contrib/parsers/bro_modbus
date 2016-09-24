@@ -1,0 +1,27 @@
+<ruleset name="bro_modbus" id="26018">
+  <pattern>bro_modbus</pattern>
+  <rules>
+    <rule provider="Security_Onion" class="26018" id="26018">
+      <patterns>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:@</pattern>
+      </patterns>
+      <examples>
+        <example>
+          <test_message program="bro_modbus">1436555953.765764|CnZKS10trXfqFTCu8|203.0.113.77|65438|192.168.3.5|502|READ_HOLDING_REGISTERS|-</test_message>
+          <!-- srcip -->
+          <test_value name="i0">203.0.113.77</test_value>
+          <!-- srcport -->
+          <test_value name="i1">65438</test_value>
+          <!-- dstip -->
+          <test_value name="i2">192.168.3.5</test_value>
+          <!-- dstport -->
+          <test_value name="i3">502</test_value>
+          <!-- func -->
+          <test_value name="s0">READ_HOLDING_REGISTERS</test_value>
+          <!-- exception -->
+          <test_value name="s1">-</test_value>
+        </example>
+      </examples>
+    </rule>
+  </rules>
+</ruleset>   

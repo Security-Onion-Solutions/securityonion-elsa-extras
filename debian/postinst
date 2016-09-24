@@ -775,6 +775,98 @@ case "$1" in
 		fi
 	fi
 
+	# 2016-07-29 Merge 5 pull requests for patterns
+	UPDATE="2016-07-29"
+	FILE="/nsm/elsa/$UPDATE"
+	if [ ! -f $FILE ]; then
+		if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
+			echo "* ELSA is enabled on this box."
+			# Only update database if Setup has already been run
+			if [ -e /var/log/nsm/sosetup.log ]; then
+				echo "* Found sosetup.log."
+				echo "* Did NOT find $FILE, so applying $UPDATE database schema update."
+
+				# Store all SQL schema updates as files in $SQL_DIR
+				SQL_DIR="/opt/elsa/contrib/securityonion/contrib/sql"
+
+        	                echo "* Adding fields for Sysmon RemoteThread patterns."
+				SQL="$SQL_DIR/sysmon.sql"
+				mysql --defaults-file=/etc/mysql/debian.cnf < $SQL || echo "Error importing $SQL."
+
+        	                echo "* Adding fields for Citrix Netscaler patterns."
+				SQL="$SQL_DIR/citrix_netscaler.sql"
+				mysql --defaults-file=/etc/mysql/debian.cnf < $SQL || echo "Error importing $SQL."
+
+        	                echo "* Adding fields for HIPS patterns."
+				SQL="$SQL_DIR/hips.sql"
+				mysql --defaults-file=/etc/mysql/debian.cnf < $SQL || echo "Error importing $SQL."
+
+        	                echo "* Adding fields for autoruns patterns."
+				SQL="$SQL_DIR/autoruns.sql"
+				mysql --defaults-file=/etc/mysql/debian.cnf < $SQL || echo "Error importing $SQL."
+
+        	                echo "* Adding fields for Bro DNP3 patterns."
+				SQL="$SQL_DIR/bro_dnp3.sql"
+				mysql --defaults-file=/etc/mysql/debian.cnf < $SQL || echo "Error importing $SQL."
+
+        	                echo "* Adding fields for Bro Modbus patterns."
+				SQL="$SQL_DIR/bro_modbus.sql"
+				mysql --defaults-file=/etc/mysql/debian.cnf < $SQL || echo "Error importing $SQL."
+
+				# backup syslog-ng.conf with today's date as file extension
+				DATE=`date '+%Y%m%d'`
+				SYSLOG_CONF="/etc/syslog-ng/syslog-ng.conf"
+				SYSLOG_CONFBAK="$SYSLOG_CONF.$DATE"
+				if [ -f $SYSLOG_CONF ]; then
+					echo "* Backing up $SYSLOG_CONF to $SYSLOG_CONFBAK."
+					cp $SYSLOG_CONF $SYSLOG_CONFBAK || echo "Error backing up $SYSLOG_CONF to $SYSLOG_CONFBAK."
+
+        	            		if ! grep 'source s_bro_dnp3 { file("/nsm/bro/logs/current/dnp3.log" flags(no-parse) program_override("bro_dnp3")); };' $SYSLOG_CONF >> /dev/null; then
+						echo "* Updating $SYSLOG_CONF to monitor Bro dnp3.log."
+						sed -i '/^source s_bro_sip/a source s_bro_dnp3 { file("/nsm/bro/logs/current/dnp3.log" flags(no-parse) program_override("bro_dnp3")); };' $SYSLOG_CONF || echo "Error adding s_bro_dnp3 to $SYSLOG_CONF."
+						sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_dnp3);' $SYSLOG_CONF || echo "Error adding s_bro_dnp3 to $SYSLOG_CONF."
+					fi
+
+	        	            	if ! grep 'source s_bro_modbus { file("/nsm/bro/logs/current/modbus.log" flags(no-parse) program_override("bro_modbus")); };' $SYSLOG_CONF >> /dev/null; then
+						echo "* Updating $SYSLOG_CONF to monitor Bro modbus.log."
+						sed -i '/^source s_bro_sip/a source s_bro_modbus { file("/nsm/bro/logs/current/modbus.log" flags(no-parse) program_override("bro_modbus")); };' $SYSLOG_CONF || echo "Error adding s_bro_modbus to $SYSLOG_CONF."
+						sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_modbus);' $SYSLOG_CONF || echo "Error adding s_bro_modbus to $SYSLOG_CONF."
+					fi
+				fi
+
+			fi
+		fi
+		# If Setup hasn't been run yet, then we need to create /nsm/elsa/ before trying to create /nsm/elsa/$UPDATE
+		mkdir -p /nsm/elsa/
+		touch $FILE
+	fi
+
+	# If Setup hasn't been run yet, then we need to create /nsm/elsa/ before trying to create /nsm/elsa/$UPDATE
+	mkdir -p /nsm/elsa/
+
+	# 2016-08-09 additional sysmon sql
+	UPDATE="2016-08-09"
+	FILE="/nsm/elsa/$UPDATE"
+	if [ ! -f $FILE ]; then
+		if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
+			echo "* ELSA is enabled on this box."
+			# Only update database if Setup has already been run
+			if [ -e /var/log/nsm/sosetup.log ]; then
+				echo "* Found sosetup.log."
+				echo "* Did NOT find $FILE, so applying $UPDATE database schema update."
+
+				# Store all SQL schema updates as files in $SQL_DIR
+				SQL_DIR="/opt/elsa/contrib/securityonion/contrib/sql"
+
+        	                echo "* Updating database schema for Sysmon."
+				SQL="$SQL_DIR/sysmon.sql"
+				mysql --defaults-file=/etc/mysql/debian.cnf < $SQL || echo "Error importing $SQL."
+			fi
+		fi
+		# Now that we've applied the update, record that we've applied it
+		touch $FILE
+	fi
+
 	# Always check to see if ELSA is enabled and, if so, update patterns
 	if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
 		echo "* ELSA is enabled on this box."
@@ -801,11 +893,12 @@ case "$1" in
 		service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
 	fi
 
-	# Make sure that reset script is executable
-	FILE="/usr/bin/securityonion-elsa-reset-archive"
-	if [ -f $FILE ]; then
-		chmod +x $FILE || echo "Error making $FILE executable."
-	fi
+	# Make sure that reset scripts are executable
+	for FILE in "/usr/bin/securityonion-elsa-reset-archive" "/usr/bin/securityonion-elsa-reset"; do
+		if [ -f $FILE ]; then
+			chmod +x $FILE || echo "Error making $FILE executable."
+		fi
+	done
 
 	# Port 3154 no longer needs to be allowed in firewall
         ufw delete allow 3154/tcp >dev/null 2>&1 || echo "Error blocking port 3154 in firewall."

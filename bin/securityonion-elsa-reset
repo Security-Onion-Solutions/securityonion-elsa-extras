@@ -3,12 +3,11 @@
 [ `id -u` -ne 0 ] && echo "This script must be run using sudo!" && exit 1
 
 echo
-echo "This script will reset the ELSA Archive."
+echo "This script will reset the ELSA database."
 echo
-echo "It should only be used if you see the following error in your ELSA logs:"
-echo " Can't find file: 'syslogs_archive_1'"
+echo "It should only be used as a last resort."
 echo
-echo "Continuing will delete any existing data in the ELSA archive."
+echo "Continuing will delete any existing data in the ELSA database."
 echo
 echo "Type yes to continue or anything else to exit."
 read INPUT
@@ -20,14 +19,18 @@ service nsm stop
 service syslog-ng stop
 
 echo
-echo "Deleting old database entries..."
+echo "Deleting database tables..."
 mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e "DROP TABLE syslog_data.syslogs_archive_1"
 mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e "DELETE FROM syslog.tables WHERE table_name='syslog_data.syslogs_archive_1'"
+mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e "DROP TABLE syslog_data.syslogs_index_1"
+mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e "DELETE FROM syslog.tables WHERE table_name='syslog_data.syslogs_index_1'"
 
 echo
 echo "Cleaning up old database files..."
 rm /nsm/elsa/data/elsa/mysql/syslogs_archive_1*
 rm /var/lib/mysql/syslog_data/syslogs_archive_1*
+rm /nsm/elsa/data/elsa/mysql/syslogs_index_1*
+rm /var/lib/mysql/syslog_data/syslogs_index_1*
 
 echo
 echo "Restarting services..."

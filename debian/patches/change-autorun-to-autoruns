@@ -1,0 +1,34 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20151011-1ubuntu1securityonion35) trusty; urgency=medium
+ .
+   * change autorun to autoruns
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20151011.orig/contrib/securityonion_parsers_sql.sh
++++ securityonion-elsa-extras-20151011/contrib/securityonion_parsers_sql.sh
+@@ -301,5 +301,5 @@ SQL="$SQL_DIR/hips.sql"
+ mysql -uroot < $SQL || echo "Error importing $SQL."
+ 
+ # Additions for autoruns class & associated fields
+-SQL="$SQL_DIR/autorun.sql"
++SQL="$SQL_DIR/autoruns.sql"
+ mysql -uroot < $SQL || echo "Error importing $SQL."

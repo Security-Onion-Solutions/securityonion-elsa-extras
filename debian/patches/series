@@ -14,3 +14,12 @@ configure-Apache-to-proxy-elsa-query-to-port-3154
 elsa_web.conf-pcap_url-can-be-a-relative-hyperlink-now-that-Apache-is-proxying
 remove-NameVirtualHost-from-securityonion_apache_site.conf
 change-cli.sh-to-use-new-ELSA-API-address
+Issue-881:-ELSA:-remove-non-ascii-character-from-securityonion-elsa-reset-archive
+Issue-898:-ELSA:-set-master-peer-label-to-hostname-instead-of-127.0.0.1
+revert-last-change
+add-securityonion-elsa-reset-script-#908
+fix-securityonion-elsa-reset
+securityonion-elsa-extras:-merge-additional-patterns-#827
+change-autorun-to-autoruns
+Issue-979:-securityonion-elsa-extras:-additional-patterns-for-Sysmon-4-and-4.11
+securityonion-elsa-extras:-add-"AR-LOG"-header-to-autoruns-pattern-#983

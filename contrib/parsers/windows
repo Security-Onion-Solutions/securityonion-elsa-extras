@@ -2,6 +2,52 @@
 <ruleset name="SYSMON" id='777'>
     <pattern>ossec_archive</pattern>
     <rules>
+    
+        <!-- Create remote thread sysmon 3 and 3.10 -->
+       <rule provider="DefensiveDepth-SYSMON3" class='10777' id='10777'>
+                        <patterns>
+                                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@ SYSTEM: NT AUTHORITY: @ESTRING:s0::@ @ESTRING:: SequenceNumber:@ @NUMBER::@ @ESTRING:: SourceProcessGuid:@ {@ESTRING:s1:}@ @ESTRING:: SourceImage: @@ESTRING:s2:  TargetProcessGuid: {@@ESTRING:s3:}@@ESTRING:: TargetImage: @@ESTRING:s4:  NewThreadId:@</pattern>
+                                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::(@@NUMBER::):@): @ESTRING:::@ SYSTEM: NT AUTHORITY: @ESTRING:s0:: @@ESTRING:: SourceProcessGuid:@ {@ESTRING:s1:}@ @ESTRING:: SourceImage: @@ESTRING:s2:  TargetProcessGuid: {@@ESTRING:s3:}@@ESTRING:: TargetImage: @@ESTRING:s4:  NewThreadId:@@ESTRING:: StartAddress:@@ESTRING:: StartModule: @@ESTRING:s5:  StartFunction:@</pattern>
+
+                        </patterns>
+
+                        <examples>
+                                <example>
+                                        <test_message program="ossec_archive">2015 Jun 02 02:18:10 (windows7_x64) 192.168.142.6->WinEvtLog 2015 Jun 01 15:53:02 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(8): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-KTL39CHEPFC: CreateRemoteThread detected:  SequenceNumber: 599  UtcTime: 6/1/2015 09:53:02.371 PM  SourceProcessGuid: {F17228B0-CB16-556C-0000-0010A6A90000}  SourceProcessId: 468  SourceImage: C:\Windows\System32\csrss.exe  TargetProcessGuid: {F17228B0-CC30-556C-0000-0010B6510500}  TargetProcessId: 1668  TargetImage: C:\Windows\System32\cmd.exe  NewThreadId: 756</test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">WIN-KTL39CHEPFC</test_value>
+                                                <!-- sourceprocessguid-->
+                                                <test_value name="s1">F17228B0-CB16-556C-0000-0010A6A90000</test_value>
+                                                <!-- sourceimage-->
+                                                <test_value name="s2">C:\Windows\System32\csrss.exe</test_value>
+                                                <!-- targetProcessGuid-->
+                                                <test_value name="s3">F17228B0-CC30-556C-0000-0010B6510500</test_value>
+                                                <!-- targetimage-->
+                                                <test_value name="s4">C:\Windows\System32\cmd.exe</test_value>
+
+                                </example>
+                                <example>
+                                        <test_message program="ossec_archive">2015 Aug 08 16:41:28 (james_dell) 192.168.1.101->WinEvtLog 2015 Aug 08 10:41:25 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(8): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: james-laptop: CreateRemoteThread detected:  UtcTime: 2015-08-08 16:41:25.215  SourceProcessGuid: {16F5F390-BD09-55BF-0000-001019A80300}  SourceProcessId: 2688  SourceImage: C:\Windows\System32\wbem\WmiPrvSE.exe  TargetProcessGuid: {16F5F390-3135-55C6-0000-0010C123FC1A}  TargetProcessId: 225012  TargetImage: C:\Windows\System32\wbem\WmiApSrv.exe  NewThreadId: 226380  StartAddress: 0x00007FFE7EA30710  StartModule: C:\Windows\SYSTEM32\ntdll.dll  StartFunction: </test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">james-laptop</test_value>
+                                                <!-- sourceprocessguid-->
+                                                <test_value name="s1">16F5F390-BD09-55BF-0000-001019A80300</test_value>
+                                                <!-- sourceimage-->
+                                                <test_value name="s2">C:\Windows\System32\wbem\WmiPrvSE.exe</test_value>
+                                                <!-- targetProcessGuid-->
+                                                <test_value name="s3">16F5F390-3135-55C6-0000-0010C123FC1A</test_value>
+                                                <!-- targetimage-->
+                                                <test_value name="s4">C:\Windows\System32\wbem\WmiApSrv.exe</test_value>
+                                                <!-- startmodule -->
+                                                <test_value name="s5">C:\Windows\SYSTEM32\ntdll.dll</test_value>
+
+                                </example>
+
+
+                        </examples>
+                </rule>
+
+      
         <rule provider="DefensiveDepth" class='10778' id='10778'>
             <patterns>
                 <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::Microsoft-Windows-Sysmon/Operational: INFORMATION(1):@@ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2:  CommandLine: @@ESTRING::CurrentDirectory: @@ESTRING::User: @@ESTRING:s3:  LogonGuid:@@ESTRING::Hashes: @@ESTRING:s4: @@ESTRING::ParentImage: @@ESTRING:s5:  ParentCommandLine:@</pattern>
@@ -51,6 +97,137 @@
                 </example>
             </examples>
         </rule>
+   
+   
+       <!--https://github.com/jtaylo78/Sysmon_ELSA_Parsers -->
+       <rule provider="DefensiveDepth" class='10782' id='10782'>
+                        <patterns>
+                                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::Microsoft-Windows-Sysmon/Operational: INFORMATION(7): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: @@ESTRING:s0:: @@ESTRING::ProcessGuid: {@@ESTRING:s1:} @@ESTRING:: Image: @@ESTRING:s2:  ImageLoaded: @@ESTRING:s3:  Hashes: @@ESTRING:s4: @@ESTRING:: Signed: @@ESTRING:s5: @</pattern>
+                        </patterns>
+
+                        <examples>
+                                <example>
+                                        <test_message program="ossec_archive">2016 Jul 26 03:30:18 (win8-test) 192.168.1.76->WinEvtLog 2016 Jul 26 20:14:35 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(7): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-VL5U1V07CA7: Image loaded:  UtcTime: 2016-07-27 02:14:34.620  ProcessGuid: {B8CD0A89-D195-5796-0000-0010DDF71B00}  ProcessId: 3520  Image: C:\Windows\Sysmon.exe  ImageLoaded: C:\Windows\System32\FWPUCLNT.DLL  Hashes: SHA1=26DE7E214FE056327469E86D5D38AC744FB353FA,IMPHASH=89B1C5BA3C0EC10428AC86A1628A90EF  Signed: true  Signature: Microsoft Windows</test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">WIN-VL5U1V07CA7</test_value>
+                                                <!-- processguid-->
+                                                <test_value name="s1">B8CD0A89-D195-5796-0000-0010DDF71B00</test_value>
+                                                <!-- image-->
+                                                <test_value name="s2">C:\Windows\Sysmon.exe</test_value>
+                                                <!-- imageloaded-->
+                                                <test_value name="s3">C:\Windows\System32\FWPUCLNT.DLL</test_value>
+                                                <!-- hashes-->
+                                                <test_value name="s4">SHA1=26DE7E214FE056327469E86D5D38AC744FB353FA,IMPHASH=89B1C5BA3C0EC10428AC86A1628A90EF</test_value>
+                                                <!-- signed -->
+                                                <test_value name="s5">true</test_value>
+
+                                </example>
+                        </examples>
+                </rule>
+                 <rule provider="DefensiveDepth" class='10783' id='10783'>
+                        <patterns>
+                                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::Microsoft-Windows-Sysmon/Operational: INFORMATION(2): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: @@ESTRING:s0:: @@ESTRING::ProcessGuid: {@@ESTRING:s1:} @@ESTRING:: Image: @@ESTRING:s2:  TargetFilename: @@ESTRING:s3:  CreationUtcTime: @@ESTRING:s4:  PreviousCreationUtcTime: @@ESTRING:s5:@</pattern>
+                        </patterns>
+
+                        <examples>
+                                <example>
+                                        <test_message program="ossec_archive">2016 Jul 26 03:31:00 (win8-test) 192.168.1.76->WinEvtLog 2016 Jul 26 20:15:16 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(2): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-VL5U1V07CA7: File creation time changed:  UtcTime: 2016-07-27 02:15:16.727  ProcessGuid: {B8CD0A89-CDA9-5796-0000-001005E50500}  ProcessId: 3620  Image: C:\Program Files (x86)\Google\Chrome\Application\chrome.exe  TargetFilename: C:\Users\james\AppData\Roaming\Microsoft\Windows\Recent\CustomDestinations\6R7AY6B552FSY7NMWD0S.temp  CreationUtcTime: 2016-05-10 13:30:19.910  PreviousCreationUtcTime: 2016-07-27 02:15:16.727</test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">WIN-VL5U1V07CA7</test_value>
+                                                <!-- processguid-->
+                                                <test_value name="s1">B8CD0A89-CDA9-5796-0000-001005E50500</test_value>
+                                                <!-- image-->
+                                                <test_value name="s2">C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</test_value>
+                                                <!-- targetfilename -->
+                                                <test_value name="s3">C:\Users\james\AppData\Roaming\Microsoft\Windows\Recent\CustomDestinations\6R7AY6B552FSY7NMWD0S.temp</test_value>
+                                                
+                                </example>
+                        </examples>
+                </rule>
+                 <rule provider="DefensiveDepth" class='10784' id='10784'>
+                        <patterns>
+                                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::Microsoft-Windows-Sysmon/Operational: INFORMATION(5): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: @@ESTRING:s0:: @@ESTRING::ProcessGuid: {@@ESTRING:s1:} @@ESTRING:: Image: @@ESTRING:s2:@</pattern>
+                        </patterns>
+
+                        <examples>
+                                <example>
+                                        <test_message program="ossec_archive">2016 Jul 26 03:32:14 (win8-test) 192.168.1.76->WinEvtLog 2016 Jul 26 20:16:31 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(5): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-VL5U1V07CA7: Process terminated:  UtcTime: 2016-07-27 02:16:31.060  ProcessGuid: {B8CD0A89-D602-5796-0000-001087702400}  ProcessId: 3424  Image: C:\Windows\System32\taskhost.exe</test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">WIN-VL5U1V07CA7</test_value>
+                                                <!-- processguid-->
+                                                <test_value name="s1">B8CD0A89-D602-5796-0000-001087702400</test_value>
+                                                <!-- image-->
+                                                <test_value name="s2">C:\Windows\System32\taskhost.exe</test_value>
+
+                                </example>
+                        </examples>
+                </rule>
+
+                <rule provider="DefensiveDepth" class='10785' id='10785'>
+                        <patterns>
+                                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::Microsoft-Windows-Sysmon/Operational: INFORMATION(6): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: @@ESTRING:s0:: @@ESTRING:: ImageLoaded: @@ESTRING:s1:  Hashes: @@ESTRING:s2: @@ESTRING:: Signed: @@ESTRING:s3: @@ESTRING:: Signature: @@ANYSTRING:s4:@</pattern>
+                        </patterns>
+
+                        <examples>
+                                <example>
+                                        <test_message program="ossec_archive">2016 Jul 28 03:44:40 (win8-test) 192.168.1.76->WinEvtLog 2016 Jul 29 17:03:04 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(6): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-VL5U1V07CA7: Driver loaded:  UtcTime: 2016-07-29 23:02:45.306  ImageLoaded: C:\Windows\System32\drivers\Ndu.sys  Hashes: SHA1=BA3773A62C2E67533E1C75E48DB6E62D8A92A1AA,IMPHASH=0CB044FF22A5D4FEEC3D7063EC18FF35  Signed: true  Signature: Microsoft Windows</test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">WIN-VL5U1V07CA7</test_value>
+                                                <!-- imageloaded -->
+                                                <test_value name="s1">C:\Windows\System32\drivers\Ndu.sys</test_value>
+                                                <!-- hash-->
+                                                <test_value name="s2">SHA1=BA3773A62C2E67533E1C75E48DB6E62D8A92A1AA,IMPHASH=0CB044FF22A5D4FEEC3D7063EC18FF35</test_value>
+                                                <!-- signed -->
+                                                <test_value name="s3">true</test_value>
+                                                <!-- Signature -->
+                                                <test_value name="s4">Microsoft Windows</test_value>
+
+                                </example>
+                        </examples>
+                </rule>
+                 <rule provider="DefensiveDepth" class='10786' id='10786'>
+                        <patterns>
+                                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::Microsoft-Windows-Sysmon/Operational: INFORMATION(9): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: @@ESTRING:s0:: @@ESTRING::ProcessGuid: {@@ESTRING:s1:} @@ESTRING:: Image: @@ESTRING:s2:  Device: @@ANYSTRING:s3:@</pattern>
+                        </patterns>
+
+                        <examples>
+                                <example>
+                                        <test_message program="ossec_archive">2016 Jul 28 04:29:02 (win8-test) 192.168.1.76->WinEvtLog 2016 Jul 29 17:47:50 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(9): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-VL5U1V07CA7: RawAccessRead detected:  UtcTime: 2016-07-29 23:47:50.526  ProcessGuid: {B8CD0A89-EAC9-579B-0000-001030BD0100}  ProcessId: 1436  Image: C:\Program Files\Windows Defender\MsMpEng.exe  Device: \Device\HarddiskVolume1</test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">WIN-VL5U1V07CA7</test_value>
+                                                <!-- processguid  -->
+                                                <test_value name="s1">B8CD0A89-EAC9-579B-0000-001030BD0100</test_value>
+                                                <!-- image-->
+                                                <test_value name="s2">C:\Program Files\Windows Defender\MsMpEng.exe</test_value>
+                                                <!-- device -->
+                                                <test_value name="s3">\Device\HarddiskVolume1</test_value>
+
+                                </example>
+                        </examples>
+                </rule>
+                <rule provider="DefensiveDepth" class='10787' id='10787'>
+                        <patterns>
+                                <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::Microsoft-Windows-Sysmon/Operational: INFORMATION(10): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: @@ESTRING:s0:: @@ESTRING:: SourceProcessGUID: {@@ESTRING:s1:} @@ESTRING:: SourceImage: @@ESTRING:s2:  TargetProcessGUID: {@@ESTRING:s3:} @@ESTRING:: TargetImage: @@ESTRING:s4:  GrantedAccess:@@ESTRING:: CallTrace: @@ANYSTRING::@</pattern>
+                        </patterns>
+
+                        <examples>
+                                <example>
+                                        <test_message program="ossec_archive">2016 Jul 30 15:23:09 (win8-test) 192.168.1.76->WinEvtLog 2016 Jul 30 12:18:39 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(10): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-VL5U1V07CA7: Process accessed:  UtcTime: 2016-07-30 18:18:39.109  SourceProcessGUID: {B8CD0A89-ED98-579C-0000-001001CC0100}  SourceProcessId: 1500  SourceThreadId: 2024  SourceImage: C:\Program Files\Windows Defender\MsMpEng.exe  TargetProcessGUID: {B8CD0A89-ED97-579C-0000-00106D9B0100}  TargetProcessId: 1304  TargetImage: C:\Program Files (x86)\ossec-agent\ossec-agent.exe  GrantedAccess: 0x101000  CallTrace: C:\Windows\SYSTEM32\ntdll.dll+9091a|C:\Windows\system32\KERNELBASE.dll+2e5e|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+9e99c|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+9e8ac|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+9e841|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+56ca6d|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+38b3d8|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+1abd31|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+1a8c43|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+1a7ca8|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+1a7abe|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+1aa0cf|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+1aec46|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+1f9d5f|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+1ae4d3|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+1ae7da|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+50147|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+73413|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+2b7f00|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+410be7|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+350168|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+956c7|C:\ProgramData\Microsoft\Windows Defender\Definition Updates\{BF09301C-3DC5-498A-A66A-483CEC6AA846}\mpengine.dll+9564e|C:\Program Files\Windows Defender\mpsvc.dll+18253</test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">WIN-VL5U1V07CA7</test_value>
+                                                <!-- sourceprocessguid-->
+                                                <test_value name="s1">B8CD0A89-ED98-579C-0000-001001CC0100</test_value>
+                                                <!-- sourceimage-->
+                                                <test_value name="s2">C:\Program Files\Windows Defender\MsMpEng.exe</test_value>
+                                                <!-- targetprocessguid-->
+                                                <test_value name="s3">B8CD0A89-ED97-579C-0000-00106D9B0100</test_value>
+                                                <!-- targetimage-->
+                                                <test_value name="s4">C:\Program Files (x86)\ossec-agent\ossec-agent.exe</test_value>
+                                               
+                                </example>
+                        </examples>
+                </rule>
+   
     </rules>
 </ruleset>
 
@@ -76,7 +253,8 @@
             </example>
         </examples>
     </rule>
-</rules>
+    
+     </rules>
 </ruleset>
 
 
