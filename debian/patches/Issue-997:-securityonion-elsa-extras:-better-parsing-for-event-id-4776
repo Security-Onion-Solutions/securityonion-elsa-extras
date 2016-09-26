@@ -1,0 +1,60 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20151011-1ubuntu1securityonion38) trusty; urgency=medium
+ .
+   * Issue 997: securityonion-elsa-extras: better parsing for event id 4776
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20151011.orig/contrib/parsers/windows
++++ securityonion-elsa-extras-20151011/contrib/parsers/windows
+@@ -258,12 +258,15 @@
+ </ruleset>
+ 
+ 
+-<!-- v. 7/20/2015 --- Brian Kellogg -->
++<!-- v. 9/23/2016 --- Brian Kellogg -->
+ <ruleset name="WINDOWS" id='4'>
+ <pattern>ossec_archive</pattern>
+ <rules>
+     <rule provider="ELSA" class='4' id='4'>
+         <patterns>
++            <!-- 4776s -->
++            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:: The domain controller attempted to validate the credentials for an account.@@ESTRING::Logon Account: @@ESTRING:s1: Source Workstation: @@ESTRING:s0: Error@</pattern>
++            
+             <!-- 4740s -->
+             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::A user account was locked out.@@ESTRING::Account Domain:  @@ESTRING:s2:  @@ESTRING::Account That Was Locked Out: @@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::Caller Computer Name: @@ESTRING:s0:@</pattern>
+             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A user account was locked out.@@ESTRING::Account Domain:  @@ESTRING:s2:  @@ESTRING::Account That Was Locked Out: @@ESTRING::Account Name:  @@ESTRING:s1:  @</pattern>
+@@ -602,6 +605,15 @@
+                 <!-- Source Network Address -->
+                 <test_value name="i1">192.1.2.3</test_value>
+             </example>
++            <example>
++                <test_message program="ossec_archive">2015 Nov 03 19:57:04 (SERVER01) 10.1.1.1->WinEvtLog 2015 Nov 03 14:57:03 WinEvtLog: Security: AUDIT_FAILURE(4776): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: The domain controller attempted to validate the credentials for an account. Authentication Package: MICROSOFT_AUTHENTICATION_PACKAGE_V1_0 Logon Account: ttest Source Workstation: WORK01 Error Code: 0xc0000064</test_message>
++                <!-- Event ID -->
++                <test_value name="i0">4776</test_value>
++                <!-- Source Name -->
++                <test_value name="s0">WORK01</test_value>
++                <!-- User -->
++                <test_value name="s1">ttest</test_value>
++            </example>
+         </examples>
+     </rule>
+ </rules>
