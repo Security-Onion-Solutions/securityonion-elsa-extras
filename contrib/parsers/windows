@@ -233,6 +233,7 @@
 
 
 <!-- v. 2/8/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com -->
+<!-- v. 9/29/2016 --- Brian Kellogg added more events and updated parsers -->
 <ruleset name="WIN-PROCESS-TRACKING" id='10780'>
 <pattern>ossec_archive</pattern>
 <rules>
