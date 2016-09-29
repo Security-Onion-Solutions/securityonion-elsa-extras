@@ -2,7 +2,7 @@
 <ruleset name="SYSMON" id='777'>
     <pattern>ossec_archive</pattern>
     <rules>
-    
+
         <!-- Create remote thread sysmon 3 and 3.10 -->
        <rule provider="DefensiveDepth-SYSMON3" class='10777' id='10777'>
                         <patterns>
@@ -47,26 +47,26 @@
                         </examples>
                 </rule>
 
-      
+
         <rule provider="DefensiveDepth" class='10778' id='10778'>
             <patterns>
                 <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog @ESTRING::Microsoft-Windows-Sysmon/Operational: INFORMATION(1):@@ESTRING:::@@ESTRING:::@@ESTRING:::@ @ESTRING:s0::@@ESTRING::{@@ESTRING:s1:}@@ESTRING::Image: @@ESTRING:s2:  CommandLine: @@ESTRING::CurrentDirectory: @@ESTRING::User: @@ESTRING:s3:  LogonGuid:@@ESTRING::Hashes: @@ESTRING:s4: @@ESTRING::ParentImage: @@ESTRING:s5:  ParentCommandLine:@</pattern>
             </patterns>
             <examples>
                 <example>
-				    <test_message program="ossec_archive">2015 Jul 13 13:27:17 (windows7_x64) 192.168.142.6->WinEvtLog 2015 Jul 13 07:27:16 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(1): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-KTL39CHEPFC: Process Create:  SequenceNumber: 472  UtcTime: 7/13/2015 01:27:16.823 PM  ProcessGuid: {F17228B0-BCB4-55A3-0000-001024551800}  ProcessId: 2208  Image: C:\Windows\System32\notepad.exe  CommandLine: notepad  CurrentDirectory: C:\Users\tester\  User: WIN-KTL39CHEPFC\tester  LogonGuid: {F17228B0-B2C7-55A3-0000-0020E54F0700}  LogonId: 0x74fe5  TerminalSessionId: 1  IntegrityLevel: Medium  Hashes: SHA1=7EB0139D2175739B3CCB0D1110067820BE6ABD29  ParentProcessGuid: {F17228B0-BCB2-55A3-0000-001089501800}  ParentProcessId: 3004  ParentImage: C:\Windows\System32\cmd.exe  ParentCommandLine: "C:\Windows\system32\cmd.exe"</test_message>
-						<!-- host-->
-						<test_value name="s0">WIN-KTL39CHEPFC</test_value>
-						<!-- processguid-->
-						<test_value name="s1">F17228B0-BCB4-55A3-0000-001024551800</test_value>
-						<!-- image-->
-						<test_value name="s2">C:\Windows\System32\notepad.exe</test_value>
-						<!-- user-->
-						<test_value name="s3">WIN-KTL39CHEPFC\tester</test_value>
-						<!-- hash-->
-						<test_value name="s4">SHA1=7EB0139D2175739B3CCB0D1110067820BE6ABD29</test_value>
-						<!-- parentimage-->
-						<test_value name="s5">C:\Windows\System32\cmd.exe</test_value>
+                                    <test_message program="ossec_archive">2015 Jul 13 13:27:17 (windows7_x64) 192.168.142.6->WinEvtLog 2015 Jul 13 07:27:16 WinEvtLog: Microsoft-Windows-Sysmon/Operational: INFORMATION(1): Microsoft-Windows-Sysmon: SYSTEM: NT AUTHORITY: WIN-KTL39CHEPFC: Process Create:  SequenceNumber: 472  UtcTime: 7/13/2015 01:27:16.823 PM  ProcessGuid: {F17228B0-BCB4-55A3-0000-001024551800}  ProcessId: 2208  Image: C:\Windows\System32\notepad.exe  CommandLine: notepad  CurrentDirectory: C:\Users\tester\  User: WIN-KTL39CHEPFC\tester  LogonGuid: {F17228B0-B2C7-55A3-0000-0020E54F0700}  LogonId: 0x74fe5  TerminalSessionId: 1  IntegrityLevel: Medium  Hashes: SHA1=7EB0139D2175739B3CCB0D1110067820BE6ABD29  ParentProcessGuid: {F17228B0-BCB2-55A3-0000-001089501800}  ParentProcessId: 3004  ParentImage: C:\Windows\System32\cmd.exe  ParentCommandLine: "C:\Windows\system32\cmd.exe"</test_message>
+                                                <!-- host-->
+                                                <test_value name="s0">WIN-KTL39CHEPFC</test_value>
+                                                <!-- processguid-->
+                                                <test_value name="s1">F17228B0-BCB4-55A3-0000-001024551800</test_value>
+                                                <!-- image-->
+                                                <test_value name="s2">C:\Windows\System32\notepad.exe</test_value>
+                                                <!-- user-->
+                                                <test_value name="s3">WIN-KTL39CHEPFC\tester</test_value>
+                                                <!-- hash-->
+                                                <test_value name="s4">SHA1=7EB0139D2175739B3CCB0D1110067820BE6ABD29</test_value>
+                                                <!-- parentimage-->
+                                                <test_value name="s5">C:\Windows\System32\cmd.exe</test_value>
                 </example>
             </examples>
         </rule>
@@ -97,8 +97,8 @@
                 </example>
             </examples>
         </rule>
-   
-   
+
+
        <!--https://github.com/jtaylo78/Sysmon_ELSA_Parsers -->
        <rule provider="DefensiveDepth" class='10782' id='10782'>
                         <patterns>
@@ -140,7 +140,7 @@
                                                 <test_value name="s2">C:\Program Files (x86)\Google\Chrome\Application\chrome.exe</test_value>
                                                 <!-- targetfilename -->
                                                 <test_value name="s3">C:\Users\james\AppData\Roaming\Microsoft\Windows\Recent\CustomDestinations\6R7AY6B552FSY7NMWD0S.temp</test_value>
-                                                
+
                                 </example>
                         </examples>
                 </rule>
@@ -223,30 +223,30 @@
                                                 <test_value name="s3">B8CD0A89-ED97-579C-0000-00106D9B0100</test_value>
                                                 <!-- targetimage-->
                                                 <test_value name="s4">C:\Program Files (x86)\ossec-agent\ossec-agent.exe</test_value>
-                                               
+
                                 </example>
                         </examples>
                 </rule>
-   
+
     </rules>
 </ruleset>
 
 
 <!-- v. 2/8/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com -->
 <!-- v. 9/29/2016 --- Brian Kellogg added more events and updated parsers -->
-<ruleset name="WIN-PROCESS-TRACKING" id='10780'>
+<ruleset name="WIN-PROCESS-TRACKING" id='780'>
 <pattern>ossec_archive</pattern>
 <rules>
     <rule provider="DefensiveDepth" class='10780' id='10780'>
         <patterns>
-	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Target Subject:@@ESTRING::Account Name:  @@ESTRING:s1:   Account Domain:@@ESTRING::New Process Name: @@ESTRING:s2:   Token Elevation Type: @@ESTRING:s3:   @@ESTRING::Creator Process Name: @@ESTRING:s4:   Process Command Line: @@ESTRING:s5:    Token Elevation Type@</pattern>
-	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::New Process Name: @@ESTRING:s2:  Token Elevation Type: @@ESTRING:s3:  Creator@</pattern>
-	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A process has exited@@ESTRING::Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name: @@ESTRING:s2:  Exit Status: @@NUMBER:i2:@</pattern>
-	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::An operation was attempted on a privileged object@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name: @@ESTRING:s2:  Requested Operation@</pattern>
-	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::The state of a transaction has changed@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:@</pattern>
-	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A privileged service was called@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name: @@ESTRING:s2:  Service Request Information@</pattern>
-	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Account Whose Credentials Were Used:  Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:  Network Information:  Network Address: @@IPv4:i1:  Port: @</pattern>
-	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Account Whose Credentials Were Used:  Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:  Network Information@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Target Subject:@@ESTRING::Account Name:  @@ESTRING:s1:   Account Domain:@@ESTRING::New Process Name: @@ESTRING:s2:   Token Elevation Type: @@ESTRING:s3:   @@ESTRING::Creator Process Name: @@ESTRING:s4:   Process Command Line: @@ESTRING:s5:    Token Elevation Type@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::New Process Name: @@ESTRING:s2:  Token Elevation Type: @@ESTRING:s3:  Creator@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A process has exited@@ESTRING::Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name: @@ESTRING:s2:  Exit Status: @@NUMBER:i2:@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::An operation was attempted on a privileged object@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name: @@ESTRING:s2:  Requested Operation@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::The state of a transaction has changed@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A privileged service was called@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name: @@ESTRING:s2:  Service Request Information@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Account Whose Credentials Were Used:  Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:  Network Information:  Network Address: @@IPv4:i1:  Port: @</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Account Whose Credentials Were Used:  Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:  Network Information@</pattern>
         </patterns>
         <examples>
             <example>
@@ -361,12 +361,12 @@
 <rules>
     <rule provider="ELSA" class='4' id='4'>
         <patterns>
+            <!-- 4740s -->
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A user account was locked out.@@ESTRING::Account Domain:  @@ESTRING:s2:  @@ESTRING::Account That Was Locked Out: @@ESTRING::Account Name:  @@ESTRING:s1: @@ESTRING::Caller Computer Name: @@ANYSTRING:s0:@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A user account was locked out.@@ESTRING::Account Domain:  @@ESTRING:s2:  @@ESTRING::Account That Was Locked Out: @@ESTRING::Account Name:  @@ESTRING:s1:  @</pattern>
+
             <!-- 4776s -->
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:: The domain controller attempted to validate the credentials for an account.@@ESTRING::Logon Account: @@ESTRING:s1: Source Workstation: @@ESTRING:s0: Error@</pattern>
-            
-            <!-- 4740s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::A user account was locked out.@@ESTRING::Account Domain:  @@ESTRING:s2:  @@ESTRING::Account That Was Locked Out: @@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::Caller Computer Name: @@ESTRING:s0:@</pattern>
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A user account was locked out.@@ESTRING::Account Domain:  @@ESTRING:s2:  @@ESTRING::Account That Was Locked Out: @@ESTRING::Account Name:  @@ESTRING:s1:  @</pattern>
 
             <!-- 4624s -->
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account was successfully logged on. @ESTRING::Account Name:@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:  @@ESTRING:s2:  Logon ID:@@ESTRING::Source Network Address: @@IPv4:i1: Source Port:@</pattern>
@@ -399,10 +399,6 @@
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @File @IPv4:i1:@@ESTRING:: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s4: 0x@</pattern>
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING:: @@ESTRING:s1: @@ESTRING:s2: @@ESTRING:: @File @ESTRING:: @@ESTRING:: @@ESTRING:s3: @@ESTRING:s4: 0x@</pattern>
 
-            <!-- 4648s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A logon was attempted using explicit credentials.@ESTRING:: Account Whose Credentials Were Used:  Account Name:  @@ESTRING:s1:  Account Domain:  @@ESTRING:s2:  @@ESTRING:: Network Address: @@IPv4:i1: @</pattern>
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @A logon was attempted using explicit credentials.@ESTRING:: Account Whose Credentials Were Used:  Account Name:  @@ESTRING:s1:  Account Domain:  @@ESTRING:s2:  @</pattern>
-
             <!-- 18453s and 18454s -->
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s2:\\@@ESTRING:s1:'. @@ESTRING::CLIENT: @@IPv4:i1:]@</pattern>
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Login succeeded for user '@@ESTRING:s2:\\@@ESTRING:s1:'. @</pattern>
@@ -434,9 +430,19 @@
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::User Name: @@ESTRING:s1: |@@ESTRING::Domain: |@@ESTRING:s2: |Logon ID:@</pattern>
 
             <!-- pattern of last resort -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->WinEvtLog@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @</pattern>
+
         </patterns>
         <examples>
+            <example>
+                <test_message program="ossec_archive">2015 Nov 03 19:57:01 (SERVER01) 10.1.1.1->WinEvtLog 2015 Nov 03 20:56:58 WinEvtLog: Security: AUDIT_SUCCESS(4776): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: The domain controller attempted to validate the credentials for an account. Authentication Package: MICROSOFT_AUTHENTICATION_PACKAGE_V1_0 Logon Account: user01 Source Workstation: WORKSTATION01 Error Code: 0x0</test_message>
+                <!-- Event ID -->
+                <test_value name="i0">4776</test_value>
+                <!-- Source Name -->
+                <test_value name="s0">WORKSTATION01</test_value>
+                <!-- User -->
+                <test_value name="s1">user01</test_value>
+            </example>
             <example>
                 <test_message program="ossec_archive">2015 Jul 10 06:29:11 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 10 08:29:07 WinEvtLog: Security: AUDIT_SUCCESS(4740): Microsoft-Windows-Security-Auditing: (no user): no domain: server01.eu.d-rco.com: 0x8000000000000000    message: A user account was locked out.  Subject:  Security ID:  S-1-5-18  Account Name:  SERVER01$  Account Domain:  CONTOSO  Logon ID:  0x3e7  Account That Was Locked Out:  Security ID:  S-1-5-21-1202660629-2052111302-682003330-7883  Account Name:  bsmith  Additional Information:  Caller Computer Name: WORKSTATION01</test_message>
                 <!-- Event ID -->
@@ -519,19 +525,6 @@
                 <test_value name="s2">CONTOSO</test_value>
                 <!-- User -->
                 <test_value name="s1">bsmith</test_value>
-                <!-- Source IP -->
-                <test_value name="i1">192.1.2.3</test_value>
-            </example>
-            <example>
-                <test_message program="ossec_archive">2015 Jul 09 16:31:39 (SERVER01) 10.1.2.3->WinEvtLog 2015 Jul 09 12:31:34 WinEvtLog: Security: AUDIT_SUCCESS(4648): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A logon was attempted using explicit credentials. Subject:  Security ID:  S-1-5-18  Account Name:  WORKSTATION01  Account Domain:  CONTOSO  Logon ID:  0x3e7  Logon GUID:  {00000000-0000-0000-0000-000000000000}  Account Whose Credentials Were Used:  Account Name:  bsmith  Account Domain:  CONTOSO  Logon GUID:  {00000000-0000-0000-0000-000000000000}  Target Server:  Target Server Name: localhost  Additional Information: localhost  Process Information:  Process ID:  0x218  Process Name:  C:\\Windows\\System32\\lsass.exe  Network Information:  Network Address: 192.1.2.3  Port:   62744  This event is generated when a process attempts to log on an account by explicitly specifying that accountâ€™s credentials.  This most commonly occurs in batch-type configurations such as scheduled tasks, or when using the RUNAS command.</test_message>
-                <!-- Event ID -->
-                <test_value name="i0">4648</test_value>
-                <!-- Source Name -->
-                <test_value name="s0">SERVER01.contoso.com</test_value>
-                <!-- User -->
-                <test_value name="s1">bsmith</test_value>
-                <!-- User Domain -->
-                <test_value name="s2">CONTOSO</test_value>
                 <!-- Source IP -->
                 <test_value name="i1">192.1.2.3</test_value>
             </example>
@@ -701,15 +694,6 @@
                 <test_value name="s1">bsmith</test_value>
                 <!-- Source Network Address -->
                 <test_value name="i1">192.1.2.3</test_value>
-            </example>
-            <example>
-                <test_message program="ossec_archive">2015 Nov 03 19:57:04 (SERVER01) 10.1.1.1->WinEvtLog 2015 Nov 03 14:57:03 WinEvtLog: Security: AUDIT_FAILURE(4776): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: The domain controller attempted to validate the credentials for an account. Authentication Package: MICROSOFT_AUTHENTICATION_PACKAGE_V1_0 Logon Account: ttest Source Workstation: WORK01 Error Code: 0xc0000064</test_message>
-                <!-- Event ID -->
-                <test_value name="i0">4776</test_value>
-                <!-- Source Name -->
-                <test_value name="s0">WORK01</test_value>
-                <!-- User -->
-                <test_value name="s1">ttest</test_value>
             </example>
         </examples>
     </rule>
