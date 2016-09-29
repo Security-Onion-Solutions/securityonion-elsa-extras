@@ -231,17 +231,28 @@
     </rules>
 </ruleset>
 
+
 <!-- v. 2/8/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com -->
-<ruleset name="WIN-PROCESS-TRACKING" id='780'>
+<!-- v. 9/29/16 --- Extended by Brian Kellogg to add more fields and events -->
+<ruleset name="WIN-PROCESS-TRACKING" id='10780'>
 <pattern>ossec_archive</pattern>
 <rules>
     <rule provider="DefensiveDepth" class='10780' id='10780'>
         <patterns>
-            <pattern>@NUMBER::@@ESTRING::(@@ESTRING::)@ @IPv4::@->WinEvtLog@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Name: @@ESTRING:s2: Token Elevation Type: @@ESTRING:s3: Creator@</pattern>
+	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::New Process Name: @@ESTRING:s2: Token Elevation Type: @@ESTRING:s3: @@ESTRING::Creator Process Name: @@ESTRING:s4: Process Command Line: @@ESTRING:s5: Token Elevation Type@</pattern>
+	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Name: @@ESTRING:s2: Token Elevation Type: @@ESTRING:s3: Creator@</pattern>
+	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::A process has exited@@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Process Name: @@ESTRING:s2: Exit Status: @@NUMBER:i2:@</pattern>
+	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::An operation was attempted on a privileged object@@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Process Name: @@ESTRING:s2: Requested Operation@</pattern>
+	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::The state of a transaction has changed@@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Process Name: @@ESTRING:s2:@</pattern>
+	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::A privileged service was called@@ESTRING::Name: @@ESTRING:s1: Account Domain:@@ESTRING::Process Name: @@ESTRING:s2: Service Request Information@</pattern>
+	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Name: @@ESTRING::Account Whose Credentials Were Used: Account Name: @@ESTRING:s1: Account Domain:@@ESTRING::Process Name: @@ESTRING:s2: Network Information: Network Address: @@IPv4:i1: Port: @</pattern>
+	    <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING::domain: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Name: @@ESTRING::Account Whose Credentials Were Used: Account Name: @@ESTRING:s1: Account Domain:@@ESTRING::Process Name: @@ESTRING:s2: Network Information: Network Address: @</pattern>
         </patterns>
         <examples>
             <example>
                 <test_message program="ossec_archive">2015 Feb 04 22:05:18 (COLLECT02) 192.168.160.18->WinEvtLog 2015 Feb 04 17:05:14 WinEvtLog: Security: AUDIT_SUCCESS(4688): Microsoft-Windows-Security-Auditing: (no user): no domain: DD-COLLECT-01.DD.US: A new process has been created. Subject: Security ID: S-1-5-18 Account Name: DD-COLLECT-01$ Account Domain: DD.US Logon ID: 0x3e7 Process Information: New Process ID: 0x68c New Process Name: C:\Windows\System32\taskhost.exe Token Elevation Type: %%1936 Creator Process ID: 0x2d0</test_message>
+                <!-- Event ID-->
+                <test_value name="i0">4688</test_value>
                 <!-- hostname-->
                 <test_value name="s0">DD-COLLECT-01.DD.US</test_value>
                 <!-- user-->
@@ -251,10 +262,96 @@
                 <!-- token_elevation-->
                 <test_value name="s3">%%1936</test_value>
             </example>
+            <example>
+                <test_message program="ossec_archive">2016 Sep 28 22:08:07 (WinTEST) 10.1.11.4->WinEvtLog 2016 Sep 28 18:08:06 WinEvtLog: Security: AUDIT_SUCCESS(4688): Microsoft-Windows-Security-Auditing: (no user): no domain: WINTEST: A new process has been created. Creator Subject: Security ID: S-1-5-21-1799166368-2267426087-2432483420-1001 Account Name: admin Account Domain: WINTEST Logon ID: 0x2CCF8FB Target Subject: Security ID: S-1-0-0 Account Name: - Account Domain: - Logon ID: 0x0 Process Information: New Process ID: 0x2348 New Process Name: C:\\Windows\\System32\\conhost.exe Token Elevation Type: %%1936 Mandatory Label: S-1-16-12288 Creator Process ID: 0xd50 Creator Process Name: C:\\Windows\\System32\\sc.exe Process Command Line: \\??\\C:\\WINDOWS\\system32\\conhost.exe 0xffffffff -ForceV1 Token Elevation Type indicates the type of token that was assigned to the new process in accordance with User Account Control policy. Type 1 is a full token with no privileges removed or groups disabled. A full token is only used if User Account Control is disabled or if the user is the built-in Administrator account or a service account. Type 2 is an elevated token with no privileges removed or groups disabled. An elevated token is used when User Account Control is enabled and the user chooses to start the program using Run as administrator. An elevated token is also used when an application is configured to always require administrative privilege or to always require maximum privilege, and the user is a member of the Administrators group. Type 3 is a limited token with administrative privileges removed and administrative groups disabled. The limited token is used when User Account Control is enabled, the application does not require administrative privilege, and the user does not choose to start the program using Run as administrator.</test_message>
+                <!-- Event ID-->
+                <test_value name="i0">4688</test_value>
+                <!-- hostname-->
+                <test_value name="s0">WINTEST</test_value>
+                <!-- user-->
+                <test_value name="s1">admin</test_value>
+                <!-- image-->
+                <test_value name="s2">C:\\Windows\\System32\\conhost.exe</test_value>
+                <!-- token_elevation-->
+                <test_value name="s3">%%1936</test_value>
+                <!-- Parent Image-->
+                <test_value name="s4">C:\\Windows\\System32\\sc.exe</test_value>
+                <!-- Command-->
+                <test_value name="s5">\\??\\C:\\WINDOWS\\system32\\conhost.exe 0xffffffff -ForceV1</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2016 Sep 25 13:39:54 (SERVER01) 10.1.1.1->WinEvtLog 2016 Sep 25 09:39:50 WinEvtLog: Security: AUDIT_SUCCESS(4689): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A process has exited. Subject: Security ID: S-1-5-21-3139522044-2517663871-817314980-1021 Account Name: user01 Account Domain: SERVER01 Logon ID: 0x2c570 Process Information: Process ID: 0x6628 Process Name: C:\\Program Files (x86)\\PostgreSQL\\8.4\\bin\\postgres.exe Exit Status: 0x0</test_message>
+                <!-- Event ID-->
+                <test_value name="i0">4689</test_value>
+                <!-- hostname-->
+                <test_value name="s0">SERVER01.contoso.com</test_value>
+                <!-- user-->
+                <test_value name="s1">user01</test_value>
+                <!-- image-->
+                <test_value name="s2">C:\\Program Files (x86)\\PostgreSQL\\8.4\\bin\\postgres.exe</test_value>
+                <!-- Status Code-->
+                <test_value name="i2">0x0</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2016 Sep 25 13:40:22 (SERVER01) 10.1.1.1->WinEvtLog 2016 Sep 25 09:40:19 WinEvtLog: Security: AUDIT_SUCCESS(4674): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: An operation was attempted on a privileged object. Subject: Security ID: S-1-5-21-1434109735-357464061-2299825339-50770 Account Name: user01 Account Domain: CONTOSO Logon ID: 0x6fa369f6 Object: Object Server: Security Object Type: - Object Name: - Object Handle: 0x59c Process Information: Process ID: 0x540c Process Name: C:\\Windows\\System32\\wbem\\WmiPrvSE.exe Requested Operation: Desired Access: 983103 Privileges: SeTakeOwnershipPrivilege</test_message>
+                <!-- Event ID-->
+                <test_value name="i0">4674</test_value>
+                <!-- hostname-->
+                <test_value name="s0">SERVER01.contoso.com</test_value>
+                <!-- user-->
+                <test_value name="s1">user01</test_value>
+                <!-- image-->
+                <test_value name="s2">C:\\Windows\\System32\\wbem\\WmiPrvSE.exe</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2016 Sep 26 13:13:23 (SERVER01) 10.1.1.1->WinEvtLog 2016 Sep 26 09:13:20 WinEvtLog: Security: AUDIT_SUCCESS(4985): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: The state of a transaction has changed. Subject: Security ID: S-1-5-18 Account Name: user01 Account Domain: CoNTOSO Logon ID: 0x3e7 Transaction Information: RM Transaction ID: {45CEFF4E-832B-11E6-B2B4-005056A95E7F} New State: 48 Resource Manager: {A179B264-D50B-11E2-95C5-F10400FFA7AA} Process Information: Process ID: 0x3ec Process Name: C:\\Windows\\System32\\svchost.exe</test_message>
+                <!-- Event ID-->
+                <test_value name="i0">4985</test_value>
+                <!-- hostname-->
+                <test_value name="s0">SERVER01.contoso.com</test_value>
+                <!-- user-->
+                <test_value name="s1">user01</test_value>
+                <!-- image-->
+                <test_value name="s2">C:\\Windows\\System32\\svchost.exe</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2016 Sep 25 17:15:51 (server01) 10.1.1.1->WinEvtLog 2016 Sep 25 13:15:46 WinEvtLog: Security: AUDIT_SUCCESS(4673): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A privileged service was called. Subject: Security ID: S-1-5-18 Account Name: user01 Account Domain: CONTOSO Logon ID: 0x3e7 Service: Server: NT Local Security Authority / Authentication Service Service Name: LsaRegisterLogonProcess() Process: Process ID: 0x274 Process Name: C:\\Windows\\System32\\lsass.exe Service Request Information: Privileges: SeTcbPrivilege</test_message>
+                <!-- Event ID-->
+                <test_value name="i0">4673</test_value>
+                <!-- hostname-->
+                <test_value name="s0">SERVER01.contoso.com</test_value>
+                <!-- user-->
+                <test_value name="s1">user01</test_value>
+                <!-- image-->
+                <test_value name="s2">C:\\Windows\\System32\\lsass.exe</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2016 Sep 25 13:58:41 (server01) 10.1.1.1->WinEvtLog 2016 Sep 25 09:58:38 WinEvtLog: Security: AUDIT_SUCCESS(4648): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A logon was attempted using explicit credentials. Subject: Security ID: S-1-5-18 Account Name: SERVER01$ Account Domain: CONTOSO Logon ID: 0x3e7 Logon GUID: {00000000-0000-0000-0000-000000000000} Account Whose Credentials Were Used: Account Name: user01 Account Domain: CONTOSO Logon GUID: {70AC72B8-473F-34EF-46DB-FC991CF4649A} Target Server: Target Server Name: SERVER01$ Additional Information: SERVER01$ Process Information: Process ID: 0x1b94 Process Name: C:\\Windows\\System32\\taskhost.exe Network Information: Network Address: - Port: - This event is generated when a process attempts to log on an account by explicitly specifying that accountÃ¢ÂÂs credentials. This most commonly occurs in batch-type configurations such as scheduled tasks, or when using the RUNAS command.</test_message>
+                <!-- Event ID-->
+                <test_value name="i0">4648</test_value>
+                <!-- hostname-->
+                <test_value name="s0">SERVER01.contoso.com</test_value>
+                <!-- user-->
+                <test_value name="s1">user01</test_value>
+                <!-- image-->
+                <test_value name="s2">C:\\Windows\\System32\\taskhost.exe</test_value>
+            </example>
+            <example>
+                <test_message program="ossec_archive">2016 Sep 25 09:39:53 (SERVER01) 10.1.1.1->WinEvtLog 2016 Sep 25 04:39:47 WinEvtLog: Security: AUDIT_SUCCESS(4648): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A logon was attempted using explicit credentials. Subject: Security ID: S-1-5-18 Account Name: SERVER01$ Account Domain: CONTOSO Logon ID: 0x3e7 Logon GUID: {00000000-0000-0000-0000-000000000000} Account Whose Credentials Were Used: Account Name: user01 Account Domain: CONTOSO Logon GUID: {313EB2E9-51B3-147B-F4D5-A927CC72BDDF} Target Server: Target Server Name: localhost Additional Information: localhost Process Information: Process ID: 0xa68 Process Name: C:\\Windows\\System32\\inetsrv\\w3wp.exe Network Information: Network Address: 192.168.1.1 Port: 4806 This event is generated when a process attempts to log on an account by explicitly specifying that accountÃ¢ÂÂs credentials. This most commonly occurs in batch-type configurations such as scheduled tasks, or when using the RUNAS command.</test_message>
+                <!-- Event ID-->
+                <test_value name="i0">4648</test_value>
+                <!-- hostname-->
+                <test_value name="s0">SERVER01.contoso.com</test_value>
+                <!-- user-->
+                <test_value name="s1">user01</test_value>
+                <!-- image-->
+                <test_value name="s2">C:\\Windows\\System32\\inetsrv\\w3wp.exe</test_value>
+                <!-- Src IP-->
+                <test_value name="i1">192.168.1.1</test_value>
+            </example>
         </examples>
     </rule>
-    
-     </rules>
+    </rules>
 </ruleset>
 
 
