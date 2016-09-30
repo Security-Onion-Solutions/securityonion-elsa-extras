@@ -244,16 +244,16 @@
             <!-- 4688s -->
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::New Process Name: @@ESTRING:s2:  @@ESTRING::Token Elevation Type: @@ESTRING:s3:  @</pattern>
             <!-- 4689s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A process has exited@@ESTRING::Account Name:  @@ESTRING:s1: @@ESTRING::Process Name: @@ESTRING:s2:  @@ESTRING::Exit Status: @@NUMBER:i2:@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A process has exited@@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::Process Name: @@ESTRING:s2:  @@ESTRING::Exit Status: @</pattern>
             <!-- 4674s -->
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::An operation was attempted on a privileged object@@ESTRING::Account Name:  @@ESTRING:s1: @@ESTRING::Process Name: @@ESTRING:s2:  @</pattern>
             <!-- 4985s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::The state of a transaction has changed@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ANYSTRING:s2:@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::The state of a transaction has changed@@ESTRING::Account Name:  @@ESTRING:s1: @@ESTRING::Process Name:  @@ANYSTRING:s2:@</pattern>
             <!-- 4673s -->
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A privileged service was called@@ESTRING::Account Name:  @@ESTRING:s1: @@ESTRING::Process Name: @@ESTRING:s2:  @</pattern>
             <!-- 4648s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Account Whose Credentials Were Used:  Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:  Network Information:  Network Address: @@IPv4:i1:  Port: @</pattern>
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Account Whose Credentials Were Used:  Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:  Network Information@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Account Whose Credentials Were Used@@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::Process Name:  @@ESTRING:s2:  @@ESTRING::Network Address: @@IPv4:i1: @</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Account Whose Credentials Were Used@@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::Process Name:  @@ESTRING:s2:  @</pattern>
         </patterns>
         <examples>
             <example>
@@ -287,7 +287,7 @@
                 <test_value name="s5">"C:\\Program Files\\WindowsApps\\microsoft.windowscommunicationsapps_17.7167.40817.0_x64__8wekyb3d8bbwe\\HxTsr.exe" -ServerName:Hx.IPC.Server</test_value>
             </example>
             <example>
-                <test_message program="ossec_archive">2015 Nov 03 19:57:01 (SERVER01) 10.1.1.1->WinEvtLog 2015 Nov 03 13:56:57 WinEvtLog: Security: AUDIT_SUCCESS(4689): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A process has exited. Subject:  Security ID:  S-1-5-18  Account Name:  user01  Account Domain:  CONTOSO  Logon ID:  0x3e7  Process Information:  Process ID: 0x1804  Process Name: C:\\Program Files (x86)\\PostgreSQL\\8.4\\bin\\postgres.exe  Exit Status: 0x0</test_message>
+                <test_message program="ossec_archive">2015 Nov 03 19:57:01 (SERVER01) 10.1.1.1->WinEvtLog 2015 Nov 03 13:56:57 WinEvtLog: Security: AUDIT_SUCCESS(4689): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: A process has exited. Subject:  Security ID:  S-1-5-18  Account Name:  user01  Account Domain:  CONTOSO  Logon ID:  0x3e7  Process Information:  Process ID: 0x1804  Process Name: C:\\Program Files (x86)\\PostgreSQL\\8.4\\bin\\postgres.exe  Exit Status: 0xFFFFFFFF</test_message>
                 <!-- Event ID-->
                 <test_value name="i0">4689</test_value>
                 <!-- hostname-->
@@ -296,8 +296,6 @@
                 <test_value name="s1">user01</test_value>
                 <!-- image-->
                 <test_value name="s2">C:\\Program Files (x86)\\PostgreSQL\\8.4\\bin\\postgres.exe</test_value>
-                <!-- Status Code-->
-                <test_value name="i2">0x0</test_value>
             </example>
             <example>
                 <test_message program="ossec_archive">2015 Nov 03 19:57:02 (SERVER01) 10.1.1.1->WinEvtLog 2015 Nov 03 21:56:57 WinEvtLog: Security: AUDIT_SUCCESS(4674): Microsoft-Windows-Security-Auditing: (no user): no domain: SERVER01.contoso.com: An operation was attempted on a privileged object. Subject:  Security ID:  S-1-5-21-1202660629-2052111302-682003330-5406  Account Name:  user01  Account Domain:  CONTOSO  Logon ID:  0x20b21e  Object:  Object Server: Security  Object Type: -  Object Name: -  Object Handle: 0xce8  Process Information:  Process ID: 0x161c  Process Name: C:\\Windows\\System32\\wbem\\WmiPrvSE.exe  Requested Operation:  Desired Access: 2031619  Privileges:  SeTakeOwnershipPrivilege</test_message>
@@ -376,8 +374,8 @@
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:: The domain controller attempted to validate the credentials for an account.@@ESTRING::Logon Account: @@ESTRING:s1: Source Workstation: @@ESTRING:s0: Error@</pattern>
 
             <!-- 4624s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account was successfully logged on. @ESTRING::Account Name:@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:  @@ESTRING:s2:  Logon ID:@@ESTRING::Source Network Address: @@IPv4:i1: Source Port:@</pattern>
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account was successfully logged on. @ESTRING::Account Name:@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:  @@ESTRING:s2:  Logon ID:@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account was successfully logged on. @ESTRING::Account Name:@@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::Account Domain:  @@ESTRING:s2:  @@ESTRING::Source Network Address: @@IPv4:i1: @</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account was successfully logged on. @ESTRING::Account Name:@@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::Account Domain:  @@ESTRING:s2:  @</pattern>
 
             <!-- 4625s -->
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @An account failed to log on. @ESTRING::Account Name:@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:  @@ESTRING:s2:  Failure@@ESTRING::Source Network Address: @@IPv4:i1: Source Port:@</pattern>
@@ -426,8 +424,8 @@
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::User Name: @@ESTRING:s1:    |@@ESTRING::Domain: |@@ESTRING:s2:    |@</pattern>
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Primary User Name: @@ESTRING:s1:    |@@ESTRING::Primary Domain: @@ESTRING:s2:    |@</pattern>
 
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:  @@ESTRING:s2:  Logon @@ESTRING::ffff:@@IPv4:i1: @</pattern>
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:  @@ESTRING:s2:  Logon@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::Account Domain:  @@ESTRING:s2:  @@ESTRING::ffff:@@IPv4:i1: @</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::Account Domain:  @@ESTRING:s2:  @</pattern>
 
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::Source Network Address: @@IPv4:i1: @</pattern>
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::ffff:@@IPv4:i1: @</pattern>
