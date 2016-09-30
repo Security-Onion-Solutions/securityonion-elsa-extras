@@ -1,4 +1,4 @@
-<!-- v. 7/19/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com-->
+!-- v. 7/19/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com-->
 <ruleset name="SYSMON" id='777'>
     <pattern>ossec_archive</pattern>
     <rules>
@@ -240,17 +240,17 @@
     <rule provider="DefensiveDepth" class='10780' id='10780'>
         <patterns>
             <!-- 4688s with command line auditing -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Target Subject:@@ESTRING::Account Name:  @@ESTRING:s1:   Account Domain:@@ESTRING::New Process Name: @@ESTRING:s2:   Token Elevation Type: @@ESTRING:s3:   @@ESTRING::Creator Process Name: @@ESTRING:s4:   Process Command Line: @@ESTRING:s5:    Token Elevation Type@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Target Subject:@@ESTRING::Account Name:  @@ESTRING:s1: @@ESTRING::New Process Name: @@ESTRING:s2:  @@ESTRING::Token Elevation Type: @@ESTRING:s3:  @@ESTRING::Creator Process Name: @@ESTRING:s4:  @@ESTRING::Process Command Line: @@ESTRING:s5:  @</pattern>
             <!-- 4688s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::New Process Name: @@ESTRING:s2:  Token Elevation Type: @@ESTRING:s3:  Creator@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A new process has been created@@ESTRING::Account Name:  @@ESTRING:s1:  @@ESTRING::New Process Name: @@ESTRING:s2:  @@ESTRING::Token Elevation Type: @@ESTRING:s3:  @</pattern>
             <!-- 4689s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A process has exited@@ESTRING::Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name: @@ESTRING:s2:  Exit Status: @@NUMBER:i2:@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A process has exited@@ESTRING::Account Name:  @@ESTRING:s1: @@ESTRING::Process Name: @@ESTRING:s2:  @@ESTRING::Exit Status: @@NUMBER:i2:@</pattern>
             <!-- 4674s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::An operation was attempted on a privileged object@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name: @@ESTRING:s2:  Requested Operation@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::An operation was attempted on a privileged object@@ESTRING::Account Name:  @@ESTRING:s1: @@ESTRING::Process Name: @@ESTRING:s2:  @</pattern>
             <!-- 4985s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::The state of a transaction has changed@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::The state of a transaction has changed@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ANYSTRING:s2:@</pattern>
             <!-- 4673s -->
-            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A privileged service was called@@ESTRING::Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name: @@ESTRING:s2:  Service Request Information@</pattern>
+            <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A privileged service was called@@ESTRING::Account Name:  @@ESTRING:s1: @@ESTRING::Process Name: @@ESTRING:s2:  @</pattern>
             <!-- 4648s -->
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Account Whose Credentials Were Used:  Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:  Network Information:  Network Address: @@IPv4:i1:  Port: @</pattern>
             <pattern>@NUMBER::@@ESTRING::) @@IPv4::->@@ESTRING::(@@ESTRING:i0:): @@ESTRING:::@@ESTRING:::@@ESTRING::: @@ESTRING:s0:: @@ESTRING::A logon was attempted using explicit credentials@@ESTRING::Account Whose Credentials Were Used:  Account Name:  @@ESTRING:s1:  Account Domain:@@ESTRING::Process Name:  @@ESTRING:s2:  Network Information@</pattern>
