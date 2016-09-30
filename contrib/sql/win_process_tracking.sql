@@ -17,4 +17,3 @@ INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES (
 INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="WINDOWS_PROCESS"), (SELECT id FROM fields WHERE field="eventid"), 5);
 INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="WINDOWS_PROCESS"), (SELECT id FROM fields WHERE field="srcip"), 6);
 INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="WINDOWS_PROCESS"), (SELECT id FROM fields WHERE field="command"), 16);
-INSERT IGNORE INTO fields_classes_map (class_id, field_id, field_order) VALUES ((SELECT id FROM classes WHERE class="WINDOWS_PROCESS"), (SELECT id FROM fields WHERE field="status_code"), 7);
