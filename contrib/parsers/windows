@@ -1,4 +1,4 @@
-!-- v. 7/19/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com-->
+<!-- v. 7/19/15 --- Maintained by Josh Brower, Josh@DefensiveDepth.com-->
 <ruleset name="SYSMON" id='777'>
     <pattern>ossec_archive</pattern>
     <rules>
