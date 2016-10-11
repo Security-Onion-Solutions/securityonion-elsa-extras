@@ -6,8 +6,29 @@
                 <patterns>
                         <pattern>@ESTRING::ASA-4-338@@ESTRING:: blacklisted @@ESTRING:i0: @@ESTRING::INSIDE:@@ESTRING::__@@IPv4:i1:_@@ESTRING::/@@ESTRING:i2: (@@ESTRING::OUTSIDE:@@ESTRING:i3:/@@ESTRING:i4: (@@ESTRING::dynamic list: @@ESTRING:s0:,@@ESTRING::threat-level: @@ESTRING:s1:,@@ESTRING::category: @@ANYSTRING:s2:@</pattern>
                         <pattern>@ESTRING::ASA-4-338@@ESTRING:: blacklisted @@ESTRING:i0: @@ESTRING::INSIDE:@@ESTRING:i1:/@@ESTRING:i2: (@@ESTRING::OUTSIDE:@@ESTRING:i3:/@@ESTRING:i4: (@@ESTRING::dynamic list: @@ESTRING:s0:,@@ESTRING::threat-level: @@ESTRING:s1:,@@ESTRING::category: @@ANYSTRING:s2:@</pattern>
+                        <pattern>@ESTRING::ASA-4-338@@ESTRING:: greylisted @@ESTRING:i0: @@ESTRING::INSIDE:@@ESTRING::__@@IPv4:i1:_@@ESTRING::/@@ESTRING:i2: (@@ESTRING::OUTSIDE:@@ESTRING:i3:/@@ESTRING:i4: (@@ESTRING::dynamic list: @@ESTRING:s0:,@@ESTRING::threat-level: @@ESTRING:s1:,@@ESTRING::category: @@ANYSTRING:s2:@</pattern>
+                        <pattern>@ESTRING::ASA-4-338@@ESTRING:: greylisted @@ESTRING:i0: @@ESTRING::INSIDE:@@ESTRING:i1:/@@ESTRING:i2: (@@ESTRING::OUTSIDE:@@ESTRING:i3:/@@ESTRING:i4: (@@ESTRING::dynamic list: @@ESTRING:s0:,@@ESTRING::threat-level: @@ESTRING:s1:,@@ESTRING::category: @@ANYSTRING:s2:@</pattern>
                 </patterns>
                 <examples>
+                        <example>
+                                <test_message program="ossec_archive">2016 Oct 09 00:37:27 ossec-colo->10.1.1.2 Oct 09 2016 00:37:26: %ASA-4-338202: Dynamic Filter monitored greylisted UDP traffic from INSIDE:10.1.1.1/59962 (10.1.1.1/59962) to OUTSIDE:1.1.1.1/53 (1.1.1.1/53), destination 1.1.1.1 resolved from dynamic list: test.test.com, threat-level: very-high, category: Malware</test_message>
+                                <!-- Protocol -->
+                                <test_value name="i0">UDP</test_value>
+                                <!-- SRC IP -->
+                                <test_value name="i1">10.1.1.1</test_value>
+                                <!-- SRC Port -->
+                                <test_value name="i2">59962</test_value>
+                                <!-- DST IP -->
+                                <test_value name="i3">1.1.1.1</test_value>
+                                <!-- DST Port -->
+                                <test_value name="i4">53</test_value>
+                                <!-- Domain name -->
+                                <test_value name="s0">test.test.com</test_value>
+                                <!-- Threat level -->
+                                <test_value name="s1">very-high</test_value>
+                                <!-- Category -->
+                                <test_value name="s2">Malware</test_value>
+                        </example>
                         <example>
                                 <test_message program="ossec_archive">2016 Oct 07 03:34:42 ossec-colo->10.1.1.2 Oct 07 2016 03:34:41: %ASA-4-338006: Dynamic Filter dropped blacklisted TCP traffic from INSIDE:10.1.1.1/60239 (10.1.1.1/60239) to OUTSIDE:1.1.1.1/80 (1.1.1.1/80), destination 1.1.1.1 resolved from dynamic list: test.test.com, threat-level: very-high, category: Malware</test_message>
                                 <!-- Protocol -->
