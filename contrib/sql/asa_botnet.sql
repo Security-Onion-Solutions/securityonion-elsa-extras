@@ -1,4 +1,4 @@
-/* v. 10/11/2016 --- Brian Kellogg */
+/* 10/11/2016 --- Brian Kellogg */
 use syslog;
 
 /* Create CISCO_BOTNET ELSA class and all its associated fields */
