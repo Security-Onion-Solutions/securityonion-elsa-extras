@@ -1,3 +1,4 @@
+<!-- 10/11/2016 --- Brian Kellogg -->
 <ruleset name="CISCO_BOTNET" id='12002'>
    <pattern>ossec_archive</pattern>
         <rules>
