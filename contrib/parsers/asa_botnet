@@ -4,8 +4,8 @@
         <rules>
                 <rule provider="ELSA" class='12002' id='12002'>
                 <patterns>
-				      <pattern>@ESTRING::ASA-4-338002@@ESTRING::monitored blacklisted @@ESTRING:i0: @@ESTRING::INSIDE:@@ESTRING::__@@IPv4:i1:_@@ESTRING::/@@ESTRING:i2: (@@ESTRING::OUTSIDE:@@ESTRING:i3:/@@ESTRING:i4: (@@ESTRING::dynamic list: @@ESTRING:s0:,@@ESTRING::threat-level: @@ESTRING:s1:,@@ESTRING::category: @@ANYSTRING:s2:@</pattern>
-                  <pattern>@ESTRING::ASA-4-338002@@ESTRING::monitored blacklisted @@ESTRING:i0: @@ESTRING::INSIDE:@@ESTRING:i1:/@@ESTRING:i2: (@@ESTRING::OUTSIDE:@@ESTRING:i3:/@@ESTRING:i4: (@@ESTRING::dynamic list: @@ESTRING:s0:,@@ESTRING::threat-level: @@ESTRING:s1:,@@ESTRING::category: @@ANYSTRING:s2:@</pattern>
+			<pattern>@ESTRING::ASA-4-338002@@ESTRING::monitored blacklisted @@ESTRING:i0: @@ESTRING::INSIDE:@@ESTRING::__@@IPv4:i1:_@@ESTRING::/@@ESTRING:i2: (@@ESTRING::OUTSIDE:@@ESTRING:i3:/@@ESTRING:i4: (@@ESTRING::dynamic list: @@ESTRING:s0:,@@ESTRING::threat-level: @@ESTRING:s1:,@@ESTRING::category: @@ANYSTRING:s2:@</pattern>
+			<pattern>@ESTRING::ASA-4-338002@@ESTRING::monitored blacklisted @@ESTRING:i0: @@ESTRING::INSIDE:@@ESTRING:i1:/@@ESTRING:i2: (@@ESTRING::OUTSIDE:@@ESTRING:i3:/@@ESTRING:i4: (@@ESTRING::dynamic list: @@ESTRING:s0:,@@ESTRING::threat-level: @@ESTRING:s1:,@@ESTRING::category: @@ANYSTRING:s2:@</pattern>
                 </patterns>
                 <examples>
                         <example>
