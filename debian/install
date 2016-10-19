@@ -4,6 +4,7 @@ bin/securityonion-elsa-reset usr/bin
 bin/securityonion-elsa-reset-archive usr/bin
 bin/securityonion_elsa_register.rb usr/bin
 contrib/securityonion-patterndb.xml /etc/elsa/patterns.d/elsa
+contrib/parsers/asa_botnet etc/elsa/patterns.d/securityonion
 contrib/parsers/asa_conn etc/elsa/patterns.d/securityonion
 contrib/parsers/asa_deny etc/elsa/patterns.d/securityonion
 contrib/parsers/asa_vpn etc/elsa/patterns.d/securityonion
