@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion40) trusty; urgency=medium
+
+  * update database schema for new installations 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 19 Oct 2016 15:25:31 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion39) trusty; urgency=medium
 
   * Issue 1010: securityonion-elsa-extras: Windows process enhancements 
