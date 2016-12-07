@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion42) trusty; urgency=medium
+
+  * update bro_http pattern for Bro 2.5 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 07 Dec 2016 14:32:41 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion41) trusty; urgency=medium
 
   * update bro_dns pattern for Bro 2.5 
