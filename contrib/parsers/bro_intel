@@ -3,28 +3,28 @@
   <rules>
     <rule provider="Security_Onion" class="26009" id="26009">
       <patterns>
-        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:s3:@</pattern>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING::|@@ESTRING::|@@ESTRING:s3:|@</pattern>
       </patterns>
       <examples>
         <example>
           <test_message program='bro_intel'>1391104904.213081|C4lG181iOhPyUt50k8|172.24.248.101|52490|199.7.91.13|53|-|-|-|travel.msnhome.org|Intel::DOMAIN|DNS::IN_REQUEST|nsm.local-eth1-1|Mandiant APT1 Report</test_message>
+          <test_message program='bro_intel'>1481139311.423700|Cj061w4HkGlt8jMm3|10.0.3.15|1029|192.168.1.1|53|www.honeynet.org|Intel::DOMAIN|DNS::IN_REQUEST|bro|Intel::DOMAIN|Test Domain|-|-|-</test_message>
           <!-- srcip -->
-          <test_value name="i0">172.24.248.101</test_value>
+          <test_value name="i0">10.0.3.15</test_value>
           <!-- srcport -->
-          <test_value name="i1">52490</test_value>
+          <test_value name="i1">1029</test_value>
           <!-- dstip -->
-          <test_value name="i2">199.7.91.13</test_value>
+          <test_value name="i2">192.168.1.1</test_value>
           <!-- dstport -->
           <test_value name="i3">53</test_value>
           <!-- indicator -->
-          <test_value name="s0">travel.msnhome.org</test_value>
+          <test_value name="s0">www.honeynet.org</test_value>
           <!-- indicator_type -->
           <test_value name="s1">Intel::DOMAIN</test_value>
           <!-- seen_where -->
           <test_value name="s2">DNS::IN_REQUEST</test_value>
           <!-- sources -->
-          <test_value name="s3">Mandiant APT1 Report</test_value>
-
+          <test_value name="s3">Test Domain</test_value>
         </example>
       </examples>
     </rule>
