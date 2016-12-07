@@ -3,13 +3,13 @@
 		<rules>
 			<rule class="14" id="14">
 				<patterns>
-					<pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s1:|@@ANYSTRING::@</pattern>
-                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ANYSTRING:s1@</pattern>
-                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING:s0:|@</pattern>
+					<pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s1:|@@ANYSTRING::@</pattern>
+                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING:s2:|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING:s4:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ANYSTRING:s1@</pattern>
+                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING:i4:|@@ESTRING::|@@ESTRING::|@@ESTRING:s0:|@</pattern>
 				</patterns>
 				<examples>
 					<example>
-						<test_message program="bro_dns">1420831379.950431|CsQlNY1bfzq9sW2tsc|192.168.10.101|1036|193.108.91.137|53|udp|3753|www.ask.com.edgesuite.net|1|C_INTERNET|1|A|0|NOERROR|T|F|F|F|0|a1230.b.akamai.net|21600.000000|F</test_message>
+						<test_message program="bro_dns">1420831379.950431|CsQlNY1bfzq9sW2tsc|192.168.10.101|1036|193.108.91.137|53|udp|3753|0.0|www.ask.com.edgesuite.net|1|C_INTERNET|1|A|0|NOERROR|T|F|F|F|0|a1230.b.akamai.net|21600.000000|F</test_message>
 						<!-- srcip -->
 						<test_value name="i0">192.168.10.101</test_value>
 						<!-- srcport -->
