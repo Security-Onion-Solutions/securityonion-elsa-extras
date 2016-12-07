@@ -29,3 +29,4 @@ update-database-schema-for-new-installations
 update-bro_dns-pattern-for-Bro-2.5
 update-bro_http-pattern-for-Bro-2.5
 update-bro_intel-pattern-for-Bro-2.5
+update-bro_smtp-pattern-for-Bro-2.5

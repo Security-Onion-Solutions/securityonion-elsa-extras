@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion44) trusty; urgency=medium
+
+  * update bro_smtp pattern for Bro 2.5 
+
+ -- Doug Burks <doug.burks@gmail.com>  Wed, 07 Dec 2016 15:29:57 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion43) trusty; urgency=medium
 
   * update bro_intel pattern for Bro 2.5 

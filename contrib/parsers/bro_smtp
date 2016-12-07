@@ -1,0 +1,35 @@
+        <ruleset>
+                <pattern>bro_smtp</pattern>
+                <rules>
+                        <rule class="16" id="16">
+                                <patterns>
+                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s4:|@@ESTRING:s5:|@</pattern>
+                                </patterns>
+                                <examples>
+                                        <example>
+                                                <test_message program="bro_smtp">1481136793.453126|CFau1z1sOBwsm9J2ij|192.168.1.159|1038|64.12.102.142|587|1|annlaptop|sneakyg33k@aol.com|mistersecretx@aol.com|Sat, 10 Oct 2009 07:38:10 -0600|"Ann Dercover" &lt;sneakyg33k@aol.com&gt;|&lt;mistersecretx@aol.com&gt;|-|-|&lt;001101ca49ae$e93e45b0$9f01a8c0@annlaptop&gt;|-|rendezvous|-|-|-|250 OK|64.12.102.142,192.168.1.159|Microsoft Outlook Express 6.00.2900.2180|F|FQiXGa4wsod68Ybzz2,FLZ2TY3RRwekPJ26Xb,FwBjO73iIuicfTC8gk|F</test_message>
+                                                <!-- srcip -->
+                                                <test_value name="i0">192.168.1.159</test_value>
+                                                <!-- srcport -->
+                                                <test_value name="i1">1038</test_value>
+                                                <!-- dstip -->
+                                                <test_value name="i2">64.12.102.142</test_value>
+                                                <!-- dstport -->
+                                                <test_value name="i3">587</test_value>
+                                                <!-- server -->
+                                                <test_value name="s0">annlaptop</test_value>
+                                                <!-- from -->
+                                                <test_value name="s1">"Ann Dercover" &lt;sneakyg33k@aol.com&gt;</test_value>
+                                                <!-- to -->
+                                                <test_value name="s2">&lt;mistersecretx@aol.com&gt;</test_value>
+                                                <!-- subject -->
+                                                <test_value name="s3">rendezvous</test_value>
+                                                <!-- last_reply -->
+                                                <test_value name="s4">250 OK</test_value>
+                                                <!-- path -->
+                                                <test_value name="s5">64.12.102.142,192.168.1.159</test_value>
+                                        </example>
+                                </examples>
+                        </rule>
+                </rules>
+        </ruleset>

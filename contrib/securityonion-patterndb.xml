@@ -710,41 +710,6 @@
 		</rules>
 	</ruleset>
 	<ruleset>
-		<pattern>bro_smtp</pattern>
-		<rules>
-			<rule class="16" id="16">
-				<patterns>
-					<pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s4:|@@ESTRING:s5:|@@ANYSTRING::@</pattern>
-				</patterns>
-				<examples>
-					<example>
-						<test_message program="bro_smtp">1320612601.697404|SFiDYDwOSl8|10.0.0.0|45765|66.94.25.228|25|@woMgeVXDE|server.example.com|&lt;prvs=284e51a33=user@domain.com&gt;|&lt;user@example.com&gt;|Sun, 6 Nov 2011 14:50:00 -0600|"user" &lt;user@domain.com&gt;|"'user@example.com'" &lt;user@example.com&gt;|-|&lt;F3AC33A1A5033546890246040DCA32E303CDF29D5FE6@mailserver.domain.com&gt;|&lt;user@example.com&gt;|RE: some subject|-|from mailserver.domain.com ([10.0.0.0]) with mapi; Sun, 6 Nov 2011 14:50:01 -0600|from mailserver.domain.com ([10.0.0.0]) by mailserver.domain.com with ESMTP/TLS/RC4-MD5; 06 Nov 2011 14:50:01 -0600|250 2.0.0 10wk4g5v6k-1 Message accepted for delivery|192.168.1.1,10.0.0.0|-|F</test_message>
-						<!-- srcip -->
-						<test_value name="i0">10.0.0.0</test_value>
-						<!-- srcport -->
-						<test_value name="i1">45765</test_value>
-						<!-- dstip -->
-						<test_value name="i2">66.94.25.228</test_value>
-						<!-- dstport -->
-						<test_value name="i3">25</test_value>
-						<!-- server -->
-						<test_value name="s0">server.example.com</test_value>
-						<!-- from -->
-						<test_value name="s1">"user" &lt;user@domain.com&gt;</test_value>
-						<!-- to -->
-						<test_value name="s2">"'user@example.com'" &lt;user@example.com&gt;</test_value>
-						<!-- subject -->
-						<test_value name="s3">RE: some subject</test_value>
-						<!-- last_reply -->
-						<test_value name="s4">250 2.0.0 10wk4g5v6k-1 Message accepted for delivery</test_value>
-						<!-- path -->
-						<test_value name="s5">192.168.1.1,10.0.0.0</test_value>
-					</example>
-				</examples>
-			</rule>
-		</rules>
-	</ruleset>
-	<ruleset>
 		<pattern>bro_smtp_entities</pattern>
 		<rules>
 			<rule class="17" id="17">

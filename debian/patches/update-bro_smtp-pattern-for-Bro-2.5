@@ -1,0 +1,107 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20151011-1ubuntu1securityonion44) trusty; urgency=medium
+ .
+   * update bro_smtp pattern for Bro 2.5
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- /dev/null
++++ securityonion-elsa-extras-20151011/contrib/parsers/bro_smtp
+@@ -0,0 +1,35 @@
++        <ruleset>
++                <pattern>bro_smtp</pattern>
++                <rules>
++                        <rule class="16" id="16">
++                                <patterns>
++                                        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s4:|@@ESTRING:s5:|@</pattern>
++                                </patterns>
++                                <examples>
++                                        <example>
++                                                <test_message program="bro_smtp">1481136793.453126|CFau1z1sOBwsm9J2ij|192.168.1.159|1038|64.12.102.142|587|1|annlaptop|sneakyg33k@aol.com|mistersecretx@aol.com|Sat, 10 Oct 2009 07:38:10 -0600|"Ann Dercover" &lt;sneakyg33k@aol.com&gt;|&lt;mistersecretx@aol.com&gt;|-|-|&lt;001101ca49ae$e93e45b0$9f01a8c0@annlaptop&gt;|-|rendezvous|-|-|-|250 OK|64.12.102.142,192.168.1.159|Microsoft Outlook Express 6.00.2900.2180|F|FQiXGa4wsod68Ybzz2,FLZ2TY3RRwekPJ26Xb,FwBjO73iIuicfTC8gk|F</test_message>
++                                                <!-- srcip -->
++                                                <test_value name="i0">192.168.1.159</test_value>
++                                                <!-- srcport -->
++                                                <test_value name="i1">1038</test_value>
++                                                <!-- dstip -->
++                                                <test_value name="i2">64.12.102.142</test_value>
++                                                <!-- dstport -->
++                                                <test_value name="i3">587</test_value>
++                                                <!-- server -->
++                                                <test_value name="s0">annlaptop</test_value>
++                                                <!-- from -->
++                                                <test_value name="s1">"Ann Dercover" &lt;sneakyg33k@aol.com&gt;</test_value>
++                                                <!-- to -->
++                                                <test_value name="s2">&lt;mistersecretx@aol.com&gt;</test_value>
++                                                <!-- subject -->
++                                                <test_value name="s3">rendezvous</test_value>
++                                                <!-- last_reply -->
++                                                <test_value name="s4">250 OK</test_value>
++                                                <!-- path -->
++                                                <test_value name="s5">64.12.102.142,192.168.1.159</test_value>
++                                        </example>
++                                </examples>
++                        </rule>
++                </rules>
++        </ruleset>
+--- securityonion-elsa-extras-20151011.orig/contrib/securityonion-patterndb.xml
++++ securityonion-elsa-extras-20151011/contrib/securityonion-patterndb.xml
+@@ -710,41 +710,6 @@
+ 		</rules>
+ 	</ruleset>
+ 	<ruleset>
+-		<pattern>bro_smtp</pattern>
+-		<rules>
+-			<rule class="16" id="16">
+-				<patterns>
+-					<pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s4:|@@ESTRING:s5:|@@ANYSTRING::@</pattern>
+-				</patterns>
+-				<examples>
+-					<example>
+-						<test_message program="bro_smtp">1320612601.697404|SFiDYDwOSl8|10.0.0.0|45765|66.94.25.228|25|@woMgeVXDE|server.example.com|&lt;prvs=284e51a33=user@domain.com&gt;|&lt;user@example.com&gt;|Sun, 6 Nov 2011 14:50:00 -0600|"user" &lt;user@domain.com&gt;|"'user@example.com'" &lt;user@example.com&gt;|-|&lt;F3AC33A1A5033546890246040DCA32E303CDF29D5FE6@mailserver.domain.com&gt;|&lt;user@example.com&gt;|RE: some subject|-|from mailserver.domain.com ([10.0.0.0]) with mapi; Sun, 6 Nov 2011 14:50:01 -0600|from mailserver.domain.com ([10.0.0.0]) by mailserver.domain.com with ESMTP/TLS/RC4-MD5; 06 Nov 2011 14:50:01 -0600|250 2.0.0 10wk4g5v6k-1 Message accepted for delivery|192.168.1.1,10.0.0.0|-|F</test_message>
+-						<!-- srcip -->
+-						<test_value name="i0">10.0.0.0</test_value>
+-						<!-- srcport -->
+-						<test_value name="i1">45765</test_value>
+-						<!-- dstip -->
+-						<test_value name="i2">66.94.25.228</test_value>
+-						<!-- dstport -->
+-						<test_value name="i3">25</test_value>
+-						<!-- server -->
+-						<test_value name="s0">server.example.com</test_value>
+-						<!-- from -->
+-						<test_value name="s1">"user" &lt;user@domain.com&gt;</test_value>
+-						<!-- to -->
+-						<test_value name="s2">"'user@example.com'" &lt;user@example.com&gt;</test_value>
+-						<!-- subject -->
+-						<test_value name="s3">RE: some subject</test_value>
+-						<!-- last_reply -->
+-						<test_value name="s4">250 2.0.0 10wk4g5v6k-1 Message accepted for delivery</test_value>
+-						<!-- path -->
+-						<test_value name="s5">192.168.1.1,10.0.0.0</test_value>
+-					</example>
+-				</examples>
+-			</rule>
+-		</rules>
+-	</ruleset>
+-	<ruleset>
+ 		<pattern>bro_smtp_entities</pattern>
+ 		<rules>
+ 			<rule class="17" id="17">
