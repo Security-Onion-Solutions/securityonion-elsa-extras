@@ -3,29 +3,29 @@
   <rules>
     <rule provider="Security_Onion" class="26007" id="26007">
       <patterns>
-        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s4:|@@ESTRING:s5:|@@ESTRING::|@@ESTRING::|@@ESTRING::@</pattern>
+        <pattern>@ESTRING::|@@ESTRING::|@@ESTRING:i0:|@@ESTRING:i1:|@@ESTRING:i2:|@@ESTRING:i3:|@@ESTRING::|@@ESTRING:s0:|@@ESTRING::|@@ESTRING:s1:|@@ESTRING:s2:|@@ESTRING:s3:|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING::|@@ESTRING:s4:|@@ESTRING:s5:|@@ESTRING::|@@ESTRING::@</pattern>
       </patterns>
       <examples>
         <example>
-          <test_message program="bro_ssh">1436555953.765764|CnZKS10trXfqFTCu8|203.0.113.77|65438|192.168.3.5|22|2|T|INBOUND|SSH-2.0-OpenSSH_5.8p2_hpn13v11 FreeBSD-20110503|SSH-2.0-OpenSSH_4.7p1 Debian-8ubuntu1|aes128-cbc|hmac-md5|none|diffie-hellman-group-exchange-sha256|ssh-rsa|56:56:24:0f:21:1d:de:a7:2b:ae:61:b1:24:3d:e8:f3|AU|-|-|-|-</test_message>
+          <test_message program="bro_ssh">1481232333.626584|CYKycoFzezsF36eH6|192.168.1.32|58641|131.103.20.168|22|2|F|1|OUTBOUND|SSH-2.0-OpenSSH_6.7|SSH-2.0-OpenSSH_5.3|aes128-ctr|hmac-md5|none|diffie-hellman-group-exchange-sha256|ssh-rsa|97:8c:1b:f2:6f:14:6b:5c:3b:ec:aa:46:46:74:7c:40|US|-|-|-|-</test_message>
           <!-- srcip -->
-          <test_value name="i0">203.0.113.77</test_value>
+          <test_value name="i0">192.168.1.32</test_value>
           <!-- srcport -->
-          <test_value name="i1">65438</test_value>
+          <test_value name="i1">58641</test_value>
           <!-- dstip -->
-          <test_value name="i2">192.168.3.5</test_value>
+          <test_value name="i2">131.103.20.168</test_value>
           <!-- dstport -->
           <test_value name="i3">22</test_value>
           <!-- status -->
-          <test_value name="s0">T</test_value>
+          <test_value name="s0">F</test_value>
           <!-- direction -->
-          <test_value name="s1">INBOUND</test_value>
+          <test_value name="s1">OUTBOUND</test_value>
           <!-- client -->
-          <test_value name="s2">SSH-2.0-OpenSSH_5.8p2_hpn13v11 FreeBSD-20110503</test_value>
+          <test_value name="s2">SSH-2.0-OpenSSH_6.7</test_value>
           <!-- server -->
-          <test_value name="s3">SSH-2.0-OpenSSH_4.7p1 Debian-8ubuntu1</test_value>
+          <test_value name="s3">SSH-2.0-OpenSSH_5.3</test_value>
           <!-- country -->
-          <test_value name="s4">AU</test_value>
+          <test_value name="s4">US</test_value>
           <!-- region -->
           <test_value name="s5">-</test_value>
         </example>

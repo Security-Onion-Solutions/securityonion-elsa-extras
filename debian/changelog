@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion46) trusty; urgency=medium
+
+  * update bro_ssh pattern for Bro 2.5 
+
+ -- Doug Burks <doug.burks@gmail.com>  Thu, 08 Dec 2016 16:55:01 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion45) trusty; urgency=medium
 
   * install bro_smtp pattern 
