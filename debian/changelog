@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion47) trusty; urgency=medium
+
+  * fix bro_ftp pattern 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 09 Dec 2016 09:42:31 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion46) trusty; urgency=medium
 
   * update bro_ssh pattern for Bro 2.5 
