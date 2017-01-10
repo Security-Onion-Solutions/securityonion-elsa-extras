@@ -307,3 +307,8 @@ mysql -uroot < $SQL || echo "Error importing $SQL."
 # Additions for Cisco ASA Botnet
 SQL="$SQL_DIR/asa_botnet.sql"
 mysql -uroot < $SQL || echo "Error importing $SQL."
+
+# Additions for BRO_RFB class & associated fields
+SQL="$SQL_DIR/bro_rfb.sql"
+mysql -uroot < $SQL || echo "Error importing $SQL."
+

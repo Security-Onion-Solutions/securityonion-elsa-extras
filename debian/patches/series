@@ -32,3 +32,4 @@ update-bro_intel-pattern-for-Bro-2.5
 update-bro_smtp-pattern-for-Bro-2.5
 update-bro_ssh-pattern-for-Bro-2.5
 fix-bro_ftp-pattern
+Issue-1036:-securityonion-elsa-extras:-add-pattern-for-Bro-rfb.log

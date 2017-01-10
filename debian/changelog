@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion48) trusty; urgency=medium
+
+  * Issue 1036: securityonion-elsa-extras: add pattern for Bro rfb.log 
+
+ -- Doug Burks <doug.burks@gmail.com>  Tue, 10 Jan 2017 16:26:11 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion47) trusty; urgency=medium
 
   * fix bro_ftp pattern 

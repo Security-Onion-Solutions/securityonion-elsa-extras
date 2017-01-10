@@ -892,6 +892,45 @@ case "$1" in
 		touch $FILE
 	fi
 
+        # 2017-01-10 Merge pattern for Bro rfb.log
+        UPDATE="2017-01-10"
+        FILE="/nsm/elsa/$UPDATE"
+        if [ ! -f $FILE ]; then
+                if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
+                        echo "* ELSA is enabled on this box."
+                        # Only update database if Setup has already been run
+                        if [ -e /var/log/nsm/sosetup.log ]; then
+                                echo "* Found sosetup.log."
+                                echo "* Did NOT find $FILE, so applying $UPDATE database schema update."
+
+                                # Store all SQL schema updates as files in $SQL_DIR
+                                SQL_DIR="/opt/elsa/contrib/securityonion/contrib/sql"
+
+                                echo "* Adding fields for Bro rfb.log."
+                                SQL="$SQL_DIR/bro_rfb.sql"
+                                mysql --defaults-file=/etc/mysql/debian.cnf < $SQL || echo "Error importing $SQL."
+
+                                # backup syslog-ng.conf with today's date as file extension
+                                DATE=`date '+%Y%m%d'`
+                                SYSLOG_CONF="/etc/syslog-ng/syslog-ng.conf"
+                                SYSLOG_CONFBAK="$SYSLOG_CONF.$DATE"
+                                if [ -f $SYSLOG_CONF ]; then
+                                        echo "* Backing up $SYSLOG_CONF to $SYSLOG_CONFBAK."
+                                        cp $SYSLOG_CONF $SYSLOG_CONFBAK || echo "Error backing up $SYSLOG_CONF to $SYSLOG_CONFBAK."
+
+                                        if ! grep 'source s_bro_rfb { file("/nsm/bro/logs/current/rfb.log" flags(no-parse) program_override("bro_rfb")); };' $SYSLOG_CONF >> /dev/null; then
+                                                echo "* Updating $SYSLOG_CONF to monitor Bro rfb.log."
+                                                sed -i '/^source s_bro_sip/a source s_bro_rfb { file("/nsm/bro/logs/current/rfb.log" flags(no-parse) program_override("bro_rfb")); };' $SYSLOG_CONF || echo "Error adding s_bro_rfb to $SYSLOG_CONF."
+                                                sed -i '/source(s_bro_ssh);/a \\tsource(s_bro_rfb);' $SYSLOG_CONF || echo "Error adding s_bro_rfb to $SYSLOG_CONF."
+                                        fi
+                                fi
+
+                        fi
+                fi
+		# Now that we've applied the update, record that we've applied it
+                touch $FILE
+        fi
+
 	# Always check to see if ELSA is enabled and, if so, update patterns
 	if grep -i "ELSA=yes" /etc/nsm/securityonion.conf >/dev/null 2>&1; then
 		echo "* ELSA is enabled on this box."
