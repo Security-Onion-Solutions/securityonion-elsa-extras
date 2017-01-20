@@ -955,6 +955,11 @@ case "$1" in
 
 		echo "* Restarting syslog-ng."
 		service syslog-ng restart >/dev/null 2>&1 || echo "Error restarting syslog-ng."
+
+		# New MySQL packages require that elsa user has file privileges
+		mysql --defaults-file=/etc/mysql/debian.cnf -e 'GRANT file ON *.* TO "elsa"@"localhost" IDENTIFIED BY "biglog"'          
+		mysql --defaults-file=/etc/mysql/debian.cnf -e 'GRANT file ON *.* TO "elsa"@"%" IDENTIFIED BY "biglog"'
+
 	fi
 
 	# Make sure that reset scripts are executable

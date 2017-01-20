@@ -114,6 +114,9 @@ function config_lognode() {
 	mysql -uroot $MYSQL_PORT -e 'GRANT ALL ON syslog.* TO "elsa"@"%" IDENTIFIED BY "biglog"'
 	mysql -uroot $MYSQL_PORT -e 'GRANT ALL ON syslog_data.* TO "elsa"@"localhost" IDENTIFIED BY "biglog"' 
 	mysql -uroot $MYSQL_PORT -e 'GRANT ALL ON syslog_data.* TO "elsa"@"%" IDENTIFIED BY "biglog"'
+	# New MySQL packages now require elsa account to have file privileges
+	mysql -uroot $MYSQL_PORT -e 'GRANT file ON *.* TO "elsa"@"localhost" IDENTIFIED BY "biglog"' 
+	mysql -uroot $MYSQL_PORT -e 'GRANT file ON *.* TO "elsa"@"%" IDENTIFIED BY "biglog"'
 	mysql -uelsa $MYSQL_PORT -pbiglog syslog -e "source $BASE_DIR/elsa/contrib/securityonion/contrib/securityonion-elsa-schema.sql"
 
 	echo "* Adding custom parser schema" | $LOGGER

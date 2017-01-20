@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion49) trusty; urgency=medium
+
+  * securityonion-elsa-extras: new MySQL packages require changes to elsa user #1065 
+
+ -- Doug Burks <doug.burks@gmail.com>  Fri, 20 Jan 2017 14:11:51 -0500
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion48) trusty; urgency=medium
 
   * Issue 1036: securityonion-elsa-extras: add pattern for Bro rfb.log 
