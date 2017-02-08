@@ -1,0 +1,127 @@
+#!/bin/bash
+
+# Define a banner to separate sections
+banner="========================================================================="
+
+# Check for root
+[ "$(id -u)" -ne 0 ] && echo "This script must be run using sudo!" && exit 1
+
+header() {
+  printf '%s\n' "$banner" "$*" "$banner"
+}
+
+
+# Set logging variables
+INDEX=2.6
+ARCHIVE=.1
+PERCENTAGE=.33
+BYTES=300
+CONSTANT=86400
+EVENTS=1000
+DAYSTOKEEP=30
+
+echo
+echo
+header "ELSA Log Storage Calculator"
+read -p "This script will help you calculate how much storage should be required for your indexed and archived ELSA logs.
+
+Follow the prompt(s) below to begin! [Yn]" -e -i Y ANSWER
+if [[ ! $ANSWER == "Y" ]];then
+	echo
+	echo "EXITING.  User chose not to continue."
+	echo
+	exit 1
+fi
+echo "------------------------------------------"
+
+# Get percentage for Index/Archive logsecho
+read -p "# Please enter the percentage of indexed logs you wish to retain: " -e -i 66 INDEX_LOG_PERCENTAGE
+echo
+read -p  "# Please enter the percentage of archived logs you wish to retain: " -e -i 33 ARCHIVE_LOG_PERCENTAGE
+echo
+
+IND_PERCENTAGE=$(echo $INDEX_LOG_PERCENTAGE / 100 | bc -l)
+ARC_PERCENTAGE=$(echo $ARCHIVE_LOG_PERCENTAGE / 100 | bc -l)
+TOTAL_PERCENTAGE=$(($INDEX_LOG_PERCENAGE + $ARCHIVE_LOG_PERCENTAGE))
+
+if [[ "$TOTAL_PERCENTAGE" -gt 100 ]];then
+	echo "ERROR: Total cannot be greater than 100 percent!"
+	exit 1
+fi
+
+# Get other values for log retention
+read -p "# Please enter the number of bytes for each event: " -e -i $BYTES BYTES
+echo
+read -p "# Please enter the number of events per second: " -e -i $EVENTS EVENTS
+echo
+read -p "# Please enter the number of days for which you wish to retain events: " -e -i $DAYSTOKEEP DAYSTOKEEP
+echo
+
+# Provide a summary of user input
+header "Summary"
+echo
+echo "Indexed Percentage: "$INDEX_LOG_PERCENTAGE"%"
+echo "Archived Percentage: "$ARCHIVE_LOG_PERCENTAGE"%"
+echo "Number of bytes per event: "$BYTES
+echo "Number of events per second: "$EVENTS
+echo "Retention period: "$DAYSTOKEEP
+echo
+
+# Calculate storage requirements
+IND_RESULT=$(echo $IND_PERCENTAGE \* $INDEX \* $BYTES \* $EVENTS \* $DAYSTOKEEP \* $CONSTANT | bc -l)
+ARC_RESULT=$(echo $ARC_PERCENTAGE \* $ARCHIVE \* $BYTES \* $EVENTS \* $DAYSTOKEEP \* $CONSTANT | bc -l)
+TOTAL=$(echo $IND_RESULT + $ARC_RESULT | bc -l)
+
+# Create an associative array containing type and storage result
+declare -A RESULTS=([Total]=$TOTAL [Archive]=$ARC_RESULT [Index]=$IND_RESULT)
+
+# Provide a recommendation
+echo "---------------------------------------------------------------------------"
+echo "---------------------------------------------------------------------------"
+echo "------------------------ Calculation Complete! ----------------------------"
+echo "---------------------------------------------------------------------------"
+echo "---------------------------------------------------------------------------"
+echo 
+echo "Based on your answers to the prompts, it is recommneded that you allocate
+at least the following amount of storage for ELSA logs:"
+ echo
+ for i in "${!RESULTS[@]}"
+ do
+	echo
+	header $i "Logs"
+	echo
+	echo "Bytes"
+	echo "-----"
+	echo "${RESULTS[$i]}" / 1 | bc
+	echo
+	echo "Gigabytes"
+	echo "----------"
+	echo "scale=2; ${RESULTS[$i]}" /1000000000 / 1 | bc -l
+	echo 
+	echo "Terabytes"
+	echo "----------"
+	echo "scale=2; ${RESULTS[$i]}" /1000000000000 | bc -l
+	echo
+done
+echo
+# Information about current logging
+header "Current Logging"
+echo
+ARC_LOGGING=$(grep '"percentage":' /etc/elsa_node.conf | awk '{print $2}')
+echo "Archive: "${ARC_LOGGING%?}"%"
+IND_LOGGING=$(((100 - ${ARC_LOGGING%?})))
+echo "Index: "$IND_LOGGING"%"
+echo
+echo "Available space"
+echo "----------------"
+echo
+echo "/nsm/elsa/data/"
+df -Ph /nsm/elsa/data/ | awk 'NR==2 {print $4}'
+echo
+echo "/var/lib/mysql/"
+df -Ph /nsm/elsa/data/ | awk 'NR==2 {print $4}'
+echo
+df -h
+echo
+echo "*ELSA's logging settings can be modified in /etc/elsa_node.conf"
+echo
