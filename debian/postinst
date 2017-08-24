@@ -962,8 +962,8 @@ case "$1" in
 
 	fi
 
-	# Make sure that reset scripts are executable
-	for FILE in "/usr/bin/securityonion-elsa-reset-archive" "/usr/bin/securityonion-elsa-reset"; do
+	# Make sure that scripts are executable
+	for FILE in "/usr/bin/securityonion-elsa-log-calc" "/usr/bin/securityonion-elsa-reset-archive" "/usr/bin/securityonion-elsa-reset"; do
 		if [ -f $FILE ]; then
 			chmod +x $FILE || echo "Error making $FILE executable."
 		fi
