@@ -82,7 +82,7 @@ echo "------------------------ Calculation Complete! ---------------------------
 echo "---------------------------------------------------------------------------"
 echo "---------------------------------------------------------------------------"
 echo 
-echo "Based on your answers to the prompts, it is recommneded that you allocate
+echo "Based on your answers to the prompts, it is recommended that you allocate
 at least the following amount of storage for ELSA logs:"
  echo
  for i in "${!RESULTS[@]}"
