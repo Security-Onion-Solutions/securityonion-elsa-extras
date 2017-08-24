@@ -34,3 +34,4 @@ update-bro_ssh-pattern-for-Bro-2.5
 fix-bro_ftp-pattern
 Issue-1036:-securityonion-elsa-extras:-add-pattern-for-Bro-rfb.log
 securityonion-elsa-extras:-new-MySQL-packages-require-changes-to-elsa-user-#1065
+merge-pull-requests

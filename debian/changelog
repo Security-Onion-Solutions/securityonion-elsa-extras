@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion50) trusty; urgency=medium
+
+  * merge pull requests 
+
+ -- Doug Burks <doug.burks@gmail.com>  Thu, 24 Aug 2017 10:16:19 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion49) trusty; urgency=medium
 
   * securityonion-elsa-extras: new MySQL packages require changes to elsa user #1065 
