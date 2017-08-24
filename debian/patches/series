@@ -36,3 +36,4 @@ Issue-1036:-securityonion-elsa-extras:-add-pattern-for-Bro-rfb.log
 securityonion-elsa-extras:-new-MySQL-packages-require-changes-to-elsa-user-#1065
 merge-pull-requests
 Issue-1059:-securityonion-elsa-extras:-cron.pl-should-check-to-see-if-it's-already-running
+improve-cron-job
