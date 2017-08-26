@@ -38,3 +38,4 @@ merge-pull-requests
 Issue-1059:-securityonion-elsa-extras:-cron.pl-should-check-to-see-if-it's-already-running
 improve-cron-job
 fix-typo
+remove-cron-job-limitation

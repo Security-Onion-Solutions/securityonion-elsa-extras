@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion55) trusty; urgency=medium
+
+  * remove cron job limitation 
+
+ -- Doug Burks <doug.burks@gmail.com>  Sat, 26 Aug 2017 07:19:41 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion54) trusty; urgency=medium
 
   * fix typo 
