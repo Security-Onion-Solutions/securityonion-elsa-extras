@@ -26,8 +26,8 @@ VIEW=0
 # Got r00t?
 #########################################
 if [[ $(/usr/bin/id -u) -ne 0 ]]; then
-    echo "This script needs to be run as root.  Please try again using sudo."
-    exit
+	echo "This script needs to be run as root.  Please try again using sudo."
+	exit
 fi
 
 
@@ -64,22 +64,22 @@ EOF
 view()
 {
 	echo $BANNER
-  echo "MySQL Archive contents of 'syslog_data':"
-  mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e 'SHOW TABLES where Tables_in_syslog_data like "syslogs_archive_%"'
+	echo "MySQL Archive contents of 'syslog_data':"
+	mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e 'SHOW TABLES where Tables_in_syslog_data like "syslogs_archive_%"'
 
-  echo
-  echo "MySQL Archive contents of 'syslog.tables':"
-  mysql --defaults-file=/etc/mysql/debian.cnf syslog -e 'SELECT * FROM tables where table_name like "syslog_data.syslogs_archive_%"'
+	echo
+	echo "MySQL Archive contents of 'syslog.tables':"
+	mysql --defaults-file=/etc/mysql/debian.cnf syslog -e 'SELECT * FROM tables where table_name like "syslog_data.syslogs_archive_%"'
 
-  echo
-  echo "Folder contents of '/nsm/elsa/data/elsa/mysql/syslogs_archive*:"
-  echo $BANNER
-  find /nsm/elsa/data/elsa/mysql/ -name 'syslogs_archive*' | sort
+	echo
+	echo "Folder contents of '/nsm/elsa/data/elsa/mysql/syslogs_archive*:"
+	echo $BANNER
+	find /nsm/elsa/data/elsa/mysql/ -name 'syslogs_archive*' | sort
 
-  echo
-  echo "Folder contents of '/var/lib/mysql/syslog_data/syslogs_archive*':"
-  echo $BANNER
-  find /var/lib/mysql/syslog_data/ -name 'syslogs_archive*' | sort
+	echo
+	echo "Folder contents of '/var/lib/mysql/syslog_data/syslogs_archive*':"
+	echo $BANNER
+	find /var/lib/mysql/syslog_data/ -name 'syslogs_archive*' | sort
 
 	echo
 }
@@ -93,34 +93,34 @@ if [ $# -eq 0 ]; then
 
 	usage
 	exit 0
-	fi
+fi
 
 
 while getopts "hl:rvy" OPTION
 do
-     case $OPTION in
-			h)
-				usage
-				exit 0
-				;;
-			l)
-				LOG=1
-        LOGFILE="$OPTARG"
-        ;;
-			r)
-				RESET=1
-				;;
-			v)
-				VIEW=1
-				;;
-      y)
-				SKIP=1
-        ;;
-      *)
-				usage
-				exit 0
-				;;
-     esac
+	case $OPTION in
+		h)
+			usage
+			exit 0
+			;;
+		l)
+			LOG=1
+			LOGFILE="$OPTARG"
+			;;
+		r)
+			RESET=1
+			;;
+		v)
+			VIEW=1
+			;;
+		y)
+			SKIP=1
+			;;
+		*)
+			usage
+			exit 0
+			;;
+	esac
 done
 
 
@@ -131,9 +131,9 @@ fi
 
 
 if [ $VIEW -eq 1 ]; then
-  view
-  exit 0
-  fi
+	view
+	exit 0
+fi
 
 
 if [ $SKIP -ne 1 ]; then
@@ -151,10 +151,10 @@ fi
 
 
 if [ $RESET -ne 1 ]; then
-  echo "error: 'RESET' not specified, nothing to do"
-  usage
-  exit 0
-  fi
+	echo "error: 'RESET' not specified, nothing to do"
+	usage
+	exit 0
+fi
 
 
 echo "Stopping services..."
@@ -172,14 +172,12 @@ TABLES_SYSLOG=$(mysql --defaults-file=/etc/mysql/debian.cnf syslog --batch -e 'S
 echo
 echo "Removing data:"
 echo "  deleting tables from 'syslog_data'"
-for t1 in $TABLES_SYSLOG_DATA
-do
+for t1 in $TABLES_SYSLOG_DATA; do
     mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e "DROP TABLE $t1"
 done
 
 echo "  deleting rows from 'syslog.tables'"
-for t2 in $TABLES_SYSLOG
-do
+for t2 in $TABLES_SYSLOG; do
     mysql --defaults-file=/etc/mysql/debian.cnf syslog -e "DELETE FROM syslog.tables WHERE table_name='$t2'"
 done
 

@@ -1,3 +1,9 @@
+securityonion-elsa-extras (20151011-1ubuntu1securityonion56) trusty; urgency=medium
+
+  * merge securityonion-elsa-reset-archive and do minor cleanup 
+
+ -- Doug Burks <doug.burks@gmail.com>  Tue, 29 Aug 2017 09:25:18 -0400
+
 securityonion-elsa-extras (20151011-1ubuntu1securityonion55) trusty; urgency=medium
 
   * remove cron job limitation 

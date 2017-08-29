@@ -39,3 +39,4 @@ Issue-1059:-securityonion-elsa-extras:-cron.pl-should-check-to-see-if-it's-alrea
 improve-cron-job
 fix-typo
 remove-cron-job-limitation
+merge-securityonion-elsa-reset-archive-and-do-minor-cleanup

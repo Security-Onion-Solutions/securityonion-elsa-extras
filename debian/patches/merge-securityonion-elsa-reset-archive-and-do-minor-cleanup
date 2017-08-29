@@ -1,0 +1,409 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ securityonion-elsa-extras (20151011-1ubuntu1securityonion56) trusty; urgency=medium
+ .
+   * merge securityonion-elsa-reset-archive and do minor cleanup
+Author: Doug Burks <doug.burks@gmail.com>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- securityonion-elsa-extras-20151011.orig/bin/securityonion-elsa-reset
++++ securityonion-elsa-extras-20151011/bin/securityonion-elsa-reset
+@@ -25,8 +25,8 @@ VIEW=0
+ # Got r00t?
+ #########################################
+ if [[ $(/usr/bin/id -u) -ne 0 ]]; then
+-    echo "This script needs to be run as root.  Please try again using sudo."
+-    exit
++	echo "This script needs to be run as root.  Please try again using sudo."
++	exit
+ fi
+ 
+ 
+@@ -63,22 +63,22 @@ EOF
+ view()
+ {
+ 	echo $BANNER
+-  echo "MySQL contents of 'syslog_data':"
+-  mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e 'SHOW TABLES'
++	echo "MySQL contents of 'syslog_data':"
++	mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e 'SHOW TABLES'
+ 
+-  echo
+-  echo "MySQL contents of 'syslog.tables':"
+-  mysql --defaults-file=/etc/mysql/debian.cnf syslog -e 'SELECT * FROM tables'
+-
+-  echo
+-  echo "Folder contents of '/nsm/elsa/data/elsa/mysql/':"
+-  echo $BANNER
+-  find /nsm/elsa/data/elsa/mysql/ -name 'syslogs*' | sort
+-
+-  echo
+-  echo "Folder contents of '/var/lib/mysql/syslog_data/':"
+-  echo $BANNER
+-  find /var/lib/mysql/syslog_data/ -name 'syslogs*' | sort
++	echo
++	echo "MySQL contents of 'syslog.tables':"
++	mysql --defaults-file=/etc/mysql/debian.cnf syslog -e 'SELECT * FROM tables'
++
++	echo
++	echo "Folder contents of '/nsm/elsa/data/elsa/mysql/':"
++	echo $BANNER
++	find /nsm/elsa/data/elsa/mysql/ -name 'syslogs*' | sort
++
++	echo
++	echo "Folder contents of '/var/lib/mysql/syslog_data/':"
++	echo $BANNER
++	find /var/lib/mysql/syslog_data/ -name 'syslogs*' | sort
+ 
+ 	echo
+ }
+@@ -92,34 +92,34 @@ if [ $# -eq 0 ]; then
+ 
+ 	usage
+ 	exit 0
+-	fi
++fi
+ 
+ 
+ while getopts "hl:rvy" OPTION
+ do
+-     case $OPTION in
+-			h)
+-				usage
+-				exit 0
+-				;;
+-			l)
+-				LOG=1
+-        LOGFILE="$OPTARG"
+-        ;;
+-			r)
+-				RESET=1
+-				;;
+-			v)
+-				VIEW=1
+-				;;
+-      y)
+-				SKIP=1
+-        ;;
+-      *)
+-				usage
+-				exit 0
+-				;;
+-     esac
++	case $OPTION in
++		h)
++			usage
++			exit 0
++			;;
++		l)
++			LOG=1
++			LOGFILE="$OPTARG"
++			;;
++		r)
++			RESET=1
++			;;
++		v)
++			VIEW=1
++			;;
++		y)
++			SKIP=1
++			;;
++		*)
++			usage
++			exit 0
++			;;
++	esac
+ done
+ 
+ 
+@@ -130,9 +130,9 @@ fi
+ 
+ 
+ if [ $VIEW -eq 1 ]; then
+-  view
+-  exit 0
+-  fi
++	view
++	exit 0
++fi
+ 
+ 
+ if [ $SKIP -ne 1 ]; then
+@@ -149,10 +149,10 @@ fi
+ 
+ 
+ if [ $RESET -ne 1 ]; then
+-  echo "error: 'RESET' not specified, nothing to do"
+-  usage
+-  exit 0
+-  fi
++	echo "error: 'RESET' not specified, nothing to do"
++	usage
++	exit 0
++fi
+ 
+ 
+ echo "Stopping services..."
+@@ -170,14 +170,12 @@ TABLES_SYSLOG=$(mysql --defaults-file=/e
+ echo
+ echo "Removing data:"
+ echo "  deleting tables from 'syslog_data'"
+-for t1 in $TABLES_SYSLOG_DATA
+-do
++for t1 in $TABLES_SYSLOG_DATA; do
+     mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e "DROP TABLE $t1"
+ done
+ 
+ echo "  deleting rows from 'syslog.tables'"
+-for t2 in $TABLES_SYSLOG
+-do
++for t2 in $TABLES_SYSLOG; do
+     mysql --defaults-file=/etc/mysql/debian.cnf syslog -e "DELETE FROM syslog.tables WHERE table_name='$t2'"
+ done
+ 
+--- securityonion-elsa-extras-20151011.orig/bin/securityonion-elsa-reset-archive
++++ securityonion-elsa-extras-20151011/bin/securityonion-elsa-reset-archive
+@@ -1,33 +1,191 @@
+-#!/bin/sh
++#!/bin/bash
+ 
+-[ `id -u` -ne 0 ] && echo "This script must be run using sudo!" && exit 1
++## Edited to be an archive only version of 4A61736F6E's securityonion-elsa-reset script.
++
++#########################################
++# Variables
++#########################################
++
++# A banner for user output
++BANNER="----------------------------------------------------"
++
++# Log to file
++LOG=0
++
++# Reset ELSA archives only
++RESET=0
++
++# Skip interactive key presses
++SKIP=0
++
++# View only mode
++VIEW=0
++
++
++#########################################
++# Got r00t?
++#########################################
++if [[ $(/usr/bin/id -u) -ne 0 ]]; then
++	echo "This script needs to be run as root.  Please try again using sudo."
++	exit
++fi
++
++
++#########################################
++# Options
++#########################################
++usage()
++{
++cat <<EOF
++
++Security Onion ELSA Archive Only Reset
++
++  Options:
++  -h         This message
++  -l <file>  Log stdout and stderr to specified file (Use with '-y')
++  -r         Reset Archive tables and files
++  -v         View only mode
++  -y         Skip interactive mode
++
++  Usage:
++    Show help file.
++    $0 -h
++
++    Show relevant ELSA Archive tables and files.
++    $0 -v
++
++    Reset ELSA archives.
++    $0 -y -r
++
++EOF
++}
++
++
++view()
++{
++	echo $BANNER
++	echo "MySQL Archive contents of 'syslog_data':"
++	mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e 'SHOW TABLES where Tables_in_syslog_data like "syslogs_archive_%"'
++
++	echo
++	echo "MySQL Archive contents of 'syslog.tables':"
++	mysql --defaults-file=/etc/mysql/debian.cnf syslog -e 'SELECT * FROM tables where table_name like "syslog_data.syslogs_archive_%"'
++
++	echo
++	echo "Folder contents of '/nsm/elsa/data/elsa/mysql/syslogs_archive*:"
++	echo $BANNER
++	find /nsm/elsa/data/elsa/mysql/ -name 'syslogs_archive*' | sort
++
++	echo
++	echo "Folder contents of '/var/lib/mysql/syslog_data/syslogs_archive*':"
++	echo $BANNER
++	find /var/lib/mysql/syslog_data/ -name 'syslogs_archive*' | sort
++
++	echo
++}
++
++
++#########################################
++# Check if no arguments passed
++#########################################
++if [ $# -eq 0 ]; then
++	echo "error: argument required"
++
++	usage
++	exit 0
++fi
++
++
++while getopts "hl:rvy" OPTION
++do
++	case $OPTION in
++		h)
++			usage
++			exit 0
++			;;
++		l)
++			LOG=1
++			LOGFILE="$OPTARG"
++			;;
++		r)
++			RESET=1
++			;;
++		v)
++			VIEW=1
++			;;
++		y)
++			SKIP=1
++			;;
++		*)
++			usage
++			exit 0
++			;;
++	esac
++done
++
++
++if [ $LOG -eq 1 ]; then
++	echo -e "\n --> Logging stdout & stderr to $LOGFILE"
++	exec > "$LOGFILE" 2>&1
++fi
++
++
++if [ $VIEW -eq 1 ]; then
++	view
++	exit 0
++fi
++
++
++if [ $SKIP -ne 1 ]; then
++	# Prompt user to continue
++	echo $BANNER
++	echo "This script will reset the ELSA Archive."
++	echo
++	echo "It should only be used if you see the following error in your ELSA logs:"
++	echo "Can't find file: 'syslog_archive_<number>'"
++	echo
++	echo "Press Enter to continue or Ctrl-C to cancel."
++	read input
++	echo $BANNER
++fi
++
++
++if [ $RESET -ne 1 ]; then
++	echo "error: 'RESET' not specified, nothing to do"
++	usage
++	exit 0
++fi
+ 
+-echo
+-echo "This script will reset the ELSA Archive."
+-echo
+-echo "It should only be used if you see the following error in your ELSA logs:"
+-echo " Can't find file: 'syslogs_archive_1'"
+-echo
+-echo "Continuing will delete any existing data in the ELSA archive."
+-echo
+-echo "Type yes to continue or anything else to exit."
+-read INPUT
+-[ "$INPUT" != "yes" ] && exit 0
+ 
+-echo
+ echo "Stopping services..."
+ service nsm stop
+ service syslog-ng stop
+-
+ echo
+-echo "Deleting old database entries..."
+-mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e "DROP TABLE syslog_data.syslogs_archive_1"
+-mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e "DELETE FROM syslog.tables WHERE table_name='syslog_data.syslogs_archive_1'"
+ 
+-echo
+-echo "Cleaning up old database files..."
+-rm /nsm/elsa/data/elsa/mysql/syslogs_archive_1*
+-rm /var/lib/mysql/syslog_data/syslogs_archive_1*
++echo "Generating lists for removal:"
++echo "  accessing database 'syslog_data'"
++TABLES_SYSLOG_DATA=$(mysql --defaults-file=/etc/mysql/debian.cnf syslog_data --batch -e 'SHOW TABLES' | grep syslogs_archive | grep -v '^Table' | awk '{print "syslog_data."$1}')
++
++echo "  accessing table 'syslog.tables'"
++TABLES_SYSLOG=$(mysql --defaults-file=/etc/mysql/debian.cnf syslog --batch -e 'SELECT * FROM tables' | grep syslogs_archive | grep -v '^id' | awk '{print $2}')
++
++echo
++echo "Removing data:"
++echo "  deleting tables from 'syslog_data'"
++for t1 in $TABLES_SYSLOG_DATA; do
++    mysql --defaults-file=/etc/mysql/debian.cnf syslog_data -e "DROP TABLE $t1"
++done
++
++echo "  deleting rows from 'syslog.tables'"
++for t2 in $TABLES_SYSLOG; do
++    mysql --defaults-file=/etc/mysql/debian.cnf syslog -e "DELETE FROM syslog.tables WHERE table_name='$t2'"
++done
++
++echo "  deleting Archive files from /var/lib/mysql/syslog_data/"
++find /var/lib/mysql/syslog_data/ -name 'syslogs_archive*' -delete
++
++echo "  deleting Archive files from /nsm/elsa/data/elsa/mysql/"
++find /nsm/elsa/data/elsa/mysql/ -name 'syslogs_archive*' -delete
+ 
+ echo
+ echo "Restarting services..."
+@@ -37,6 +195,9 @@ service nsm start
+ 
+ echo
+ echo "Done."
+-echo "Please wait a minute or two and then log into ELSA"
+-echo "to see if it is now showing a non-zero number of logs"
+-echo "in the upper right corner."
++echo
++echo "Log onto ELSA and review 'logs indexed' and 'archived'"
++echo "statistics visible in the top right corner of the web console."
++echo "Depending on your ELSA configuration and activity on your"
++echo "network, these statistics will begin to climb."
++echo
